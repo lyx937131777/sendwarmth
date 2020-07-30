@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_interesting_activity"
+        android:icon="@drawable/interesting_activity"
+        android:title="@string/title_interesting_activity" />
+
+    <item
+        android:id="@+id/navigation_health_broadcast"
+        android:icon="@drawable/health_broadcast"
+        android:title="@string/title_health_broadcast" />
+
+    <item
+        android:id="@+id/navigation_friends_circle"
+        android:icon="@drawable/friends_circle"
+        android:title="@string/title_friends_circle" />
+
+    <item
+        android:id="@+id/navigation_pension_institutions"
+        android:icon="@drawable/pension_institutions"
+        android:title="@string/title_pension_institutions" />
+
+</menu>
