@@ -2,6 +2,7 @@ package com.example.sendwarmth.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.sendwarmth.MainActivity;
 import com.example.sendwarmth.MyFragAdapter;
 import com.example.sendwarmth.R;
+import com.example.sendwarmth.util.LogUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -23,6 +27,8 @@ import java.util.List;
 
 public class CommunityFragment extends Fragment
 {
+    private Toolbar toolbar;
+
     private ViewPager viewPager;
     private List<Fragment> listFragment;
     private BottomNavigationView navView;
@@ -32,6 +38,10 @@ public class CommunityFragment extends Fragment
     {
 
         View root = inflater.inflate(R.layout.fragment_community, container, false);
+
+        toolbar = root.findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+
         navView = root.findViewById(R.id.top_nav_view);
         viewPager = root.findViewById(R.id.view_pager);
         listFragment = new ArrayList<>();
@@ -88,4 +98,16 @@ public class CommunityFragment extends Fragment
         });
         return root;
     }
+
+
+    public Toolbar getToolbar(){
+        return toolbar;
+    }
+
+//    @Override
+//    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater)
+//    {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.community_menu, menu);
+//    }
 }

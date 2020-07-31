@@ -1,7 +1,10 @@
 package com.example.sendwarmth;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.example.sendwarmth.ui.ShoppingMallFragment;
 import com.example.sendwarmth.ui.CommunityFragment;
@@ -9,6 +12,7 @@ import com.example.sendwarmth.ui.HomeFragment;
 import com.example.sendwarmth.ui.PersonalCenterFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +26,15 @@ public class MainActivity extends AppCompatActivity
 
     private ViewPager viewPager;
     private List<Fragment> listFragment;
+    private HomeFragment homeFragment;
+    private CommunityFragment communityFragment;
+    private ShoppingMallFragment shoppingMallFragment;
+    private PersonalCenterFragment personalCenterFragment;
     private BottomNavigationView navView;
 
     public static MainActivity instance = null;
+
+    private int viewPagerSelected = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,10 +49,14 @@ public class MainActivity extends AppCompatActivity
         // menu should be considered as top level destinations.
 
         listFragment = new ArrayList<>();
-        listFragment.add(new HomeFragment());
-        listFragment.add(new CommunityFragment());
-        listFragment.add(new ShoppingMallFragment());
-        listFragment.add(new PersonalCenterFragment());
+        homeFragment = new HomeFragment();
+        communityFragment = new CommunityFragment();
+        shoppingMallFragment = new ShoppingMallFragment();
+        personalCenterFragment = new PersonalCenterFragment();
+        listFragment.add(homeFragment);
+        listFragment.add(communityFragment);
+        listFragment.add(shoppingMallFragment);
+        listFragment.add(personalCenterFragment);
         MyFragAdapter myAdapter = new MyFragAdapter(getSupportFragmentManager(), this, listFragment);
         viewPager.setAdapter(myAdapter);
 
@@ -82,6 +96,16 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position)
             {
+                viewPagerSelected = position;
+                switch (viewPagerSelected){
+                    case 0:
+                        setSupportActionBar(homeFragment.getToolbar());
+                        break;
+                    case 1:
+                        setSupportActionBar(communityFragment.getToolbar());
+                        break;
+                }
+                supportInvalidateOptionsMenu();
                 navView.getMenu().getItem(position).setChecked(true);
             }
 
@@ -91,6 +115,8 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+//        setSupportActionBar(homeFragment.getToolbar());
+//        supportInvalidateOptionsMenu();
 
 //        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
 //                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
@@ -100,4 +126,59 @@ public class MainActivity extends AppCompatActivity
 //        NavigationUI.setupWithNavController(navView, navController);
     }
 
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        if (menu != null) {
+            if (menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")) {
+                try {
+                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    method.setAccessible(true);
+                    method.invoke(menu, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return super.onMenuOpened(featureId, menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //判断当前处于哪个fragment
+        switch (viewPagerSelected) {
+            case 0:
+                //第一个fragment的menu
+                getMenuInflater().inflate(R.menu.search_menu, menu);
+                break;
+            case 1:
+                //第二个fragment的menu(无)
+                getMenuInflater().inflate(R.menu.community_menu, menu);
+                break;
+            case 2:
+                //第三个fragment的menu
+                break;
+            case 3:
+
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.menu_search2:
+                break;
+            case R.id.menu_new_interesting_activity:
+                Intent intent = new Intent(this,NewInterestingActivityActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return true;
+    }
 }

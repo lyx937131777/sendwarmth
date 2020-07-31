@@ -16,7 +16,7 @@
             app:title=""
             android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:popupTheme="@style/OverflowMenuStyle"
             app:layout_scrollFlags="enterAlways">
 
             <LinearLayout

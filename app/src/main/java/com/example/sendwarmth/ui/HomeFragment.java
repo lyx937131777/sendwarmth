@@ -19,12 +19,14 @@ import com.example.sendwarmth.MainActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.MenuAdapter;
 import com.example.sendwarmth.db.Menu;
+import com.example.sendwarmth.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment
 {
+    private Toolbar toolbar;
 
     private EditText searchText;
 
@@ -45,10 +47,8 @@ public class HomeFragment extends Fragment
                              ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        toolbar = root.findViewById(R.id.toolbar);
         ((MainActivity)getActivity()).setSupportActionBar(toolbar);
-        setHasOptionsMenu(true);
-
         searchText = root.findViewById(R.id.search_edit);
 
         initMenus();
@@ -61,6 +61,7 @@ public class HomeFragment extends Fragment
         return root;
     }
 
+
     private void initMenus()
     {
         menuList.clear();
@@ -71,10 +72,7 @@ public class HomeFragment extends Fragment
 
     }
 
-    @Override
-    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater)
-    {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search_menu, menu);
+    public Toolbar getToolbar(){
+        return toolbar;
     }
 }

@@ -110,10 +110,12 @@
                 android:layout_marginLeft="10dp" />
             <EditText
                 android:id="@+id/tel"
-                android:layout_width="160dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:hint="请输入手机号..."
+                android:textSize="22sp"
+                android:hint="请输入手机号"
+                android:gravity="right|center_vertical"
+                android:background="@null"
                 android:inputType="number"
                 android:textColor="@color/gray"
                 android:layout_marginRight="10dp"
