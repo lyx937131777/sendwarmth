@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 
-import com.example.sendwarmth.ui.ShoppingMallFragment;
-import com.example.sendwarmth.ui.CommunityFragment;
-import com.example.sendwarmth.ui.HomeFragment;
-import com.example.sendwarmth.ui.PersonalCenterFragment;
+import com.example.sendwarmth.fragment.ShoppingMallFragment;
+import com.example.sendwarmth.fragment.CommunityFragment;
+import com.example.sendwarmth.fragment.HomeFragment;
+import com.example.sendwarmth.fragment.PersonalCenterFragment;
+import com.example.sendwarmth.fragment.adapter.MyFragAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.lang.reflect.Method;

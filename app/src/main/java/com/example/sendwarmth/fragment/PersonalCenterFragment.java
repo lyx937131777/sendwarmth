@@ -1,4 +1,4 @@
-package com.example.sendwarmth.ui;
+package com.example.sendwarmth.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,10 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,12 +33,12 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     private RecyclerView mMenuRecycler;
     private Menu[] mMenus = {new Menu("myInformation",R.drawable.my_information,"我的信息"),
-            new Menu("myCommunity",R.drawable.my_evaluate,"我的社区"),
-            new Menu("myActivity",R.drawable.my_star,"我的活动"),
-            new Menu("myHealth",R.drawable.my_message,"我的健康"),
-            new Menu("myAddress",R.drawable.system_message,"收货地址"),
+            new Menu("myCommunity",R.drawable.my_community,"我的社区"),
+            new Menu("myActivity",R.drawable.my_activity,"我的活动"),
+            new Menu("myHealth",R.drawable.my_health,"我的健康"),
+            new Menu("myAddress",R.drawable.my_address,"收货地址"),
             new Menu("feedback",R.drawable.feedback,"意见反馈"),
-            new Menu("customService",R.drawable.my_business_card,"定制服务"),
+            new Menu("customService",R.drawable.custom_service2,"定制服务"),
             new Menu("hotline",R.drawable.hotline,"热线电话")};
     private List<Menu> mMenuList = new ArrayList<>();
     private MenuAdapter mMenuAdapter;

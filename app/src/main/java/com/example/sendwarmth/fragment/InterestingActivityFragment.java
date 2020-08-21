@@ -1,4 +1,4 @@
-package com.example.sendwarmth.ui;
+package com.example.sendwarmth.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.adapter.FriendsCircleAdapter;
 import com.example.sendwarmth.adapter.InterestingActivityAdapter;
 import com.example.sendwarmth.db.InterestingActivity;
 

@@ -6,10 +6,7 @@ import android.content.SharedPreferences;
 
 import com.example.sendwarmth.LoginActivity;
 import com.example.sendwarmth.MainActivity;
-import com.example.sendwarmth.TestActivity;
 import com.example.sendwarmth.util.CheckUtil;
-import com.example.sendwarmth.util.LogUtil;
-import com.example.sendwarmth.util.MyApplication;
 
 public class LoginPresenter
 {

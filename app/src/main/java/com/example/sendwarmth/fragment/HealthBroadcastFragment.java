@@ -1,4 +1,4 @@
-package com.example.sendwarmth.ui;
+package com.example.sendwarmth.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

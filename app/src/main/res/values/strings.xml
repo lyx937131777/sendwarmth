@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SendWarmth</string>
+    <string name="app_name">颂温暖</string>
     <string name="title_activity_main2">MainActivity</string>
     <string name="title_home">主页</string>
     <string name="title_community">社区</string>
@@ -10,8 +10,6 @@
     <string name="title_friends_circle">交友圈</string>
     <string name="title_pension_institutions">养老机构</string>
     <string name="title_activity_main3">MainActivity3</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
 
     <string name="enter_account">手机号</string>
     <string name="pwd">密码</string>

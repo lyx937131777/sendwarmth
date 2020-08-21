@@ -1,4 +1,4 @@
-package com.example.sendwarmth;
+package com.example.sendwarmth.fragment.adapter;
 
 import android.content.Context;
 

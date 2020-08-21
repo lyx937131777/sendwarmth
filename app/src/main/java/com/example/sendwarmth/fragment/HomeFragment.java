@@ -1,15 +1,12 @@
-package com.example.sendwarmth.ui;
+package com.example.sendwarmth.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -19,7 +16,6 @@ import com.example.sendwarmth.MainActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.MenuAdapter;
 import com.example.sendwarmth.db.Menu;
-import com.example.sendwarmth.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

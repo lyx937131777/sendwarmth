@@ -1,25 +1,18 @@
-package com.example.sendwarmth.ui;
+package com.example.sendwarmth.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.sendwarmth.MainActivity;
-import com.example.sendwarmth.MyFragAdapter;
+import com.example.sendwarmth.fragment.adapter.MyFragAdapter;
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.util.LogUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;

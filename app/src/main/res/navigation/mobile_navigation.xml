@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.sendwarmth.ui.HomeFragment"
+        android:name="com.example.sendwarmth.fragment.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.sendwarmth.ui.CommunityFragment"
+        android:name="com.example.sendwarmth.fragment.CommunityFragment"
         android:label="@string/title_community"
         tools:layout="@layout/fragment_community" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.sendwarmth.ui.PersonalCenterFragment"
+        android:name="com.example.sendwarmth.fragment.PersonalCenterFragment"
         android:label="@string/title_personal_center"
         tools:layout="@layout/fragment_personal_center" />
 </navigation>
