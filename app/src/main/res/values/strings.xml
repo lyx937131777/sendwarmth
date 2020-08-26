@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">颂温暖</string>
-    <string name="title_activity_main2">MainActivity</string>
     <string name="title_home">主页</string>
     <string name="title_community">社区</string>
     <string name="title_shopp_mall">商城</string>
@@ -9,7 +8,12 @@
     <string name="title_health_broadcast">养生播报</string>
     <string name="title_friends_circle">交友圈</string>
     <string name="title_pension_institutions">养老机构</string>
-    <string name="title_activity_main3">MainActivity3</string>
+
+    <string name="title_all_orders">全部</string>
+    <string name="title_to_be_paid_orders">待付款</string>
+    <string name="title_to_be_received_orders">待收货</string>
+    <string name="title_to_be_evaluated_orders">待评价</string>
+    <string name="title_closed_orders">已结束</string>
 
     <string name="enter_account">手机号</string>
     <string name="pwd">密码</string>

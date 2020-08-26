@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.MyInformationActivity;
+import com.example.sendwarmth.OrderActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.ServiceWorkActivity;
 import com.example.sendwarmth.db.Menu;
@@ -66,6 +67,30 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                         Intent intent = new Intent(mContext, ServiceWorkActivity.class);
                         intent.putExtra("menuName",menu.getMenuName());
                         intent.putExtra("type",menu.getName());
+                        mContext.startActivity(intent);
+                        break;
+                    }
+                    case "order":{
+                        Intent intent = new Intent(mContext, OrderActivity.class);
+                        int index = 0;
+                        switch (menu.getName()){
+                            case "toBePaid":
+                                index = 1;
+                                break;
+                            case "toBeReceived":
+                                index = 2;
+                                break;
+                            case "toBeEvaluated":
+                                index = 3;
+                                break;
+                            case "closed":
+                                index = 4;
+                                break;
+                            default:
+                                index = 0;
+                                break;
+                        }
+                        intent.putExtra("index",index);
                         mContext.startActivity(intent);
                         break;
                     }

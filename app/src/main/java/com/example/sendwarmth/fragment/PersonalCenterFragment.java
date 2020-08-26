@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import com.example.sendwarmth.MyInformationActivity;
+import com.example.sendwarmth.OrderActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.MenuAdapter;
 import com.example.sendwarmth.db.Menu;
@@ -27,7 +28,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     private Menu[] myOrderMenus = {new Menu("toBePaid",R.drawable.to_be_paid,"待付款"),
             new Menu("toBeReceived",R.drawable.to_be_received,"待收货"),
             new Menu("toBeEvaluated",R.drawable.to_be_evaluated,"待评价"),
-            new Menu("completed",R.drawable.completed,"已完成")};
+            new Menu("closed",R.drawable.completed,"已结束")};
     private List<Menu> myOrderMenuList = new ArrayList<>();
     private MenuAdapter myOrderMenuAdapter;
 
@@ -42,6 +43,8 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
             new Menu("hotline",R.drawable.hotline,"热线电话")};
     private List<Menu> mMenuList = new ArrayList<>();
     private MenuAdapter mMenuAdapter;
+
+    private View allOrder;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -66,6 +69,18 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         profile.setOnClickListener(this);
         nickname.setOnClickListener(this);
         level.setOnClickListener(this);
+
+        allOrder = root.findViewById(R.id.all_orders);
+        allOrder.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getContext(), OrderActivity.class);
+                intent.putExtra("index",0);
+                startActivity(intent);
+            }
+        });
 
         return root;
     }

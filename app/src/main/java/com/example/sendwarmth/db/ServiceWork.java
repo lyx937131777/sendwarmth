@@ -7,11 +7,11 @@ public class ServiceWork implements Serializable
     private String name;
     private String type;
     private String description;
-    private float price;
+    private double price;
     private String unit;
     private int picture;
 
-    public ServiceWork(String name, String type, String description, float price, String unit,
+    public ServiceWork(String name, String type, String description, double price, String unit,
                        int picture)
     {
         this.name = name;
@@ -52,12 +52,12 @@ public class ServiceWork implements Serializable
         this.description = description;
     }
 
-    public float getPrice()
+    public double getPrice()
     {
         return price;
     }
 
-    public void setPrice(float price)
+    public void setPrice(double price)
     {
         this.price = price;
     }
