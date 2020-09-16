@@ -78,8 +78,8 @@ class ServiceWorkAdapter extends RecyclerView.Adapter<ServiceWorkAdapter.ViewHol
         ServiceWork serviceWork = mList.get(position);
         Glide.with(mContext).load(serviceWork.getPicture()).into(holder.picture);
         holder.title.setText(serviceWork.getName());
-//        holder.description.setText(serviceWork.getDescription());
-//        holder.price.setText(serviceWork.getPrice()+"元/"+serviceWork.getUnit());
+        holder.description.setText(serviceWork.getDescription());
+        holder.price.setText(serviceWork.getPrice()+"元/"+serviceWork.getUnit());
     }
     @Override
     public int getItemCount()

@@ -25,8 +25,9 @@ public class OrderFragment extends Fragment
 
     private RecyclerView recyclerView;
     private Order[] orders = {
-            new Order("012","张小花","李思思","2020-08-07 14:00~15:00","toBePaid","","修理钟表",40),
-            new Order("011","张三","张小琴","2020-08-07 10:00~14:00","running","","理发",50),
+            new Order("013","张小花","李思思","2020-08-07 14:00~15:00","toBePaid","","修理钟表",40),
+            new Order("012","张三","张小琴","2020-08-07 10:00~14:00","moving","","理发",50),
+            new Order("011","张三","张小琴","2020-08-07 10:00~14:00","arrived","","理发",50),
             new Order("010","周五","李思思","2020-08-07 12:00~14:00","unstart","","护理",50),
             new Order("009","李四","张小琴","2020-08-07 13:00~15:00","unstart","","修锁",20),
             new Order("008","小红","未接单","2020-08-07 12:00~14:00","waiting","","打扫卫生",50),
@@ -110,11 +111,11 @@ public class OrderFragment extends Fragment
     private String[] getTypes(){
         switch (index){
             case 0:
-                return new String[]{"toBePaid","waiting","unstart","running","toBeEvaluated","canceled","completed"};
+                return new String[]{"toBePaid","waiting","unstart","moving","arrived","toBeEvaluated","canceled","completed"};
             case 1:
                 return new String[]{"toBePaid"};
             case 2:
-                return new String[]{"waiting","unstart","running"};
+                return new String[]{"waiting","unstart","moving","arrived"};
             case 3:
                 return new String[]{"toBeEvaluated"};
             case 4:

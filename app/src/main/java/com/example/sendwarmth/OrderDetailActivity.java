@@ -95,7 +95,11 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         }else if(order.getState().equals("unstart") || order.getState().equals("waiting")){
             buttonLeft.setVisibility(View.GONE);
             buttonRight.setVisibility(View.GONE);
-        }else if(order.getState().equals("toBeEvaluated")) {
+        }else if(order.getState().equals("moving")){
+            button.setText("确认到达");
+            buttonLeft.setVisibility(View.GONE);
+            buttonRight.setVisibility(View.GONE);
+        } else if(order.getState().equals("toBeEvaluated")) {
             button.setText("评价此订单");
             buttonLeft.setVisibility(View.GONE);
             buttonRight.setVisibility(View.GONE);
@@ -142,7 +146,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        if(!order.getState().equals("running")){
+        if(!order.getState().equals("moving")){
             mapView.setVisibility(View.GONE);
         }
     }

@@ -1,37 +1,44 @@
 package com.example.sendwarmth;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 
-import com.example.sendwarmth.util.LogUtil;
+import com.example.sendwarmth.dagger2.DaggerMyComponent;
+import com.example.sendwarmth.dagger2.MyComponent;
+import com.example.sendwarmth.dagger2.MyModule;
+import com.example.sendwarmth.presenter.RegisterPresenter;
+import com.example.sendwarmth.util.MapUtil;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import androidx.appcompat.widget.Toolbar;
 
 public class RegisterActivity extends AppCompatActivity implements OnClickListener
 {
-    private EditText username, password, confirm_password, nickname;
-    private Button bt_username_clear;
-    private Button bt_pwd_clear;
-    private Button bt_confirm_pwd_clear;
-    private Button bt_nickname_clear;
-    private Button bt_register;
-    String username_text, password_text, confirm_password_text, nickname_text;
+    private EditText telText, passwordText, confirmPasswordText, userNameText,nameText,addressText,personalDescriptionText;
+    private Button telClearButton,passwordClearButton,confirmPasswordClearButton,userNameClearButton,nameClearButton,addressClearButton,personalDescriptionClearButton;
+    private Button registerButton;
+    private String tel, password, confirmPassword, userName, name, address, personalDescription;
+
+    private Spinner roleSpinner;
+    private List<String> roleList = new ArrayList<>();
+    private ArrayAdapter<String> roleArrayAdapter;
+    private String role;
+
+    private RegisterPresenter registerPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,13 +46,18 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         initView();
-//        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null)
-//        {
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//        }
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+        {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(this)).build();
+        registerPresenter = myComponent.registerPresenter();
+
+
     }
 
     @Override
@@ -62,23 +74,21 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
 
     private void initView()
     {
-        username = (EditText) findViewById(R.id.username);
+        telText = findViewById(R.id.tel);
         // 监听文本框内容变化
-        username.addTextChangedListener(new TextWatcher()
+        telText.addTextChangedListener(new TextWatcher()
         {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
                 // 获得文本框中的用户
-                username_text = username.getText().toString();
-                if ("".equals(username_text))
-                {
+                tel = telText.getText().toString();
+                if (tel.equals("")) {
                     // 用户名为空,设置按钮不可见
-                    bt_username_clear.setVisibility(View.INVISIBLE);
-                } else
-                {
+                    telClearButton.setVisibility(View.INVISIBLE);
+                } else {
                     // 用户名不为空，设置按钮可见
-                    bt_username_clear.setVisibility(View.VISIBLE);
+                    telClearButton.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -92,23 +102,17 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             {
             }
         });
-        password = (EditText) findViewById(R.id.password);
-        // 监听文本框内容变化
-        password.addTextChangedListener(new TextWatcher()
+        passwordText = findViewById(R.id.password);
+        passwordText.addTextChangedListener(new TextWatcher()
         {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                // 获得文本框中的用户
-                password_text = password.getText().toString();
-                if ("".equals(password_text))
-                {
-                    // 用户名为空,设置按钮不可见
-                    bt_pwd_clear.setVisibility(View.INVISIBLE);
-                } else
-                {
-                    // 用户名不为空，设置按钮可见
-                    bt_pwd_clear.setVisibility(View.VISIBLE);
+                password = passwordText.getText().toString();
+                if (password.equals("")) {
+                    passwordClearButton.setVisibility(View.INVISIBLE);
+                } else {
+                    passwordClearButton.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -122,23 +126,17 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             {
             }
         });
-        confirm_password = (EditText) findViewById(R.id.confirm_password);
-        // 监听文本框内容变化
-        confirm_password.addTextChangedListener(new TextWatcher()
+        confirmPasswordText = findViewById(R.id.confirm_password);
+        confirmPasswordText.addTextChangedListener(new TextWatcher()
         {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                // 获得文本框中的用户
-                confirm_password_text = confirm_password.getText().toString();
-                if ("".equals(confirm_password_text))
-                {
-                    // 用户名为空,设置按钮不可见
-                    bt_confirm_pwd_clear.setVisibility(View.INVISIBLE);
-                } else
-                {
-                    // 用户名不为空，设置按钮可见
-                    bt_confirm_pwd_clear.setVisibility(View.VISIBLE);
+                confirmPassword = confirmPasswordText.getText().toString();
+                if (confirmPassword.equals("")) {
+                    confirmPasswordClearButton.setVisibility(View.INVISIBLE);
+                } else {
+                    confirmPasswordClearButton.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -152,23 +150,17 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             {
             }
         });
-        nickname = (EditText) findViewById(R.id.nickname);
-        // 监听文本框内容变化
-        nickname.addTextChangedListener(new TextWatcher()
+        userNameText = findViewById(R.id.user_name);
+        userNameText.addTextChangedListener(new TextWatcher()
         {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                // 获得文本框中的用户
-                nickname_text = nickname.getText().toString();
-                if ("".equals(nickname_text))
-                {
-                    // 用户名为空,设置按钮不可见
-                    bt_nickname_clear.setVisibility(View.INVISIBLE);
-                } else
-                {
-                    // 用户名不为空，设置按钮可见
-                    bt_nickname_clear.setVisibility(View.VISIBLE);
+                userName = userNameText.getText().toString();
+                if (userName.equals("")) {
+                    userNameClearButton.setVisibility(View.INVISIBLE);
+                } else {
+                    userNameClearButton.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -182,16 +174,133 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             {
             }
         });
-        bt_username_clear = (Button) findViewById(R.id.bt_username_clear);
-        bt_username_clear.setOnClickListener(this);
-        bt_pwd_clear = (Button) findViewById(R.id.bt_pwd_clear);
-        bt_pwd_clear.setOnClickListener(this);
-        bt_confirm_pwd_clear = (Button) findViewById(R.id.bt_confirm_pwd_clear);
-        bt_confirm_pwd_clear.setOnClickListener(this);
-        bt_nickname_clear = (Button) findViewById(R.id.bt_nickname_clear);
-        bt_nickname_clear.setOnClickListener(this);
-        bt_register = (Button) findViewById(R.id.bt_register);
-        bt_register.setOnClickListener(this);
+
+        nameText = findViewById(R.id.name);
+        nameText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+                name = nameText.getText().toString();
+                if(name.equals("")){
+                    nameClearButton.setVisibility(View.INVISIBLE);
+                }else {
+                    nameClearButton.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+
+            }
+        });
+
+        addressText = findViewById(R.id.address);
+        addressText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+                address = addressText.getText().toString();
+                if(address.equals("")){
+                    addressClearButton.setVisibility(View.INVISIBLE);
+                }else {
+                    addressClearButton.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+
+            }
+        });
+
+        personalDescriptionText = findViewById(R.id.personal_description);
+        personalDescriptionText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+                personalDescription = personalDescriptionText.getText().toString();
+                if(personalDescription.equals("")){
+                    personalDescriptionClearButton.setVisibility(View.INVISIBLE);
+                }else {
+                    personalDescriptionClearButton.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+
+            }
+        });
+
+        initroleList();
+        roleArrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,roleList);
+        roleArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        roleSpinner.setAdapter(roleArrayAdapter);
+
+        telClearButton =  findViewById(R.id.tel_clear);
+        telClearButton.setOnClickListener(this);
+        passwordClearButton = findViewById(R.id.password_clear);
+        passwordClearButton.setOnClickListener(this);
+        confirmPasswordClearButton = findViewById(R.id.confirm_password_clear);
+        confirmPasswordClearButton.setOnClickListener(this);
+        userNameClearButton = findViewById(R.id.user_name_clear);
+        userNameClearButton.setOnClickListener(this);
+        nameClearButton = findViewById(R.id.name_clear);
+        nameClearButton.setOnClickListener(this);
+        addressClearButton = findViewById(R.id.address_clear);
+        addressClearButton.setOnClickListener(this);
+        personalDescriptionClearButton = findViewById(R.id.personal_description_clear);
+        personalDescriptionClearButton.setOnClickListener(this);
+        registerButton = findViewById(R.id.register);
+        registerButton.setOnClickListener(this);
+    }
+
+    private void initroleList()
+    {
+        roleSpinner = findViewById(R.id.role);
+//        roleText = findViewById(R.id.role_text);
+        roleList.add("角色");
+        roleList.add("普通用户");
+        roleList.add("专家");
+        roleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                role = MapUtil.getRole(roleList.get(i));
+//                roleText.setText(roleList.get(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView)
+            {
+
+            }
+        });
     }
 
     @Override
@@ -200,114 +309,38 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         switch (v.getId())
         {
             // 清除
-            case R.id.bt_username_clear:
-                username.setText("");
+            case R.id.tel_clear:
+                telText.setText("");
                 break;
-            case R.id.bt_pwd_clear:
-                password.setText("");
+            case R.id.password_clear:
+                passwordText.setText("");
                 break;
-            case R.id.bt_confirm_pwd_clear:
-                confirm_password.setText("");
+            case R.id.confirm_password_clear:
+                confirmPasswordText.setText("");
                 break;
-            case R.id.bt_nickname_clear:
-                nickname.setText("");
+            case R.id.user_name_clear:
+                userNameText.setText("");
+                break;
+            case R.id.name_clear:
+                nameText.setText("");
+                break;
+            case R.id.address_clear:
+                addressText.setText("");
+                break;
+            case R.id.personal_description_clear:
+                personalDescriptionText.setText("");
                 break;
 
             // TODO 注册按钮
-            case R.id.bt_register:
-                username_text = username.getText().toString();
-                password_text = password.getText().toString();
-                confirm_password_text = confirm_password.getText().toString();
-                nickname_text = nickname.getText().toString();
-                //确认密码不正确、邮箱格式不正确、昵称已被占用
-                if (!username_text.matches(Patterns.EMAIL_ADDRESS.toString()))
-                {
-                    Toast.makeText(RegisterActivity.this, "请输入正确的邮箱", Toast.LENGTH_LONG).show();
-                } else if (password_text.length() < 6)
-                {
-                    Toast.makeText(RegisterActivity.this, "请输入至少6位的密码", Toast.LENGTH_LONG).show();
-                } else if (!password.getText().toString().equals(confirm_password.getText()
-                        .toString()))
-                {
-                    Toast.makeText(RegisterActivity.this, "两次密码输入不一致", Toast.LENGTH_LONG).show();
-                } else if (nickname_text.length() < 1)
-                {
-                    Toast.makeText(RegisterActivity.this, "昵称不得为空", Toast.LENGTH_LONG).show();
-                } else
-                {
-                    LogUtil.e("Register", nickname_text);
-
-//                    String address = HttpUtil.LocalAddress + "/Register";
-//                    HttpUtil.registerRequest(address, username_text, password_text,
-//                            nickname_text, new Callback()
-//                            {
-//                                @Override
-//                                public void onFailure(Call call, IOException e)
-//                                {
-//                                    e.printStackTrace();
-//                                    Log.e("Register", "Faled!!!!!!!!!");
-//                                }
-//
-//                                @Override
-//                                public void onResponse(Call call, Response response) throws
-//                                        IOException
-//                                {
-//                                    final String responseData = response.body().string();
-//                                    Log.e("Register", "源码 " + responseData);
-//                                    if(responseData.equals("true"))
-//                                    {
-//                                        runOnUiThread(new Runnable()
-//                                        {
-//                                            @Override
-//                                            public void run()
-//                                            {
-//                                                new AlertDialog.Builder(RegisterActivity.this)
-//                                                        .setTitle("提示")
-//                                                        .setMessage("注册成功！")
-//                                                        .setPositiveButton("确定", new DialogInterface.OnClickListener()
-//                                                        {
-//                                                            @Override
-//                                                            public void onClick(DialogInterface dialog, int which)
-//                                                            {
-//                                                                finish();
-//                                                            }
-//                                                        })
-//                                                        .show();
-//                                            }
-//                                        });
-//
-//                                    }else if(responseData.equals("same"))
-//                                    {
-//                                        runOnUiThread(new Runnable()
-//                                        {
-//                                            @Override
-//                                            public void run()
-//                                            {
-//                                                new AlertDialog.Builder(RegisterActivity.this)
-//                                                        .setTitle("提示")
-//                                                        .setMessage("该账户已被注册！")
-//                                                        .setPositiveButton("确定", null)
-//                                                        .show();
-//                                            }
-//                                        });
-//                                    }else
-//                                    {
-//                                        runOnUiThread(new Runnable()
-//                                        {
-//                                            @Override
-//                                            public void run()
-//                                            {
-//                                                new AlertDialog.Builder(RegisterActivity.this)
-//                                                        .setTitle("提示")
-//                                                        .setMessage("由于未知原因注册失败，请重试！")
-//                                                        .setPositiveButton("确定", null)
-//                                                        .show();
-//                                            }
-//                                        });
-//                                    }
-//                                }
-//                            });
-                }
+            case R.id.register:
+                tel = telText.getText().toString();
+                password = passwordText.getText().toString();
+                confirmPassword = confirmPasswordText.getText().toString();
+                userName = userNameText.getText().toString();
+                name = nameText.getText().toString();
+                address = addressText.getText().toString();
+                personalDescription = personalDescriptionText.getText().toString();
+                registerPresenter.register(tel,password,confirmPassword,userName,role,name,address,personalDescription);
                 break;
 
             default:

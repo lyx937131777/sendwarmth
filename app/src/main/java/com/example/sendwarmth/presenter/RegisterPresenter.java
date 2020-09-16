@@ -7,6 +7,9 @@ import android.widget.Toast;
 
 import com.example.sendwarmth.RegisterActivity;
 import com.example.sendwarmth.util.CheckUtil;
+import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.LogUtil;
+import com.example.sendwarmth.util.Utility;
 
 import java.io.IOException;
 
@@ -26,90 +29,105 @@ public class RegisterPresenter
         this.checkUtil = checkUtil;
     }
 
-    public void register(String username, String password, String confirm, String nickname)
+    public void register(String tel, String password, String confirm, String userName, String role, String name, String cusAddress, String personalDescription)
     {
-
-        if (!checkUtil.checkRegister(username,password,confirm,nickname))
+        if (!checkUtil.checkRegister(tel,password,confirm,userName,role,name,cusAddress,personalDescription))
             return;
-//        ((RegisterActivity)context).setSyncFinished(false);
-//        String address = HttpUtil.LocalAddress + "/user/register";
-//        HttpUtil.registerRequest(address, username, password, nickname, new
-//                Callback()
-//                {
-//                    @Override
-//                    public void onFailure(Call call, IOException e)
-//                    {
-//                        e.printStackTrace();
-//                        ((RegisterActivity)context).runOnUiThread(new Runnable()
-//                        {
-//                            @Override
-//                            public void run()
-//                            {
-//                                Toast.makeText(context, "服务器连接错误", Toast
-//                                        .LENGTH_LONG).show();
-//                            }
-//                        });
-////                        ((RegisterActivity)context).setSyncFinished(true);
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException
-//                    {
-//                        final String responseData = response.body().string();
-//                        LogUtil.e("Register", "源码 : " + responseData);
-//                        if (Utility.checkMessage(responseData).equals("true"))
-//                        {
-//                            ((RegisterActivity) context).runOnUiThread(new Runnable()
-//                            {
-//                                @Override
-//                                public void run()
-//                                {
-//                                    new AlertDialog.Builder(context)
-//                                            .setTitle("提示")
-//                                            .setMessage("注册成功！")
-//                                            .setPositiveButton("确定", new
-//                                                    DialogInterface.OnClickListener()
-//                                                    {
-//                                                        @Override
-//                                                        public void onClick(DialogInterface dialog, int
-//                                                                which)
-//                                                        {
-//                                                            ((RegisterActivity) context).finish();
-//                                                        }
-//                                                    }).show();
-//                                }
-//                            });
-//                        } else if (Utility.checkErrorType(responseData).equals("userID_repeated"))
-//                        {
-//                            ((RegisterActivity) context).runOnUiThread(new Runnable()
-//                            {
-//                                @Override
-//                                public void run()
-//                                {
-//                                    new AlertDialog.Builder(context)
-//                                            .setTitle("提示")
-//                                            .setMessage("该账户已被注册！")
-//                                            .setPositiveButton("确定", null)
-//                                            .show();
-//                                }
-//                            });
-//                        } else
-//                        {
-//                            ((RegisterActivity) context).runOnUiThread(new Runnable()
-//                            {
-//                                @Override
-//                                public void run()
-//                                {
-//                                    new AlertDialog.Builder(context)
-//                                            .setTitle("提示")
-//                                            .setMessage("由于未知原因注册失败，请重试！")
-//                                            .setPositiveButton("确定", null)
-//                                            .show();
-//                                }
-//                            });
-//                        }
-////                        ((RegisterActivity)context).setSyncFinished(true);
-//                    }
-//                });
+        String address = HttpUtil.LocalAddress + "/api/users/";
+        if(role.equals("customer")){
+            address = address + "old";
+        }else{
+            address = address + role;
+        }
+        HttpUtil.registerRequest(address, tel, password, userName,role, name, cusAddress,personalDescription, new
+                Callback()
+                {
+                    @Override
+                    public void onFailure(Call call, IOException e)
+                    {
+                        e.printStackTrace();
+                        ((RegisterActivity)context).runOnUiThread(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                Toast.makeText(context, "服务器连接错误", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException
+                    {
+                        final String responseData = response.body().string();
+                        LogUtil.e("RegisterPresenter", responseData);
+                        if (Utility.checkString(responseData,"code").equals("000"))
+                        {
+                            ((RegisterActivity) context).runOnUiThread(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    new AlertDialog.Builder(context)
+                                            .setTitle("提示")
+                                            .setMessage("注册成功！")
+                                            .setPositiveButton("确定", new
+                                                    DialogInterface.OnClickListener()
+                                                    {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int
+                                                                which)
+                                                        {
+                                                            ((RegisterActivity) context).finish();
+                                                        }
+                                                    }).show();
+                                }
+                            });
+                        } else if (Utility.checkString(responseData,"code").equals("500"))
+                        {
+                            if(Utility.checkString(responseData,"msg").equals("用户名不能重复。")){
+                                ((RegisterActivity) context).runOnUiThread(new Runnable()
+                                {
+                                    @Override
+                                    public void run()
+                                    {
+                                        new AlertDialog.Builder(context)
+                                                .setTitle("提示")
+                                                .setMessage("该账户已被注册！")
+                                                .setPositiveButton("确定", null)
+                                                .show();
+                                    }
+                                });
+                            }else{
+                                ((RegisterActivity) context).runOnUiThread(new Runnable()
+                                {
+                                    @Override
+                                    public void run()
+                                    {
+                                        new AlertDialog.Builder(context)
+                                                .setTitle("提示")
+                                                .setMessage(Utility.checkString(responseData,"msg"))
+                                                .setPositiveButton("确定", null)
+                                                .show();
+                                    }
+                                });
+                            }
+                        } else
+                        {
+                            ((RegisterActivity) context).runOnUiThread(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    new AlertDialog.Builder(context)
+                                            .setTitle("提示")
+                                            .setMessage("由于未知原因注册失败，请重试！")
+                                            .setPositiveButton("确定", null)
+                                            .show();
+                                }
+                            });
+                        }
+                    }
+                });
     }
 }

@@ -1,7 +1,9 @@
 package com.example.sendwarmth.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +14,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 import com.example.sendwarmth.MyInformationActivity;
 import com.example.sendwarmth.OrderActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.MenuAdapter;
+import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.Menu;
+import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.Utility;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +57,10 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     private View allOrder;
 
+    private Customer customer;
+    private SharedPreferences pref;
+    private String credential;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_personal_center, container, false);
@@ -64,11 +79,41 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         mMenuRecycler.setAdapter(mMenuAdapter);
 
         CircleImageView profile = root.findViewById(R.id.profile);
-        TextView nickname = root.findViewById(R.id.nickname);
-        TextView level = root.findViewById(R.id.level);
+        final TextView userName = root.findViewById(R.id.user_name);
+        final TextView level = root.findViewById(R.id.level);
+
         profile.setOnClickListener(this);
-        nickname.setOnClickListener(this);
+        userName.setOnClickListener(this);
         level.setOnClickListener(this);
+
+        pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        credential = pref.getString("credential","");
+        String address = HttpUtil.LocalAddress + "/api/users/me";
+        HttpUtil.getHttp(address, credential, new Callback()
+        {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e)
+            {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
+            {
+                final String responsData = response.body().string();
+                customer = Utility.handleCustomer(responsData);
+                getActivity().runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        userName.setText(customer.getUserName());
+                        level.setText("Lv "+customer.getMemberLevel());
+                    }
+                });
+            }
+        });
+
 
         allOrder = root.findViewById(R.id.all_orders);
         allOrder.setOnClickListener(new View.OnClickListener()
@@ -109,6 +154,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
             case R.id.nickname:
             case R.id.level: {
                 Intent intent = new Intent(getContext(), MyInformationActivity.class);
+                intent.putExtra("customer",customer);
                 startActivity(intent);
                 break;
             }

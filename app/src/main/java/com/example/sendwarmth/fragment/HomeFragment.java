@@ -27,10 +27,10 @@ public class HomeFragment extends Fragment
     private EditText searchText;
 
     private RecyclerView menuRecyler;
-    private Menu[]menus = {new Menu("propertyMaintenance",R.drawable.property_maintenance,"物业维修"),
-            new Menu("housekeeping",R.drawable.housekeeping,"家政保洁"),
-            new Menu("lifeCare",R.drawable.life_care,"生活护理"),
+    private Menu[]menus = {new Menu("lifeCare",R.drawable.life_care,"生活护理"),
             new Menu("medicalService",R.drawable.medical_service,"医疗服务"),
+            new Menu("propertyMaintenance",R.drawable.property_maintenance,"物业维修"),
+            new Menu("housekeeping",R.drawable.housekeeping,"家政保洁"),
             new Menu("accompanyService",R.drawable.accompany_service,"陪同服务"),
             new Menu("purchasingAgent",R.drawable.purchasing_agent,"跑腿代购"),
             new Menu("customService",R.drawable.custom_service,"定制服务"),

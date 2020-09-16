@@ -15,8 +15,12 @@
     <string name="title_to_be_evaluated_orders">待评价</string>
     <string name="title_closed_orders">已结束</string>
 
-    <string name="enter_account">手机号</string>
+    <string name="tel">手机号</string>
     <string name="pwd">密码</string>
     <string name="confirm_pwd">确认密码</string>
-    <string name="nickname">昵称</string>
+    <string name="user_name">用户名</string>
+    <string name="role">角色</string>
+    <string name="name">姓名</string>
+    <string name="address">地址</string>
+    <string name="personal_description">个人描述</string>
 </resources>
