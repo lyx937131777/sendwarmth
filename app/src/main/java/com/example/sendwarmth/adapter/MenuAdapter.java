@@ -2,21 +2,23 @@ package com.example.sendwarmth.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.MyInformationActivity;
 import com.example.sendwarmth.OrderActivity;
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.ServiceWorkActivity;
+import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.Menu;
-import com.example.sendwarmth.db.ServiceWork;
 import com.example.sendwarmth.util.LogUtil;
+
+import org.litepal.LitePal;
 
 import java.util.List;
 
@@ -63,13 +65,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                 int position = holder.getAdapterPosition();
                 Menu menu = mList.get(position);
                 switch (menu.getType()){
-                    case "ServiceWork":{
-                        Intent intent = new Intent(mContext, ServiceWorkActivity.class);
-                        intent.putExtra("menuName",menu.getMenuName());
-                        intent.putExtra("type",menu.getName());
-                        mContext.startActivity(intent);
-                        break;
-                    }
                     case "order":{
                         Intent intent = new Intent(mContext, OrderActivity.class);
                         int index = 0;
@@ -97,7 +92,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                     case "information":{
                         switch (menu.getName()){
                             case "myInformation":{
+                                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+                                String credential = pref.getString("credential","");
+                                Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
                                 Intent intent = new Intent(mContext, MyInformationActivity.class);
+                                intent.putExtra("customer",customer);
                                 mContext.startActivity(intent);
                                 break;
                             }

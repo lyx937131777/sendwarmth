@@ -26,7 +26,7 @@ public class CheckUtil
         return true;
     }
 
-    public boolean checkRegister(String tel, String password, String confirmPassword, String userName, String role, String name, String address, String personalDescription)
+    public boolean checkRegister(String tel, String password, String confirmPassword, String userName, String name, String address, String personalDescription)
     {
         //确认密码不正确、邮箱格式不正确、昵称已被占用
         if (tel.length() != 11) {
@@ -45,10 +45,10 @@ public class CheckUtil
             Toast.makeText(context, "请填写用户名", Toast.LENGTH_LONG).show();
             return false;
         }
-        if(role.equals("notSelected")){
-            Toast.makeText(context, "请选择角色", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if(role.equals("notSelected")){
+//            Toast.makeText(context, "请选择角色", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
         if(name.length() < 1){
             Toast.makeText(context, "请填写姓名", Toast.LENGTH_LONG).show();
             return false;

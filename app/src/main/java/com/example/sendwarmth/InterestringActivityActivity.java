@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.db.InterestingActivity;
+import com.example.sendwarmth.util.HttpUtil;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class InterestringActivityActivity extends AppCompatActivity
@@ -34,10 +35,10 @@ public class InterestringActivityActivity extends AppCompatActivity
         TextView time = findViewById(R.id.time);
         TextView description = findViewById(R.id.description);
 
-        Glide.with(this).load(interestingActivity.getPicture()).into(pictrue);
+        Glide.with(this).load(HttpUtil.getPhotoURL(interestingActivity.getImage())).into(pictrue);
         collapsingToolbarLayout.setTitle(interestingActivity.getTitle());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
-        author.setText(interestingActivity.getAuthor());
+        author.setText(interestingActivity.getPromoterName());
         time.setText(interestingActivity.getTime());
         description.setText(interestingActivity.getDescription());
     }

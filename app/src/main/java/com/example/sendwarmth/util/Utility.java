@@ -7,7 +7,11 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.example.sendwarmth.db.Customer;
+import com.example.sendwarmth.db.InterestingActivity;
+import com.example.sendwarmth.db.ServiceClass;
+import com.example.sendwarmth.db.ServiceSubject;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +27,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Utility
 {
@@ -67,6 +72,63 @@ public class Utility
                 JSONObject customerObject = dataObject.getJSONObject("customerInfo");
                 String jsonString = customerObject.toString();
                 return  new Gson().fromJson(jsonString, Customer.class);
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static List<ServiceClass> handleServiceClassList(String response){
+        if (!TextUtils.isEmpty(response))
+        {
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String serviceClassJson = jsonArray.toString();
+                return new Gson().fromJson(serviceClassJson, new TypeToken<List<ServiceClass>>() {}.getType());
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static List<ServiceSubject> handleServiceSubjectList(String response){
+        if (!TextUtils.isEmpty(response))
+        {
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String serviceSubjectJson = jsonArray.toString();
+                return new Gson().fromJson(serviceSubjectJson, new TypeToken<List<ServiceSubject>>() {}.getType());
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static List<InterestingActivity> handleInterestingActivityList(String response){
+        if (!TextUtils.isEmpty(response))
+        {
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String interestingActivityJson = jsonArray.toString();
+                return new Gson().fromJson(interestingActivityJson, new TypeToken<List<InterestingActivity>>() {}.getType());
             } catch (JSONException e)
             {
                 e.printStackTrace();

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,16 +14,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.sendwarmth.db.ServiceWork;
+import com.example.sendwarmth.db.ServiceSubject;
+import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.MapUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class OrderingActivity extends AppCompatActivity
 {
-    private ServiceWork serviceWork;
+    private ServiceSubject serviceSubject;
     private Spinner tipSpinner;
     private List<String> tipList = new ArrayList<>();
     private ArrayAdapter<String> tipArrayAdapter;
@@ -52,17 +51,17 @@ public class OrderingActivity extends AppCompatActivity
 
     private void initServiceWork()
     {
-        serviceWork = (ServiceWork) getIntent().getSerializableExtra("serviceWork");
+        serviceSubject = (ServiceSubject) getIntent().getSerializableExtra("serviceWork");
         View serviceWorkView = findViewById(R.id.service_work);
         ImageView picture = serviceWorkView.findViewById(R.id.picture);
         TextView title = serviceWorkView.findViewById(R.id.title);
         TextView description = serviceWorkView.findViewById(R.id.description);
         TextView pricePerUnit = serviceWorkView.findViewById(R.id.price);
 
-        Glide.with(this).load(serviceWork.getPicture()).into(picture);
-        title.setText(serviceWork.getName());
-        description.setText(serviceWork.getDescription());
-        pricePerUnit.setText(serviceWork.getPrice()+"元/"+serviceWork.getUnit());
+        Glide.with(this).load(HttpUtil.getPhotoURL(serviceSubject.getImage())).into(picture);
+        title.setText(serviceSubject.getName());
+        description.setText(serviceSubject.getDescription());
+        pricePerUnit.setText(serviceSubject.getSalaryPerHour()+"元/时");
 
         priceText = findViewById(R.id.price_total);
         changePrice();
@@ -99,17 +98,7 @@ public class OrderingActivity extends AppCompatActivity
     }
 
     private void changePrice(){
-        double priceBase;
-        switch (serviceWork.getUnit()){
-            case "次":
-                priceBase = serviceWork.getPrice();
-                break;
-            case "小时":
-                priceBase = serviceWork.getPrice()*hour;
-                break;
-            default:
-                priceBase = 0;
-        }
+        double priceBase = serviceSubject.getSalaryPerHour()*hour;
         price = priceBase + tip;
         priceText.setText("￥"+price);
     }

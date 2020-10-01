@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+
+    <dbname value="send_warmth" />
+
+    <version value="4" />
+
+    <list>
+        <mapping class="com.example.sendwarmth.db.Customer" />
+        <mapping class="com.example.sendwarmth.db.ServiceClass" />
+    </list>
+
+</litepal>

@@ -1,23 +1,125 @@
 package com.example.sendwarmth.db;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class InterestingActivity implements Serializable
 {
+    @SerializedName("id")
+    private String internetId;
+    @SerializedName("activityName")
     private String title;
-    private String time;
-    private int picture;
+    @SerializedName("activityDes")
     private String description;
-    private String author;
+    @SerializedName("activityPic")
+    private String image;
+    @SerializedName("activityLoc")
+    private String location;
+    @SerializedName("activityBud")
+    private String upBudget;
 
-    public InterestingActivity(String title, String time, int picture, String description,
-                               String author)
+    private String contactTel;
+    private int maxNum;
+    private int reportedNum;
+    private String activityStatus;
+    private String activityDeclarationStatus;
+    private String audiStatus;
+
+    private String promoterId;
+    private String promoterName;
+    private Customer promoter;
+
+    private String time;
+
+    public String getInternetId()
     {
-        this.title = title;
-        this.time = time;
-        this.picture = picture;
-        this.description = description;
-        this.author = author;
+        return internetId;
+    }
+
+    public void setInternetId(String internetId)
+    {
+        this.internetId = internetId;
+    }
+
+    public String getPromoterId()
+    {
+        return promoterId;
+    }
+
+    public void setPromoterId(String promoterId)
+    {
+        this.promoterId = promoterId;
+    }
+
+    public String getImage()
+    {
+        return image;
+    }
+
+    public void setImage(String image)
+    {
+        this.image = image;
+    }
+
+    public String getLocation()
+    {
+        return location;
+    }
+
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
+
+    public String getUpBudget()
+    {
+        return upBudget;
+    }
+
+    public void setUpBudget(String upBudget)
+    {
+        this.upBudget = upBudget;
+    }
+
+    public String getContactTel()
+    {
+        return contactTel;
+    }
+
+    public void setContactTel(String contactTel)
+    {
+        this.contactTel = contactTel;
+    }
+
+    public int getMaxNum()
+    {
+        return maxNum;
+    }
+
+    public void setMaxNum(int maxNum)
+    {
+        this.maxNum = maxNum;
+    }
+
+    public int getReportedNum()
+    {
+        return reportedNum;
+    }
+
+    public void setReportedNum(int reportedNum)
+    {
+        this.reportedNum = reportedNum;
+    }
+
+    public Customer getPromoter()
+    {
+        return promoter;
+    }
+
+    public void setPromoter(Customer promoter)
+    {
+        this.promoter = promoter;
     }
 
     public String getTitle()
@@ -40,16 +142,6 @@ public class InterestingActivity implements Serializable
         this.time = time;
     }
 
-    public int getPicture()
-    {
-        return picture;
-    }
-
-    public void setPicture(int picture)
-    {
-        this.picture = picture;
-    }
-
     public String getDescription()
     {
         return description;
@@ -60,13 +152,13 @@ public class InterestingActivity implements Serializable
         this.description = description;
     }
 
-    public String getAuthor()
+    public String getPromoterName()
     {
-        return author;
+        return promoterName;
     }
 
-    public void setAuthor(String author)
+    public void setPromoterName(String promoterName)
     {
-        this.author = author;
+        this.promoterName = promoterName;
     }
 }

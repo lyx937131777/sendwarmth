@@ -13,6 +13,7 @@ import com.example.sendwarmth.InterestringActivityActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.FriendsCircle;
 import com.example.sendwarmth.db.InterestingActivity;
+import com.example.sendwarmth.util.HttpUtil;
 
 import java.util.List;
 
@@ -78,15 +79,25 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
     public void onBindViewHolder(InterestingActivityAdapter.ViewHolder holder, int position)
     {
         InterestingActivity interestingActivity = mList.get(position);
-        Glide.with(mContext).load(interestingActivity.getPicture()).into(holder.picture);
+        Glide.with(mContext).load(HttpUtil.getPhotoURL(interestingActivity.getImage())).into(holder.picture);
         Glide.with(mContext).load(R.drawable.profile_uri).into(holder.author);
         holder.title.setText(interestingActivity.getTitle());
         holder.description.setText(interestingActivity.getDescription());
-        holder.time.setText(interestingActivity.getTime());
+        holder.time.setText(interestingActivity.getContactTel());
     }
     @Override
     public int getItemCount()
     {
         return mList.size();
+    }
+
+    public List<InterestingActivity> getmList()
+    {
+        return mList;
+    }
+
+    public void setmList(List<InterestingActivity> mList)
+    {
+        this.mList = mList;
     }
 }

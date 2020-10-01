@@ -5,50 +5,78 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.view.MenuItem;
 
-import com.example.sendwarmth.adapter.ServiceWorkAdapter;
-import com.example.sendwarmth.db.ServiceWork;
+import com.example.sendwarmth.adapter.ServiceSubjectAdapter;
+import com.example.sendwarmth.db.ServiceClass;
+import com.example.sendwarmth.db.ServiceSubject;
+import com.example.sendwarmth.fragment.adapter.OrderPagerAdapter;
+import com.example.sendwarmth.fragment.adapter.ServiceWorkPagerAdapter;
+import com.example.sendwarmth.util.LogUtil;
+import com.google.android.material.tabs.TabLayout;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceWorkActivity extends AppCompatActivity
 {
-    private ServiceWork[] serviceWorks = {new ServiceWork("业务名称1","propertyMaintenance","相关描述xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",50,"次",R.drawable.temp),
-            new ServiceWork("业务名称2","propertyMaintenance","相关描述xxxxxxxxxxxx",10,"小时",R.drawable.temp),
-            new ServiceWork("业务名称3","propertyMaintenance","相关描述xxxxxxxxxxxxxxxxxxxxx",50,"次",R.drawable.temp)};
-    private List<ServiceWork> serviceWorkList = new ArrayList<>();
-    private ServiceWorkAdapter serviceWorkAdapter;
-    private RecyclerView serviceWorkRecycler;
+    private ServiceSubject[] serviceSubjects = {new ServiceSubject("业务名称1","propertyMaintenance","相关描述xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",50,"次",R.drawable.temp),
+            new ServiceSubject("业务名称2","propertyMaintenance","相关描述xxxxxxxxxxxx",10,"小时",R.drawable.temp),
+            new ServiceSubject("业务名称3","propertyMaintenance","相关描述xxxxxxxxxxxxxxxxxxxxx",50,"次",R.drawable.temp)};
+    private List<ServiceSubject> serviceSubjectList = new ArrayList<>();
+    private ServiceSubjectAdapter serviceSubjectAdapter;
+    private RecyclerView serviceSubjectRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_work);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
-        String title = getIntent().getStringExtra("menuName");
-        toolbar.setTitle(title);
-        getIntent().getStringExtra("type");
-
-        initServiceWorks();
-        serviceWorkRecycler = findViewById(R.id.recycler_service_work);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        serviceWorkRecycler.setLayoutManager(linearLayoutManager);
-        serviceWorkAdapter = new ServiceWorkAdapter(serviceWorkList);
-        serviceWorkRecycler.setAdapter(serviceWorkAdapter);
-
-    }
-
-    private void initServiceWorks()
-    {
-        serviceWorkList.clear();
-        for(int i = 0; i < serviceWorks.length; i++){
-            serviceWorkList.add(serviceWorks[i]);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+        {
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        List<ServiceClass> serviceClassList = LitePal.order("clickCount desc").find(ServiceClass.class);
+        ServiceClass serviceClass = new ServiceClass();
+        serviceClass.setName("全部服务");
+        serviceClassList.add(0,serviceClass);
+        ServiceWorkPagerAdapter serviceWorkPagerAdapter = new ServiceWorkPagerAdapter(this,getSupportFragmentManager(),serviceClassList);
+        viewPager.setAdapter(serviceWorkPagerAdapter);
+        String serviceClassName = getIntent().getStringExtra("serviceClassName");
+        int index = 0;
+        for(;index < serviceClassList.size(); index++){
+            if(serviceClassList.get(index).getName().equals(serviceClassName)){
+                break;
+            }
+        }
+        LogUtil.e("ServiceWorkActivity","index: " + index);
+        viewPager.setCurrentItem(index);
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
+    }
+
 }

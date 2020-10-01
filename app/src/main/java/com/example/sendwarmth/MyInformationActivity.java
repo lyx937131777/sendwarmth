@@ -66,7 +66,7 @@ public class MyInformationActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyInformationActivity.this).edit();
-                editor.remove("userID");
+                editor.remove("userId");
                 editor.remove("password");
                 editor.apply();
                 Intent intent_logout = new Intent(MyInformationActivity.this, LoginActivity.class);

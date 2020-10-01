@@ -12,12 +12,14 @@ import android.widget.Toast;
 import com.example.sendwarmth.LoginActivity;
 import com.example.sendwarmth.MainActivity;
 import com.example.sendwarmth.RegisterActivity;
+import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.util.CheckUtil;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.Utility;
 
 import org.jetbrains.annotations.NotNull;
+import org.litepal.LitePal;
 
 import java.io.IOException;
 
@@ -58,7 +60,7 @@ public class LoginPresenter
                     @Override
                     public void run()
                     {
-                        Toast.makeText(context, "服务器连接错误", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
 
                     }
                 });
@@ -89,11 +91,16 @@ public class LoginPresenter
                             LogUtil.e("Login",responsData);
                             if(Utility.getRole(responsData).equals("customer") || Utility.getRole(responsData).equals("expert")){
                                 SharedPreferences.Editor editor = pref.edit();
-                                editor.putString("userID", tel);
+                                editor.putString("userId", tel);
                                 editor.putString("password", password);
                                 editor.putString("credential",credential);
                                 editor.putString("latest", String.valueOf(System.currentTimeMillis()));
                                 editor.apply();
+                                LitePal.deleteAll(Customer.class,"userId = ?",tel);
+                                Customer customer = Utility.handleCustomer(responsData);
+                                customer.setUserId(tel);
+                                customer.setCredential(credential);
+                                customer.save();
                                 Intent intent_login = new Intent(context, MainActivity.class);
                                 context.startActivity(intent_login);
                                 ((LoginActivity) context).finish();

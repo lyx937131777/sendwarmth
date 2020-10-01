@@ -12,8 +12,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class MyFragAdapter extends FragmentStatePagerAdapter
 {
-    Context context;
-    List<Fragment> listFragment;
+    private Context context;
+    private List<Fragment> listFragment;
 
     public MyFragAdapter(FragmentManager fm, Context context, List<Fragment> listFragment)
     {

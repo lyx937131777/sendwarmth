@@ -28,6 +28,7 @@ import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.Utility;
 
 import org.jetbrains.annotations.NotNull;
+import org.litepal.LitePal;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -88,31 +89,9 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         credential = pref.getString("credential","");
-        String address = HttpUtil.LocalAddress + "/api/users/me";
-        HttpUtil.getHttp(address, credential, new Callback()
-        {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e)
-            {
-
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
-            {
-                final String responsData = response.body().string();
-                customer = Utility.handleCustomer(responsData);
-                getActivity().runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        userName.setText(customer.getUserName());
-                        level.setText("Lv "+customer.getMemberLevel());
-                    }
-                });
-            }
-        });
+        customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        userName.setText(customer.getUserName());
+        level.setText("Lv "+customer.getMemberLevel());
 
 
         allOrder = root.findViewById(R.id.all_orders);

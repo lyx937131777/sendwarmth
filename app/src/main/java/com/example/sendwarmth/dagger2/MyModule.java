@@ -5,8 +5,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 
+import com.example.sendwarmth.presenter.HomePresenter;
+import com.example.sendwarmth.presenter.InterestingActivityPresenter;
 import com.example.sendwarmth.presenter.LoginPresenter;
+import com.example.sendwarmth.presenter.NewInterestingActivityPresenter;
 import com.example.sendwarmth.presenter.RegisterPresenter;
+import com.example.sendwarmth.presenter.ServiceSubjectPresenter;
 import com.example.sendwarmth.util.CheckUtil;
 
 import dagger.Module;
@@ -17,8 +21,7 @@ public class MyModule
 {
     private Context context;
 
-    public MyModule(Context context)
-    {
+    public MyModule(Context context) {
         this.context = context;
     }
 
@@ -28,28 +31,42 @@ public class MyModule
     }
 
     @Provides
-    public CheckUtil provideCheckUtil(Context context)
-    {
+    public CheckUtil provideCheckUtil(Context context) {
         return new CheckUtil(context);
     }
 
     @Provides
-    public Context provideContext()
-    {
+    public Context provideContext() {
         return context;
     }
 
     @Provides
-    public LoginPresenter provideLoginPresenter(Context context, SharedPreferences pref, CheckUtil checkUtil)
-    {
+    public LoginPresenter provideLoginPresenter(Context context, SharedPreferences pref, CheckUtil checkUtil) {
         return new LoginPresenter(context,pref,checkUtil);
     }
 
     @Provides
-    public RegisterPresenter provideRegisterPresenter(Context context, CheckUtil checkUtil)
-    {
+    public RegisterPresenter provideRegisterPresenter(Context context, CheckUtil checkUtil) {
         return new RegisterPresenter(context,checkUtil);
     }
 
+    @Provides
+    public HomePresenter provideHomePresenter(Context context, SharedPreferences pref){
+        return new HomePresenter(context,pref);
+    }
 
+    @Provides
+    public ServiceSubjectPresenter provideServiceSubjectPresenter(Context context, SharedPreferences pref){
+        return new ServiceSubjectPresenter(context, pref);
+    }
+
+    @Provides
+    public InterestingActivityPresenter provideInterestingActivityPresenter(Context context, SharedPreferences pref){
+        return new InterestingActivityPresenter(context,pref);
+    }
+
+    @Provides
+    public NewInterestingActivityPresenter provideNewInterestingActivityPresenter(Context context, SharedPreferences pref){
+        return new NewInterestingActivityPresenter(context, pref);
+    }
 }

@@ -2,12 +2,18 @@ package com.example.sendwarmth.db;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.litepal.crud.LitePalSupport;
+
 import java.io.Serializable;
 
-public class Customer extends User implements Serializable
+public class Customer extends LitePalSupport implements Serializable
 {
     @SerializedName("id")
     private String internetId;
+
+    private String userId;
+    private String credential;
+
     @SerializedName("customerName")
     private String name;
     @SerializedName("customerAddress")
@@ -42,13 +48,12 @@ public class Customer extends User implements Serializable
     {
         this.memberPoints = memberPoints;
     }
-    @Override
+
     public String getInternetId()
     {
         return internetId;
     }
 
-    @Override
     public void setInternetId(String internetId)
     {
         this.internetId = internetId;
@@ -74,13 +79,11 @@ public class Customer extends User implements Serializable
         this.address = address;
     }
 
-    @Override
     public String getTel()
     {
         return tel;
     }
 
-    @Override
     public void setTel(String tel)
     {
         this.tel = tel;
@@ -124,5 +127,25 @@ public class Customer extends User implements Serializable
     public void setActivity(int activity)
     {
         this.activity = activity;
+    }
+
+    public String getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
+    }
+
+    public String getCredential()
+    {
+        return credential;
+    }
+
+    public void setCredential(String credential)
+    {
+        this.credential = credential;
     }
 }

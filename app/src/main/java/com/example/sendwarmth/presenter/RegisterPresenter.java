@@ -29,17 +29,12 @@ public class RegisterPresenter
         this.checkUtil = checkUtil;
     }
 
-    public void register(String tel, String password, String confirm, String userName, String role, String name, String cusAddress, String personalDescription)
+    public void register(String tel, String password, String confirm, String userName, String name, String cusAddress, String personalDescription)
     {
-        if (!checkUtil.checkRegister(tel,password,confirm,userName,role,name,cusAddress,personalDescription))
+        if (!checkUtil.checkRegister(tel,password,confirm,userName,name,cusAddress,personalDescription))
             return;
-        String address = HttpUtil.LocalAddress + "/api/users/";
-        if(role.equals("customer")){
-            address = address + "old";
-        }else{
-            address = address + role;
-        }
-        HttpUtil.registerRequest(address, tel, password, userName,role, name, cusAddress,personalDescription, new
+        String address = HttpUtil.LocalAddress + "/api/users/old";
+        HttpUtil.registerRequest(address, tel, password, userName, name, cusAddress,personalDescription, new
                 Callback()
                 {
                     @Override
@@ -51,7 +46,7 @@ public class RegisterPresenter
                             @Override
                             public void run()
                             {
-                                Toast.makeText(context, "服务器连接错误", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
                             }
                         });
                     }

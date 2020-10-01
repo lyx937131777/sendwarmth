@@ -33,10 +33,10 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
     private Button registerButton;
     private String tel, password, confirmPassword, userName, name, address, personalDescription;
 
-    private Spinner roleSpinner;
-    private List<String> roleList = new ArrayList<>();
-    private ArrayAdapter<String> roleArrayAdapter;
-    private String role;
+//    private Spinner roleSpinner;
+//    private List<String> roleList = new ArrayList<>();
+//    private ArrayAdapter<String> roleArrayAdapter;
+//    private String role;
 
     private RegisterPresenter registerPresenter;
 
@@ -256,10 +256,10 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             }
         });
 
-        initroleList();
-        roleArrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,roleList);
-        roleArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        roleSpinner.setAdapter(roleArrayAdapter);
+//        initroleList();
+//        roleArrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,roleList);
+//        roleArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        roleSpinner.setAdapter(roleArrayAdapter);
 
         telClearButton =  findViewById(R.id.tel_clear);
         telClearButton.setOnClickListener(this);
@@ -279,29 +279,29 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         registerButton.setOnClickListener(this);
     }
 
-    private void initroleList()
-    {
-        roleSpinner = findViewById(R.id.role);
-//        roleText = findViewById(R.id.role_text);
-        roleList.add("角色");
-        roleList.add("普通用户");
-        roleList.add("专家");
-        roleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
-            {
-                role = MapUtil.getRole(roleList.get(i));
-//                roleText.setText(roleList.get(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView)
-            {
-
-            }
-        });
-    }
+//    private void initroleList()
+//    {
+//        roleSpinner = findViewById(R.id.role);
+////        roleText = findViewById(R.id.role_text);
+//        roleList.add("角色");
+//        roleList.add("普通用户");
+//        roleList.add("专家");
+//        roleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+//        {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+//            {
+//                role = MapUtil.getRole(roleList.get(i));
+////                roleText.setText(roleList.get(i));
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView)
+//            {
+//
+//            }
+//        });
+//    }
 
     @Override
     public void onClick(View v)
@@ -340,7 +340,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
                 name = nameText.getText().toString();
                 address = addressText.getText().toString();
                 personalDescription = personalDescriptionText.getText().toString();
-                registerPresenter.register(tel,password,confirmPassword,userName,role,name,address,personalDescription);
+                registerPresenter.register(tel,password,confirmPassword,userName,name,address,personalDescription);
                 break;
 
             default:
