@@ -5,17 +5,15 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.HealthBroadcastActivity;
-import com.example.sendwarmth.InterestringActivityActivity;
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.db.Goods;
 import com.example.sendwarmth.db.HealthBroadcast;
-import com.example.sendwarmth.util.LogUtil;
+import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.Utility;
 
 import java.util.List;
 
@@ -77,14 +75,24 @@ public class HealthBroadcastAdapter extends RecyclerView.Adapter<HealthBroadcast
     public void onBindViewHolder(HealthBroadcastAdapter.ViewHolder holder, int position)
     {
         HealthBroadcast healthBroadcast = mList.get(position);
-        Glide.with(mContext).load(healthBroadcast.getPicture()).into(holder.picture);
-        holder.title.setText(healthBroadcast.getTitle());
-        holder.description.setText(healthBroadcast.getDescription());
-        holder.time.setText(healthBroadcast.getTime());
+        Glide.with(mContext).load(HttpUtil.getPhotoURL(healthBroadcast.getTopicPic())).into(holder.picture);
+        holder.title.setText(healthBroadcast.getTopicName());
+        holder.description.setText(healthBroadcast.getDes());
+        holder.time.setText(Utility.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
     }
     @Override
     public int getItemCount()
     {
         return mList.size();
+    }
+
+    public List<HealthBroadcast> getmList()
+    {
+        return mList;
+    }
+
+    public void setmList(List<HealthBroadcast> mList)
+    {
+        this.mList = mList;
     }
 }

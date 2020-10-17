@@ -106,6 +106,14 @@ public class NewInterestingActivityActivity extends AppCompatActivity
                 finish();
                 break;
             case R.id.commit:
+                if(imagePath == null){
+                    new AlertDialog.Builder(this)
+                            .setTitle("提示")
+                            .setMessage("请选择图片后再发布！")
+                            .setPositiveButton("确定", null)
+                            .show();
+                    break;
+                }
                 new AlertDialog.Builder(this)
                         .setTitle("提示")
                         .setMessage("确定发布该活动么？")

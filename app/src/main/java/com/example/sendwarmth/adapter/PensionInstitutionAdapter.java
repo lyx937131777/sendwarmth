@@ -5,17 +5,13 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.sendwarmth.InterestringActivityActivity;
 import com.example.sendwarmth.PensionInstitutionActivity;
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.db.Goods;
 import com.example.sendwarmth.db.PensionInstitution;
-import com.example.sendwarmth.util.LogUtil;
 
 import java.util.List;
 

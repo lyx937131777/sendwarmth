@@ -5,12 +5,17 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 
+import com.example.sendwarmth.db.FriendsCircle;
+import com.example.sendwarmth.presenter.FriendsCirclePresenter;
+import com.example.sendwarmth.presenter.HealthBroadcastPresenter;
 import com.example.sendwarmth.presenter.HomePresenter;
 import com.example.sendwarmth.presenter.InterestingActivityPresenter;
 import com.example.sendwarmth.presenter.LoginPresenter;
 import com.example.sendwarmth.presenter.NewInterestingActivityPresenter;
+import com.example.sendwarmth.presenter.PensionInstitutionPresenter;
 import com.example.sendwarmth.presenter.RegisterPresenter;
-import com.example.sendwarmth.presenter.ServiceSubjectPresenter;
+import com.example.sendwarmth.presenter.ServiceWorkPresenter;
+import com.example.sendwarmth.presenter.ShoppingMallPresenter;
 import com.example.sendwarmth.util.CheckUtil;
 
 import dagger.Module;
@@ -56,11 +61,6 @@ public class MyModule
     }
 
     @Provides
-    public ServiceSubjectPresenter provideServiceSubjectPresenter(Context context, SharedPreferences pref){
-        return new ServiceSubjectPresenter(context, pref);
-    }
-
-    @Provides
     public InterestingActivityPresenter provideInterestingActivityPresenter(Context context, SharedPreferences pref){
         return new InterestingActivityPresenter(context,pref);
     }
@@ -68,5 +68,31 @@ public class MyModule
     @Provides
     public NewInterestingActivityPresenter provideNewInterestingActivityPresenter(Context context, SharedPreferences pref){
         return new NewInterestingActivityPresenter(context, pref);
+    }
+
+    @Provides
+    public ShoppingMallPresenter provideShoppingMallPresenter(Context context, SharedPreferences pref){
+        return new ShoppingMallPresenter(context,pref);
+    }
+
+
+    @Provides
+    public ServiceWorkPresenter provideServiceWorkPresenter(Context context, SharedPreferences pref){
+        return new ServiceWorkPresenter(context, pref);
+    }
+
+    @Provides
+    public HealthBroadcastPresenter provideHealthBroadcastPresenter(Context context, SharedPreferences pref){
+        return new HealthBroadcastPresenter(context, pref);
+    }
+
+    @Provides
+    public PensionInstitutionPresenter providePensionInstitutionPresenter(Context context, SharedPreferences pref){
+        return new PensionInstitutionPresenter(context, pref);
+    }
+
+    @Provides
+    public FriendsCirclePresenter provideFriendsCirclePresenter(Context context, SharedPreferences pref){
+        return new FriendsCirclePresenter(context, pref);
     }
 }

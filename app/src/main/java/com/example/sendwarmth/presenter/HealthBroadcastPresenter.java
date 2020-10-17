@@ -5,7 +5,8 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.sendwarmth.MainActivity;
-import com.example.sendwarmth.adapter.InterestingActivityAdapter;
+import com.example.sendwarmth.adapter.HealthBroadcastAdapter;
+import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
@@ -20,18 +21,18 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class InterestingActivityPresenter
+public class HealthBroadcastPresenter
 {
     private Context context;
     private SharedPreferences pref;
 
-    public InterestingActivityPresenter(Context context, SharedPreferences pref){
+    public HealthBroadcastPresenter(Context context, SharedPreferences pref){
         this.context = context;
         this.pref = pref;
     }
 
-    public void updateInterestingActivity(final InterestingActivityAdapter interestingActivityAdapter){
-        String address = HttpUtil.LocalAddress + "/api/activity/list";
+    public void updateHealthBroadcast(final HealthBroadcastAdapter healthBroadcastAdapter){
+        String address = HttpUtil.LocalAddress + "/api/topic/list";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
         {
@@ -51,13 +52,13 @@ public class InterestingActivityPresenter
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
                 final String responsData = response.body().string();
-                LogUtil.e("InterestingActivityPresenter",responsData);
-                List<InterestingActivity> interestingActivityList = Utility.handleInterestingActivityList(responsData);
-                interestingActivityAdapter.setmList(interestingActivityList);
+                LogUtil.e("HealthBroadcastPresenter",responsData);
+                List<HealthBroadcast> healthBroadcastList = Utility.handleHealthBroadcastList(responsData);
+                healthBroadcastAdapter.setmList(healthBroadcastList);
                 ((MainActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        interestingActivityAdapter.notifyDataSetChanged();
+                        healthBroadcastAdapter.notifyDataSetChanged();
                     }
                 });
             }

@@ -10,18 +10,18 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.db.Goods;
-import com.example.sendwarmth.db.GoodsType;
+import com.example.sendwarmth.db.Product;
+import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder>
 {
     private Context mContext;
-    private List<Goods> mList;
+    private List<Product> mList;
 
     static class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -44,44 +44,54 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.ViewHolder>
         }
     }
 
-    public GoodsAdapter(List<Goods> menuList){
+    public ProductAdapter(List<Product> menuList){
         mList = menuList;
     }
 
     @Override
-    public GoodsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public ProductAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         if(mContext == null)
         {
             mContext = parent.getContext();
         }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_goods, parent,false);
-        final GoodsAdapter.ViewHolder holder = new GoodsAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_product, parent,false);
+        final ProductAdapter.ViewHolder holder = new ProductAdapter.ViewHolder(view);
         holder.addButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 int position = holder.getAdapterPosition();
-                Goods goods = mList.get(position);
-                LogUtil.e("GoodsAdapter",goods.getName()+" "+goods.getDescription());
+                Product product = mList.get(position);
+                LogUtil.e("GoodsAdapter", product.getProductName()+" "+ product.getProductDes());
             }
         });
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(GoodsAdapter.ViewHolder holder, int position)
+    public void onBindViewHolder(ProductAdapter.ViewHolder holder, int position)
     {
-        Goods goods = mList.get(position);
-        Glide.with(mContext).load(goods.getPicture()).into(holder.picture);
-        holder.title.setText(goods.getName());
-        holder.description.setText(goods.getDescription());
-        holder.price.setText("￥"+goods.getPrice());
+        Product product = mList.get(position);
+        Glide.with(mContext).load(HttpUtil.getPhotoURL(product.getProductPic())).into(holder.picture);
+        holder.title.setText(product.getProductName());
+        holder.description.setText(product.getProductDes());
+        holder.price.setText("￥"+ product.getProductPrice());
     }
     @Override
     public int getItemCount()
     {
         return mList.size();
+    }
+
+    public List<Product> getmList()
+    {
+        return mList;
+    }
+
+    public void setmList(List<Product> mList)
+    {
+        this.mList = mList;
     }
 }

@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.db.HealthBroadcast;
-import com.example.sendwarmth.db.InterestingActivity;
+import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.Utility;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class HealthBroadcastActivity extends AppCompatActivity
@@ -35,11 +36,11 @@ public class HealthBroadcastActivity extends AppCompatActivity
         TextView time = findViewById(R.id.time);
         TextView description = findViewById(R.id.description);
 
-        Glide.with(this).load(healthBroadcast.getPicture()).into(pictrue);
-        collapsingToolbarLayout.setTitle(healthBroadcast.getTitle());
+        Glide.with(this).load(HttpUtil.getPhotoURL(healthBroadcast.getTopicPic())).into(pictrue);
+        collapsingToolbarLayout.setTitle(healthBroadcast.getTopicName());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         author.setText("王专家");
-        time.setText(healthBroadcast.getTime());
-        description.setText(healthBroadcast.getDescription());
+        time.setText(Utility.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
+        description.setText(healthBroadcast.getDes());
     }
 }

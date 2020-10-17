@@ -7,20 +7,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.db.ProductClass;
+import com.example.sendwarmth.ServiceWorkActivity;
+import com.example.sendwarmth.db.ServiceClass;
 import com.example.sendwarmth.util.LogUtil;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TabAdapter extends RecyclerView.Adapter<TabAdapter.ViewHolder>
+public class ServiceClassTabAdapter extends RecyclerView.Adapter<ServiceClassTabAdapter.ViewHolder>
 {
     private Context mContext;
-    private List<ProductClass> mList;
+    private List<ServiceClass> mList;
     private String selectedName;
-    private RecyclerView productClassRecycler;
 
     static class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -37,44 +36,46 @@ public class TabAdapter extends RecyclerView.Adapter<TabAdapter.ViewHolder>
         }
     }
 
-    public TabAdapter(List<ProductClass> productClassList, RecyclerView recyclerView){
-        mList = productClassList;
-        if(productClassList != null && productClassList.size() > 0)
-            selectedName = productClassList.get(0).getName();
-        productClassRecycler = recyclerView;
+    public ServiceClassTabAdapter(List<ServiceClass> serviceClassList){
+        mList = serviceClassList;
+        if(serviceClassList.size() > 0){
+            selectedName = serviceClassList.get(0).getName();
+        }
     }
 
     @Override
-    public TabAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public ServiceClassTabAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         if(mContext == null)
         {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_tab, parent,false);
-        final TabAdapter.ViewHolder holder = new TabAdapter.ViewHolder(view);
+        final ServiceClassTabAdapter.ViewHolder holder = new ServiceClassTabAdapter.ViewHolder(view);
         holder.view.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 int position = holder.getAdapterPosition();
-                ProductClass productClass = mList.get(position);
-                selectedName = productClass.getName();
+                ServiceClass serviceClass = mList.get(position);
+                serviceClass.setClickCount(serviceClass.getClickCount()+1);
+                serviceClass.save();
+                selectedName =serviceClass.getName();
                 notifyDataSetChanged();
-                LogUtil.e("TabAdapter","selected:" + selectedName);
-                ((LinearLayoutManager)(productClassRecycler.getLayoutManager())).scrollToPositionWithOffset(position,0);
+                ((ServiceWorkActivity)mContext).scrollRightRecyclerTo(position);
             }
         });
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(TabAdapter.ViewHolder holder, int position)
+    public void onBindViewHolder(ServiceClassTabAdapter.ViewHolder holder, int position)
     {
-        ProductClass productClass = mList.get(position);
-        holder.typeName.setText(productClass.getName());
-        if(productClass.getName().equals(selectedName)){
+//        LogUtil.e("ServiceClassTabAdapter","adapter选中的是:" + selectedName);
+        ServiceClass serviceClass = mList.get(position);
+        holder.typeName.setText(serviceClass.getName());
+        if(serviceClass.getName().equals(selectedName)){
             holder.selectedLine.setBackgroundResource(R.color.colorPrimary);
             holder.view.setBackgroundResource(R.color.white);
             holder.typeName.getPaint().setFakeBoldText(true);
@@ -91,16 +92,14 @@ public class TabAdapter extends RecyclerView.Adapter<TabAdapter.ViewHolder>
         return mList.size();
     }
 
-    public List<ProductClass> getmList()
+    public List<ServiceClass> getmList()
     {
         return mList;
     }
 
-    public void setmList(List<ProductClass> mList)
+    public void setmList(List<ServiceClass> mList)
     {
         this.mList = mList;
-        if(mList != null && mList.size() > 0)
-            selectedName = mList.get(0).getName();
     }
 
     public String getSelectedName()
@@ -111,15 +110,5 @@ public class TabAdapter extends RecyclerView.Adapter<TabAdapter.ViewHolder>
     public void setSelectedName(String selectedName)
     {
         this.selectedName = selectedName;
-    }
-
-    public RecyclerView getProductClassRecycler()
-    {
-        return productClassRecycler;
-    }
-
-    public void setProductClassRecycler(RecyclerView productClassRecycler)
-    {
-        this.productClassRecycler = productClassRecycler;
     }
 }

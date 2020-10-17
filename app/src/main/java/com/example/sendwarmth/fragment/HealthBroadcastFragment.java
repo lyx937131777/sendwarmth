@@ -7,7 +7,11 @@ import android.view.ViewGroup;
 
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.HealthBroadcastAdapter;
+import com.example.sendwarmth.dagger2.DaggerMyComponent;
+import com.example.sendwarmth.dagger2.MyComponent;
+import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.HealthBroadcast;
+import com.example.sendwarmth.presenter.HealthBroadcastPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +24,17 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HealthBroadcastFragment extends Fragment
 {
     private RecyclerView recyclerView;
-    private HealthBroadcast[] healthBroadcasts = {new HealthBroadcast("养生播报1",R.drawable.temp,"养生需要注意这几点！第一…………","2020-03-03 11:05"),
-            new HealthBroadcast("养生播报2",R.drawable.temp,"养生需要注意这几点！第一…………","2020-03-04 11:55"),
-            new HealthBroadcast("养生播报3",R.drawable.temp,"养生需要注意这几点！第一…………","2020-03-15 09:05")};
     private List<HealthBroadcast> healthBroadcastList = new ArrayList<>();
     private HealthBroadcastAdapter healthBroadcastAdapter;
+
+    private HealthBroadcastPresenter healthBroadcastPresenter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View root = inflater.inflate(R.layout.fragment_health_broadcast, container, false);
+        MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(getContext())).build();
+        healthBroadcastPresenter = myComponent.healthBroadcastPresenter();
+
         initHealthBroadcast();
         recyclerView = root.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -40,7 +46,12 @@ public class HealthBroadcastFragment extends Fragment
     private void initHealthBroadcast()
     {
         healthBroadcastList.clear();
-        for(int i = 0; i < healthBroadcasts.length; i++)
-            healthBroadcastList.add(healthBroadcasts[i]);
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        healthBroadcastPresenter.updateHealthBroadcast(healthBroadcastAdapter);
     }
 }

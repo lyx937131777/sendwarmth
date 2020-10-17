@@ -54,6 +54,20 @@ public class HomePresenter
                 final String responsData = response.body().string();
                 LogUtil.e("HomePresenter",responsData);
                 List<ServiceClass> internetList = Utility.handleServiceClassList(responsData);
+                List<ServiceClass> localList = LitePal.findAll(ServiceClass.class);
+                for(ServiceClass localServiceClass : localList){
+                    String internetId = localServiceClass.getInternetId();
+                    boolean flag = true;
+                    for(ServiceClass internetServiceClass : internetList){
+                        if(internetServiceClass.getInternetId().equals(internetId)){
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if(flag){
+                        localServiceClass.delete();
+                    }
+                }
                 LogUtil.e("HomePresenter","internetList number: " + internetList.size());
                 for(ServiceClass serviceClass : internetList){
                     ServiceClass temp = LitePal.where("internetId = ?",serviceClass.getInternetId()).findFirst(ServiceClass.class);

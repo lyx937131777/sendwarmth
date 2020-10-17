@@ -1,59 +1,100 @@
 package com.example.sendwarmth.db;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class HealthBroadcast implements Serializable
 {
-    private String title;
-    private int picture;
-    private String description;
-    private String time;
+    @SerializedName("id")
+    private String internetId;
+    private String timestamp;
+    private String topicName;
+    private String topicClassType;
+    private String des;
+    private String customerId;
 
-    public HealthBroadcast(String title, int picture, String description, String time)
+    private String topicPic;
+
+    private String topicStatus;
+
+    public String getInternetId()
     {
-        this.title = title;
-        this.picture = picture;
-        this.description = description;
-        this.time = time;
+        return internetId;
     }
 
-    public String getTitle()
+    public void setInternetId(String internetId)
     {
-        return title;
+        this.internetId = internetId;
     }
 
-    public void setTitle(String title)
+    public String getTimestamp()
     {
-        this.title = title;
+        return timestamp;
     }
 
-    public int getPicture()
+    public void setTimestamp(String timestamp)
     {
-        return picture;
+        this.timestamp = timestamp;
     }
 
-    public void setPicture(int picture)
+    public String getTopicName()
     {
-        this.picture = picture;
+        return topicName;
     }
 
-    public String getDescription()
+    public void setTopicName(String topicName)
     {
-        return description;
+        this.topicName = topicName;
     }
 
-    public void setDescription(String description)
+    public String getTopicClassType()
     {
-        this.description = description;
+        return topicClassType;
     }
 
-    public String getTime()
+    public void setTopicClassType(String topicClassType)
     {
-        return time;
+        this.topicClassType = topicClassType;
     }
 
-    public void setTime(String time)
+    public String getDes()
     {
-        this.time = time;
+        return des;
+    }
+
+    public void setDes(String des)
+    {
+        this.des = des;
+    }
+
+    public String getCustomerId()
+    {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId)
+    {
+        this.customerId = customerId;
+    }
+
+    public String getTopicPic()
+    {
+        return topicPic;
+    }
+
+    public void setTopicPic(String topicPic)
+    {
+        this.topicPic = topicPic;
+    }
+
+    public String getTopicStatus()
+    {
+        return topicStatus;
+    }
+
+    public void setTopicStatus(String topicStatus)
+    {
+        this.topicStatus = topicStatus;
     }
 }

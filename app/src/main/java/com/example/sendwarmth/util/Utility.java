@@ -7,7 +7,10 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.example.sendwarmth.db.Customer;
+import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.db.InterestingActivity;
+import com.example.sendwarmth.db.Product;
+import com.example.sendwarmth.db.ProductClass;
 import com.example.sendwarmth.db.ServiceClass;
 import com.example.sendwarmth.db.ServiceSubject;
 import com.google.gson.Gson;
@@ -118,6 +121,7 @@ public class Utility
         return null;
     }
 
+    //处理活动
     public static List<InterestingActivity> handleInterestingActivityList(String response){
         if (!TextUtils.isEmpty(response))
         {
@@ -129,6 +133,66 @@ public class Utility
                 JSONArray jsonArray = dataObject.getJSONArray("content");
                 String interestingActivityJson = jsonArray.toString();
                 return new Gson().fromJson(interestingActivityJson, new TypeToken<List<InterestingActivity>>() {}.getType());
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    //处理养生播报（topic）
+    public static List<HealthBroadcast> handleHealthBroadcastList(String response){
+        if (!TextUtils.isEmpty(response))
+        {
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String healthBroadcastJson = jsonArray.toString();
+                return new Gson().fromJson(healthBroadcastJson, new TypeToken<List<HealthBroadcast>>() {}.getType());
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    //处理产品类别
+    public static List<ProductClass> handleProductClassList(String response){
+        if (!TextUtils.isEmpty(response))
+        {
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String productClassJson = jsonArray.toString();
+                return new Gson().fromJson(productClassJson, new TypeToken<List<ProductClass>>() {}.getType());
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    //处理产品
+    public static List<Product> handleProductList(String response){
+        if (!TextUtils.isEmpty(response))
+        {
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String productJson = jsonArray.toString();
+                return new Gson().fromJson(productJson, new TypeToken<List<Product>>() {}.getType());
             } catch (JSONException e)
             {
                 e.printStackTrace();
@@ -163,7 +227,7 @@ public class Utility
     }
 
     //后台给的日期格式 转化为目标的日期格式字符串
-    public static String dateStringToString(String s, String formatString){
+    public static String timeStampToString(String s, String formatString){
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         DateFormat df2 = new SimpleDateFormat(formatString);
 //        df2.setTimeZone(TimeZone.getTimeZone("GMT"));
