@@ -1,84 +1,76 @@
 package com.example.sendwarmth.db;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class PensionInstitution implements Serializable
 {
-    private String name;
-    private String address;
-    private String tel;
-    private String contact;
-    private String description;
-    private int picture;
+    @SerializedName("id")
+    private String internetId;
+    private String institutionName;
+    private String institutionTel;
+    private String institutionPic;
+    private String institutionLoc;
+    private String institutionDes;
 
-    public PensionInstitution(String name, String address, String tel, String contact,
-                              String description, int picture)
+    public String getInternetId()
     {
-        this.name = name;
-        this.address = address;
-        this.tel = tel;
-        this.contact = contact;
-        this.description = description;
-        this.picture = picture;
+        return internetId;
     }
 
-    public String getName()
+    public void setInternetId(String internetId)
     {
-        return name;
+        this.internetId = internetId;
     }
 
-    public void setName(String name)
+    public String getInstitutionName()
     {
-        this.name = name;
+        return institutionName;
     }
 
-    public String getAddress()
+    public void setInstitutionName(String institutionName)
     {
-        return address;
+        this.institutionName = institutionName;
     }
 
-    public void setAddress(String address)
+    public String getInstitutionTel()
     {
-        this.address = address;
+        return institutionTel;
     }
 
-    public String getTel()
+    public void setInstitutionTel(String institutionTel)
     {
-        return tel;
+        this.institutionTel = institutionTel;
     }
 
-    public void setTel(String tel)
+    public String getInstitutionPic()
     {
-        this.tel = tel;
+        return institutionPic;
     }
 
-    public String getContact()
+    public void setInstitutionPic(String institutionPic)
     {
-        return contact;
+        this.institutionPic = institutionPic;
     }
 
-    public void setContact(String contact)
+    public String getInstitutionLoc()
     {
-        this.contact = contact;
+        return institutionLoc;
     }
 
-    public String getDescription()
+    public void setInstitutionLoc(String institutionLoc)
     {
-        return description;
+        this.institutionLoc = institutionLoc;
     }
 
-    public void setDescription(String description)
+    public String getInstitutionDes()
     {
-        this.description = description;
+        return institutionDes;
     }
 
-    public int getPicture()
+    public void setInstitutionDes(String institutionDes)
     {
-        return picture;
-    }
-
-    public void setPicture(int picture)
-    {
-        this.picture = picture;
+        this.institutionDes = institutionDes;
     }
 }

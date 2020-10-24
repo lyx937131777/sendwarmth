@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.example.sendwarmth.PensionInstitutionActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.PensionInstitution;
+import com.example.sendwarmth.util.HttpUtil;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class PensionInstitutionAdapter extends RecyclerView.Adapter<PensionInsti
         TextView name;
         TextView address;
         TextView tel;
-        TextView contact;
+//        TextView contact;
 
         public  ViewHolder(View view)
         {
@@ -39,7 +40,7 @@ public class PensionInstitutionAdapter extends RecyclerView.Adapter<PensionInsti
             name = view.findViewById(R.id.name);
             tel = view.findViewById(R.id.tel);
             address = view.findViewById(R.id.address);
-            contact = view.findViewById(R.id.contact);
+//            contact = view.findViewById(R.id.contact);
         }
     }
 
@@ -75,15 +76,25 @@ public class PensionInstitutionAdapter extends RecyclerView.Adapter<PensionInsti
     public void onBindViewHolder(PensionInstitutionAdapter.ViewHolder holder, int position)
     {
         PensionInstitution pensionInstitution = mList.get(position);
-        Glide.with(mContext).load(pensionInstitution.getPicture()).into(holder.picture);
-        holder.name.setText(pensionInstitution.getName());
-        holder.address.setText("地址："+pensionInstitution.getAddress());
-        holder.tel.setText("联系电话："+pensionInstitution.getTel());
-        holder.contact.setText("联系人："+pensionInstitution.getContact());
+        Glide.with(mContext).load(HttpUtil.getPhotoURL(pensionInstitution.getInstitutionPic())).into(holder.picture);
+        holder.name.setText(pensionInstitution.getInstitutionName());
+        holder.address.setText("地址："+pensionInstitution.getInstitutionLoc());
+        holder.tel.setText("联系电话："+pensionInstitution.getInstitutionTel());
+//        holder.contact.setText(pensionInstitution.getInstitutionDes());
     }
     @Override
     public int getItemCount()
     {
         return mList.size();
+    }
+
+    public List<PensionInstitution> getmList()
+    {
+        return mList;
+    }
+
+    public void setmList(List<PensionInstitution> mList)
+    {
+        this.mList = mList;
     }
 }

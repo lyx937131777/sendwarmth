@@ -7,7 +7,11 @@ import android.view.ViewGroup;
 
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.FriendsCircleAdapter;
+import com.example.sendwarmth.dagger2.DaggerMyComponent;
+import com.example.sendwarmth.dagger2.MyComponent;
+import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.FriendsCircle;
+import com.example.sendwarmth.presenter.FriendsCirclePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +24,18 @@ import androidx.recyclerview.widget.RecyclerView;
 public class FriendsCircleFragment extends Fragment
 {
     private RecyclerView recyclerView;
-    private FriendsCircle[] friendsCircles = {new FriendsCircle("面朝大海春暖花开",R.drawable.temp,"李思思","大家好xxxxxxxxxxxx","2020-03-05 11:00"),
-            new FriendsCircle("面朝大海春暖花开",R.drawable.temp,"李思思","大家好xxxxxxxxxxxx","2020-03-05 11:00"),
-            new FriendsCircle("面朝大海春暖花开",R.drawable.temp,"李思思","大家好xxxxxxxxxxxx","2020-03-05 11:00")};
+
     private List<FriendsCircle> friendsCircleList = new ArrayList<>();
     private FriendsCircleAdapter friendsCircleAdapter;
+
+    private FriendsCirclePresenter friendsCirclePresenter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View root = inflater.inflate(R.layout.fragment_friends_circle, container, false);
+        MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(getContext())).build();
+        friendsCirclePresenter = myComponent.friendsCirclePresenter();
+
         initFriendsCircle();
         recyclerView = root.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -40,7 +47,12 @@ public class FriendsCircleFragment extends Fragment
     private void initFriendsCircle()
     {
         friendsCircleList.clear();
-        for(int i = 0; i < friendsCircles.length; i++)
-            friendsCircleList.add(friendsCircles[i]);
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        friendsCirclePresenter.updateFriendsCircle(friendsCircleAdapter);
     }
 }

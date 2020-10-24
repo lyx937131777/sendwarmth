@@ -1,71 +1,76 @@
 package com.example.sendwarmth.db;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class FriendsCircle implements Serializable
 {
-    private String title;
-    private int picture;
-    private String author;
-    private String description;
-    private String time;
+    @SerializedName("id")
+    private String internetId;
+    private String customerId;
+    private Customer customerInfo;
+    private String content;
+    private String timestamp;
+    private String picture;
 
-    public FriendsCircle(String title, int picture, String author, String description, String time)
+    public String getTimestamp()
     {
-        this.title = title;
-        this.picture = picture;
-        this.author = author;
-        this.description = description;
-        this.time = time;
+        return timestamp;
     }
 
-    public String getTitle()
+    public void setTimestamp(String timestamp)
     {
-        return title;
+        this.timestamp = timestamp;
     }
 
-    public void setTitle(String title)
-    {
-        this.title = title;
-    }
-
-    public int getPicture()
+    public String getPicture()
     {
         return picture;
     }
 
-    public void setPicture(int picture)
+    public void setPicture(String picture)
     {
         this.picture = picture;
     }
 
-    public String getAuthor()
+    public String getInternetId()
     {
-        return author;
+        return internetId;
     }
 
-    public void setAuthor(String author)
+    public void setInternetId(String internetId)
     {
-        this.author = author;
+        this.internetId = internetId;
     }
 
-    public String getDescription()
+    public String getCustomerId()
     {
-        return description;
+        return customerId;
     }
 
-    public void setDescription(String description)
+    public void setCustomerId(String customerId)
     {
-        this.description = description;
+        this.customerId = customerId;
     }
 
-    public String getTime()
+    public Customer getCustomerInfo()
     {
-        return time;
+        return customerInfo;
     }
 
-    public void setTime(String time)
+    public void setCustomerInfo(Customer customerInfo)
     {
-        this.time = time;
+        this.customerInfo = customerInfo;
+    }
+
+    public String getContent()
+    {
+        return content;
+    }
+
+    public void setContent(String content)
+    {
+        this.content = content;
     }
 }

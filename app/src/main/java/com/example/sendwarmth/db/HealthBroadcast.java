@@ -10,13 +10,13 @@ public class HealthBroadcast implements Serializable
     private String internetId;
     private String timestamp;
     private String topicName;
-    private String topicClassType;
     private String des;
-    private String customerId;
-
     private String topicPic;
-
+    private String topicClassType;
     private String topicStatus;
+    private String customerId;
+    private Customer customerInfo;
+    private int validTime;
 
     public String getInternetId()
     {
@@ -96,5 +96,25 @@ public class HealthBroadcast implements Serializable
     public void setTopicStatus(String topicStatus)
     {
         this.topicStatus = topicStatus;
+    }
+
+    public Customer getCustomerInfo()
+    {
+        return customerInfo;
+    }
+
+    public void setCustomerInfo(Customer customerInfo)
+    {
+        this.customerInfo = customerInfo;
+    }
+
+    public int getValidTime()
+    {
+        return validTime;
+    }
+
+    public void setValidTime(int validTime)
+    {
+        this.validTime = validTime;
     }
 }

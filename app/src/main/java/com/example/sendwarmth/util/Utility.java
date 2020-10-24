@@ -7,8 +7,10 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.example.sendwarmth.db.Customer;
+import com.example.sendwarmth.db.FriendsCircle;
 import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.db.InterestingActivity;
+import com.example.sendwarmth.db.PensionInstitution;
 import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.db.ProductClass;
 import com.example.sendwarmth.db.ServiceClass;
@@ -39,44 +41,37 @@ public class Utility
     //返回Json数据的特定string值
     public static String checkString(String response, String string)
     {
-        try
-        {
+        try {
             JSONObject dataObject = new JSONObject(response);
             return dataObject.getString(string);
-        } catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return ERROR_CODE;
     }
 
     public static String getRole(String response){
-        try
-        {
+        try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray dataArray = jsonObject.getJSONArray("datas");
             JSONObject dataObject = dataArray.getJSONObject(0);
             return dataObject.getString("roleType");
-        } catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return ERROR_CODE;
     }
 
     public static Customer handleCustomer(String response){
-        if (!TextUtils.isEmpty(response))
-        {
-            try
-            {
+        if (!TextUtils.isEmpty(response)) {
+            try {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray dataArray = jsonObject.getJSONArray("datas");
                 JSONObject dataObject = dataArray.getJSONObject(0);
                 JSONObject customerObject = dataObject.getJSONObject("customerInfo");
                 String jsonString = customerObject.toString();
                 return  new Gson().fromJson(jsonString, Customer.class);
-            } catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -84,18 +79,15 @@ public class Utility
     }
 
     public static List<ServiceClass> handleServiceClassList(String response){
-        if (!TextUtils.isEmpty(response))
-        {
-            try
-            {
+        if (!TextUtils.isEmpty(response)) {
+            try {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray dataArray = jsonObject.getJSONArray("datas");
                 JSONObject dataObject = dataArray.getJSONObject(0);
                 JSONArray jsonArray = dataObject.getJSONArray("content");
                 String serviceClassJson = jsonArray.toString();
                 return new Gson().fromJson(serviceClassJson, new TypeToken<List<ServiceClass>>() {}.getType());
-            } catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -103,18 +95,15 @@ public class Utility
     }
 
     public static List<ServiceSubject> handleServiceSubjectList(String response){
-        if (!TextUtils.isEmpty(response))
-        {
-            try
-            {
+        if (!TextUtils.isEmpty(response)) {
+            try {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray dataArray = jsonObject.getJSONArray("datas");
                 JSONObject dataObject = dataArray.getJSONObject(0);
                 JSONArray jsonArray = dataObject.getJSONArray("content");
                 String serviceSubjectJson = jsonArray.toString();
                 return new Gson().fromJson(serviceSubjectJson, new TypeToken<List<ServiceSubject>>() {}.getType());
-            } catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -123,18 +112,15 @@ public class Utility
 
     //处理活动
     public static List<InterestingActivity> handleInterestingActivityList(String response){
-        if (!TextUtils.isEmpty(response))
-        {
-            try
-            {
+        if (!TextUtils.isEmpty(response)) {
+            try {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray dataArray = jsonObject.getJSONArray("datas");
                 JSONObject dataObject = dataArray.getJSONObject(0);
                 JSONArray jsonArray = dataObject.getJSONArray("content");
                 String interestingActivityJson = jsonArray.toString();
                 return new Gson().fromJson(interestingActivityJson, new TypeToken<List<InterestingActivity>>() {}.getType());
-            } catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -143,18 +129,49 @@ public class Utility
 
     //处理养生播报（topic）
     public static List<HealthBroadcast> handleHealthBroadcastList(String response){
-        if (!TextUtils.isEmpty(response))
-        {
-            try
-            {
+        if (!TextUtils.isEmpty(response)) {
+            try {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray dataArray = jsonObject.getJSONArray("datas");
                 JSONObject dataObject = dataArray.getJSONObject(0);
                 JSONArray jsonArray = dataObject.getJSONArray("content");
                 String healthBroadcastJson = jsonArray.toString();
                 return new Gson().fromJson(healthBroadcastJson, new TypeToken<List<HealthBroadcast>>() {}.getType());
-            } catch (JSONException e)
-            {
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    //处理朋友圈
+    public static List<FriendsCircle> handleFriendsCircleList(String response){
+        if (!TextUtils.isEmpty(response)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String friendsCircleJson = jsonArray.toString();
+                return new Gson().fromJson(friendsCircleJson, new TypeToken<List<FriendsCircle>>() {}.getType());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    //处理养老机构
+    public static List<PensionInstitution> handlePensionInstitutionList(String response){
+        if (!TextUtils.isEmpty(response)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String pensionInstitutionJson = jsonArray.toString();
+                return new Gson().fromJson(pensionInstitutionJson, new TypeToken<List<PensionInstitution>>() {}.getType());
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -163,18 +180,15 @@ public class Utility
 
     //处理产品类别
     public static List<ProductClass> handleProductClassList(String response){
-        if (!TextUtils.isEmpty(response))
-        {
-            try
-            {
+        if (!TextUtils.isEmpty(response)) {
+            try {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray dataArray = jsonObject.getJSONArray("datas");
                 JSONObject dataObject = dataArray.getJSONObject(0);
                 JSONArray jsonArray = dataObject.getJSONArray("content");
                 String productClassJson = jsonArray.toString();
                 return new Gson().fromJson(productClassJson, new TypeToken<List<ProductClass>>() {}.getType());
-            } catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -183,18 +197,15 @@ public class Utility
 
     //处理产品
     public static List<Product> handleProductList(String response){
-        if (!TextUtils.isEmpty(response))
-        {
-            try
-            {
+        if (!TextUtils.isEmpty(response)) {
+            try {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray dataArray = jsonObject.getJSONArray("datas");
                 JSONObject dataObject = dataArray.getJSONObject(0);
                 JSONArray jsonArray = dataObject.getJSONArray("content");
                 String productJson = jsonArray.toString();
                 return new Gson().fromJson(productJson, new TypeToken<List<Product>>() {}.getType());
-            } catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }

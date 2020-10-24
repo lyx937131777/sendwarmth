@@ -12,7 +12,8 @@ import com.bumptech.glide.Glide;
 import com.example.sendwarmth.FriendsCircleActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.FriendsCircle;
-import com.example.sendwarmth.db.HealthBroadcast;
+import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.Utility;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<FriendsCircleAdap
         View view;
         ImageView picture;
         TextView title;
-        TextView description;
+        TextView content;
         TextView time;
         CircleImageView author;
 
@@ -39,7 +40,7 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<FriendsCircleAdap
             this.view = view;
             picture = view.findViewById(R.id.picture);
             title = view.findViewById(R.id.title);
-            description = view.findViewById(R.id.description);
+            content = view.findViewById(R.id.content);
             time = view.findViewById(R.id.time);
             author = view.findViewById(R.id.author);
         }
@@ -77,11 +78,11 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<FriendsCircleAdap
     public void onBindViewHolder(FriendsCircleAdapter.ViewHolder holder, int position)
     {
         FriendsCircle friendsCircle = mList.get(position);
-        Glide.with(mContext).load(friendsCircle.getPicture()).into(holder.picture);
+        Glide.with(mContext).load(HttpUtil.getPhotoURL(friendsCircle.getPicture())).into(holder.picture);
         Glide.with(mContext).load(R.drawable.profile_uri).into(holder.author);
-        holder.title.setText(friendsCircle.getTitle());
-        holder.description.setText(friendsCircle.getDescription());
-        holder.time.setText(friendsCircle.getTime());
+        holder.title.setText(friendsCircle.getCustomerInfo().getName());
+        holder.content.setText(friendsCircle.getContent());
+        holder.time.setText(Utility.timeStampToString(friendsCircle.getTimestamp(),"yyyy-MM-dd HH:mm"));
     }
     @Override
     public int getItemCount()
@@ -89,4 +90,13 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<FriendsCircleAdap
         return mList.size();
     }
 
+    public List<FriendsCircle> getmList()
+    {
+        return mList;
+    }
+
+    public void setmList(List<FriendsCircle> mList)
+    {
+        this.mList = mList;
+    }
 }

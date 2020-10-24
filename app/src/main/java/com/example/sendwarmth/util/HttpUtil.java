@@ -86,7 +86,7 @@ public class HttpUtil
     }
 
     //发布新活动
-    public static void newInterestingActivityRequest(String address, String userId, String credential, String title, String image, String lowBudget, String upBudget,
+    public static void postInterestingActivityRequest(String address, String userId, String credential, String title, String image, String lowBudget, String upBudget,
                                                      String maxNum, String location, String contactName, String contactTel, String description, Callback callback){
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -105,6 +105,28 @@ public class HttpUtil
         LogUtil.e("HttpUtil","registerRequest: "+jsonStr);
         RequestBody requestBody = RequestBody.create(jsonStr, JSON);
         Request request = new Request.Builder().url(address).addHeader("Authorization",credential).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //发布朋友圈
+    public static void postFriendsCircleRequest(String address, String userId, String credential, String content, String image, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        Customer customer = LitePal.where("userId = ?",userId).findFirst(Customer.class);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("content",content);
+        map.put("customerId",customer.getInternetId());
+        map.put("picture",image);
+        String jsonStr = new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(jsonStr, JSON);
+        Request request = new Request.Builder().url(address).addHeader("Authorization",credential).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //删除朋友圈
+    public static void deleteFriendsCircleRequest(String address, String credential, String friendsCircleId, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(address+"/"+friendsCircleId).addHeader("Authorization",credential).delete().build();
         client.newCall(request).enqueue(callback);
     }
 

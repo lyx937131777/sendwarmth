@@ -174,10 +174,16 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.menu_search2:
                 break;
-            case R.id.menu_new_interesting_activity:
+            case R.id.menu_new_interesting_activity:{
                 Intent intent = new Intent(this,NewInterestingActivityActivity.class);
                 startActivity(intent);
                 break;
+            }
+            case R.id.menu_new_friends_circle:{
+                Intent intent = new Intent(this, NewFriendsCircleActivity.class);
+                startActivity(intent);
+            }
+
         }
         return true;
     }

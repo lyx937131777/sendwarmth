@@ -14,4 +14,10 @@
         android:icon="@drawable/add"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/menu_new_friends_circle"
+        android:title="发表交友圈"
+        android:icon="@drawable/add"
+        app:showAsAction="never"/>
+
 </menu>

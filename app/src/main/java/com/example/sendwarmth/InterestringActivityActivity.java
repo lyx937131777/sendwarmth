@@ -1,9 +1,12 @@
 package com.example.sendwarmth;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +24,12 @@ public class InterestringActivityActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interestring_activity);
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         initInterestingActivity();
     }
 
@@ -42,4 +50,17 @@ public class InterestringActivityActivity extends AppCompatActivity
         time.setText(interestingActivity.getTime());
         description.setText(interestingActivity.getDescription());
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
+    }
+
 }

@@ -31,7 +31,7 @@ public class InterestingActivityPresenter
     }
 
     public void updateInterestingActivity(final InterestingActivityAdapter interestingActivityAdapter){
-        String address = HttpUtil.LocalAddress + "/api/activity/list";
+        String address = HttpUtil.LocalAddress + "/api/activity/list?activityStatus=pass";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
         {

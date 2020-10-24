@@ -23,7 +23,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,52 +38,43 @@ import com.bumptech.glide.Glide;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
 import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
-import com.example.sendwarmth.presenter.NewInterestingActivityPresenter;
+import com.example.sendwarmth.presenter.NewFriendsCirclePresenter;
 import com.example.sendwarmth.util.LogUtil;
 
 import java.io.File;
 import java.io.IOException;
 
-public class NewInterestingActivityActivity extends AppCompatActivity
+public class NewFriendsCircleActivity extends AppCompatActivity
 {
     public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
 
     private ImageView imageView;
-    private EditText titleText, lowBudgetText,upBudgetText, maxNumText, locationText,contactText, contactTelText,descriptionText;
+    private EditText contentText;
 
     //photo
     private Dialog dialog;
     private Uri imageUri;
     private String imagePath = null;
 
-    private NewInterestingActivityPresenter newInterestingActivityPresenter;
+    private NewFriendsCirclePresenter newFriendsCirclePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_interesting_activity);
+        setContentView(R.layout.activity_new_friends_circle);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-        {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(this)).build();
-        newInterestingActivityPresenter = myComponent.newInterestingActivityPresenter();
+        newFriendsCirclePresenter = myComponent.newFriendsCirclePresenter();
 
-        titleText = findViewById(R.id.theme_edit);
-        lowBudgetText = findViewById(R.id.budget_low);
-        upBudgetText = findViewById(R.id.budget_upper);
-        maxNumText = findViewById(R.id.number);
-        locationText = findViewById(R.id.location);
-        contactText = findViewById(R.id.host);
-        contactTelText = findViewById(R.id.tel);
-        descriptionText = findViewById(R.id.description);
-
-        imageView = findViewById(R.id.theme_img);
+        contentText = findViewById(R.id.content);
+        imageView = findViewById(R.id.img);
         imageView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -109,39 +99,29 @@ public class NewInterestingActivityActivity extends AppCompatActivity
                 if(imagePath == null){
                     new AlertDialog.Builder(this)
                             .setTitle("提示")
-                            .setMessage("请选择图片后再发布！")
+                            .setMessage("请选择图片后再发表！")
                             .setPositiveButton("确定", null)
                             .show();
                     break;
                 }
-                if(titleText.getText().toString().length() > 30){
+                if(contentText.getText().toString().length() > 1500){
                     new AlertDialog.Builder(this)
                             .setTitle("提示")
-                            .setMessage("标题请限制在30字以内！")
-                            .setPositiveButton("确定", null)
-                            .show();
-                    break;
-                }
-                if(descriptionText.getText().toString().length() > 1500){
-                    new AlertDialog.Builder(this)
-                            .setTitle("提示")
-                            .setMessage("内容请限制在1500字以内！")
+                            .setMessage("请限制在1500字以内！")
                             .setPositiveButton("确定", null)
                             .show();
                     break;
                 }
                 new AlertDialog.Builder(this)
                         .setTitle("提示")
-                        .setMessage("确定发布该活动么？")
+                        .setMessage("确定发表该交友圈么？")
                         .setPositiveButton("确定", new
                                 DialogInterface.OnClickListener()
                                 {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which)
                                     {
-                                        newInterestingActivityPresenter.postInterestingActivity(titleText.getText().toString(),imagePath,lowBudgetText.getText().toString(),
-                                                upBudgetText.getText().toString(),maxNumText.getText().toString(),locationText.getText().toString(),contactText.getText().toString(),
-                                                contactTelText.getText().toString(),descriptionText.getText().toString());
+                                        newFriendsCirclePresenter.postFriendsCircle(contentText.getText().toString(),imagePath);
                                     }
                                 })
                         .setNegativeButton("取消",null).show();
@@ -178,8 +158,8 @@ public class NewInterestingActivityActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                if (ContextCompat.checkSelfPermission(NewInterestingActivityActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(NewInterestingActivityActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, TAKE_PHOTO);
+                if (ContextCompat.checkSelfPermission(NewFriendsCircleActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(NewFriendsCircleActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, TAKE_PHOTO);
                 } else {
                     takePhoto();
                 }
@@ -192,8 +172,8 @@ public class NewInterestingActivityActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                if (ContextCompat.checkSelfPermission(NewInterestingActivityActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(NewInterestingActivityActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CHOOSE_PHOTO);
+                if (ContextCompat.checkSelfPermission(NewFriendsCircleActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(NewFriendsCircleActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CHOOSE_PHOTO);
                 } else {
                     openAlbum();
                 }
@@ -232,7 +212,7 @@ public class NewInterestingActivityActivity extends AppCompatActivity
             imageUri = Uri.fromFile(outputImage);
         } else
         {
-            imageUri = FileProvider.getUriForFile(NewInterestingActivityActivity.this,
+            imageUri = FileProvider.getUriForFile(NewFriendsCircleActivity.this,
                     "com.example.sendwarmth.fileprovider", outputImage);
         }
         // 启动相机程序
@@ -371,6 +351,5 @@ public class NewInterestingActivityActivity extends AppCompatActivity
             Toast.makeText(this, "打开图片失败", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 }

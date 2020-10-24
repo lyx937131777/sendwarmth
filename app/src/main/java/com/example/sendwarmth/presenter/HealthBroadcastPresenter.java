@@ -32,7 +32,7 @@ public class HealthBroadcastPresenter
     }
 
     public void updateHealthBroadcast(final HealthBroadcastAdapter healthBroadcastAdapter){
-        String address = HttpUtil.LocalAddress + "/api/topic/list";
+        String address = HttpUtil.LocalAddress + "/api/topic/unexpired";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
         {

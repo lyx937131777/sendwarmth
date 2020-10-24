@@ -7,7 +7,11 @@ import android.view.ViewGroup;
 
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.PensionInstitutionAdapter;
+import com.example.sendwarmth.dagger2.DaggerMyComponent;
+import com.example.sendwarmth.dagger2.MyComponent;
+import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.PensionInstitution;
+import com.example.sendwarmth.presenter.PensionInstitutionPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +24,17 @@ import androidx.recyclerview.widget.RecyclerView;
 public class PensionInstitutionsFragment extends Fragment
 {
     private RecyclerView recyclerView;
-    private PensionInstitution[] pensionInstitutions = {new PensionInstitution("养老中心1","xxx街道xx号","12312345678","李xx","该养老中心地处....是一个.....欢迎.....",R.drawable.temp),
-            new PensionInstitution("养老中心2","xxx街道xx号","12312345678","王xx","该养老中心地处....是一个.....欢迎.....",R.drawable.temp),
-            new PensionInstitution("养老中心3","xxx街道xx号","12312345678","李xx","该养老中心地处....是一个.....欢迎.....",R.drawable.temp)};
     private List<PensionInstitution> pensionInstitutionList = new ArrayList<>();
     private PensionInstitutionAdapter pensionInstitutionAdapter;
+
+    private PensionInstitutionPresenter pensionInstitutionPresenter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View root = inflater.inflate(R.layout.fragment_pension_institutions, container, false);
+        MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(getContext())).build();
+        pensionInstitutionPresenter = myComponent.pensionInstitutionPresenter();
+
         initPensionInstitutions();
         recyclerView = root.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -40,7 +46,12 @@ public class PensionInstitutionsFragment extends Fragment
     private void initPensionInstitutions()
     {
         pensionInstitutionList.clear();
-        for(int i = 0; i < pensionInstitutions.length; i++)
-            pensionInstitutionList.add(pensionInstitutions[i]);
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        pensionInstitutionPresenter.updatePensionInstitution(pensionInstitutionAdapter);
     }
 }

@@ -58,7 +58,7 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
         {
             mContext = parent.getContext();
         }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_friends_circle, parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_interestring_activity, parent,false);
         final InterestingActivityAdapter.ViewHolder holder = new InterestingActivityAdapter.ViewHolder(view);
         holder.view.setOnClickListener(new View.OnClickListener()
         {

@@ -56,6 +56,7 @@ public class ShoppingMallPresenter
                 final String responsData = response.body().string();
                 LogUtil.e("ShoppingMallPresenter",responsData);
                 List<ProductClass> tempList = Utility.handleProductClassList(responsData);
+                productClassList.clear();
                 if(tempList != null){
                     productClassList.addAll(tempList);
                 }

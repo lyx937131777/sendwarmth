@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import com.example.sendwarmth.NewFriendsCircleActivity;
 import com.example.sendwarmth.NewInterestingActivityActivity;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
@@ -19,18 +20,18 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class NewInterestingActivityPresenter
+public class NewFriendsCirclePresenter
 {
     private Context context;
     private SharedPreferences pref;
     private ProgressDialog progressDialog;
 
-    public NewInterestingActivityPresenter(Context context, SharedPreferences pref){
+    public NewFriendsCirclePresenter(Context context, SharedPreferences pref){
         this.context = context;
         this.pref = pref;
     }
 
-    public void postInterestingActivity(final String title, String imagePath, final String lowBudget, final String upBudget, final String maxNum, final String location, final String contactName, final String contactTel, final String description){
+    public void postFriendsCircle(final String content, String imagePath){
         progressDialog = ProgressDialog.show(context,"","上传中...");
         String address = HttpUtil.LocalAddress + "/api/file";
         final String credential = pref.getString("credential","");
@@ -41,7 +42,7 @@ public class NewInterestingActivityPresenter
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
-                ((NewInterestingActivityActivity)context).runOnUiThread(new Runnable()
+                ((NewFriendsCircleActivity)context).runOnUiThread(new Runnable()
                 {
                     @Override
                     public void run()
@@ -56,15 +57,15 @@ public class NewInterestingActivityPresenter
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
                 final String responsData = response.body().string();
-                LogUtil.e("NewInterestingActivityPresenter",responsData);
+                LogUtil.e("NewFriendsCirclePresenter",responsData);
                 String image = Utility.checkString(responsData,"msg");
-                String address = HttpUtil.LocalAddress + "/api/activity";
-                HttpUtil.postInterestingActivityRequest(address, userId, credential, title, image, lowBudget, upBudget, maxNum, location, contactName, contactTel, description, new Callback()
+                String address = HttpUtil.LocalAddress + "/api/blog";
+                HttpUtil.postFriendsCircleRequest(address, userId, credential, content, image, new Callback()
                 {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e)
                     {
-                        ((NewInterestingActivityActivity)context).runOnUiThread(new Runnable()
+                        ((NewFriendsCircleActivity)context).runOnUiThread(new Runnable()
                         {
                             @Override
                             public void run()
@@ -79,9 +80,9 @@ public class NewInterestingActivityPresenter
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
                     {
                         final String responsData = response.body().string();
-                        LogUtil.e("NewInterestingActivityPresenter",responsData);
+                        LogUtil.e("NewFriendsCirclePresenter",responsData);
                         if(Utility.checkString(responsData,"code").equals("000")){
-                            ((NewInterestingActivityActivity)context).runOnUiThread(new Runnable()
+                            ((NewFriendsCircleActivity)context).runOnUiThread(new Runnable()
                             {
                                 @Override
                                 public void run()
@@ -89,13 +90,12 @@ public class NewInterestingActivityPresenter
                                     Toast.makeText(context, "发布成功", Toast.LENGTH_LONG).show();
                                 }
                             });
-                            ((NewInterestingActivityActivity) context).finish();
+                            ((NewFriendsCircleActivity) context).finish();
                         }
                         progressDialog.dismiss();
                     }
                 });
             }
         });
-
     }
 }
