@@ -43,7 +43,7 @@ public class InterestringActivityActivity extends AppCompatActivity
         TextView time = findViewById(R.id.time);
         TextView description = findViewById(R.id.description);
 
-        Glide.with(this).load(HttpUtil.getPhotoURL(interestingActivity.getImage())).into(pictrue);
+        Glide.with(this).load(HttpUtil.getResourceURL(interestingActivity.getImage())).into(pictrue);
         collapsingToolbarLayout.setTitle(interestingActivity.getTitle());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         author.setText(interestingActivity.getPromoterName());

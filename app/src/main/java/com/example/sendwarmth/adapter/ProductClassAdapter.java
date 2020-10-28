@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.db.ProductClass;
+import com.example.sendwarmth.presenter.ShoppingMallPresenter;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ public class ProductClassAdapter extends RecyclerView.Adapter<ProductClassAdapte
     private Context mContext;
     private List<ProductClass> mList;
     private List<Product> productList = new ArrayList<>();
+    private ShoppingMallPresenter shoppingMallPresenter;
 
     static class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -37,8 +41,9 @@ public class ProductClassAdapter extends RecyclerView.Adapter<ProductClassAdapte
         }
     }
 
-    public ProductClassAdapter(List<ProductClass> menuList){
+    public ProductClassAdapter(List<ProductClass> menuList, ShoppingMallPresenter shoppingMallPresenter){
         mList = menuList;
+        this.shoppingMallPresenter = shoppingMallPresenter;
     }
 
     @Override
@@ -74,7 +79,7 @@ public class ProductClassAdapter extends RecyclerView.Adapter<ProductClassAdapte
                 mProductList.add(product);
             }
         }
-        ProductAdapter productAdapter = new ProductAdapter(mProductList);
+        ProductAdapter productAdapter = new ProductAdapter(mProductList,shoppingMallPresenter);
         holder.recyclerView.setAdapter(productAdapter);
     }
 
@@ -82,6 +87,18 @@ public class ProductClassAdapter extends RecyclerView.Adapter<ProductClassAdapte
     public int getItemCount()
     {
         return mList.size();
+    }
+
+    public void refresh(){
+        for(Product product : productList){
+            Product localProduct = LitePal.where("internetId = ?",product.getInternetId()).findFirst(Product.class);
+            if(localProduct == null){
+                product.setSelectedCount(0);
+            }else{
+                product.setSelectedCount(localProduct.getSelectedCount());
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public List<ProductClass> getmList()

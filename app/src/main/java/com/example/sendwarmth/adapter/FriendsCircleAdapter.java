@@ -78,7 +78,7 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<FriendsCircleAdap
     public void onBindViewHolder(FriendsCircleAdapter.ViewHolder holder, int position)
     {
         FriendsCircle friendsCircle = mList.get(position);
-        Glide.with(mContext).load(HttpUtil.getPhotoURL(friendsCircle.getPicture())).into(holder.picture);
+        Glide.with(mContext).load(HttpUtil.getResourceURL(friendsCircle.getPicture())).into(holder.picture);
         Glide.with(mContext).load(R.drawable.profile_uri).into(holder.author);
         holder.title.setText(friendsCircle.getCustomerInfo().getName());
         holder.content.setText(friendsCircle.getContent());

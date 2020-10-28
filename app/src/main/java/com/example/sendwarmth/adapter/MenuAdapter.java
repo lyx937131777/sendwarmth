@@ -65,7 +65,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                 int position = holder.getAdapterPosition();
                 Menu menu = mList.get(position);
                 switch (menu.getType()){
-                    case "order":{
+                    case "serviceOrder":{
                         Intent intent = new Intent(mContext, OrderActivity.class);
                         int index = 0;
                         switch (menu.getName()){
@@ -87,6 +87,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                         }
                         intent.putExtra("index",index);
                         mContext.startActivity(intent);
+                        break;
+                    }
+                    case "productOrder":{
                         break;
                     }
                     case "information":{

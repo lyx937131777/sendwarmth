@@ -14,9 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 import com.example.sendwarmth.MyInformationActivity;
 import com.example.sendwarmth.OrderActivity;
@@ -24,25 +21,29 @@ import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.MenuAdapter;
 import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.Menu;
-import com.example.sendwarmth.util.HttpUtil;
-import com.example.sendwarmth.util.Utility;
 
-import org.jetbrains.annotations.NotNull;
 import org.litepal.LitePal;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PersonalCenterFragment extends Fragment implements View.OnClickListener
 {
-    private RecyclerView myOrderMenuRecycler;
-    private Menu[] myOrderMenus = {new Menu("toBePaid",R.drawable.to_be_paid,"待付款"),
+    private RecyclerView serviceOrderMenuRecycler;
+    private Menu[] serviceOrderMenus = {new Menu("toBePaid",R.drawable.to_be_paid,"待付款"),
             new Menu("toBeReceived",R.drawable.to_be_received,"待收货"),
             new Menu("toBeEvaluated",R.drawable.to_be_evaluated,"待评价"),
             new Menu("closed",R.drawable.completed,"已结束")};
-    private List<Menu> myOrderMenuList = new ArrayList<>();
-    private MenuAdapter myOrderMenuAdapter;
+    private List<Menu> serviceOrderMenuList = new ArrayList<>();
+    private MenuAdapter serviceOrderMenuAdapter;
+
+    private RecyclerView productOrderMenuRecycler;
+    private Menu[] productOrderMenus = {new Menu("toBePaid",R.drawable.to_be_paid,"待付款"),
+            new Menu("toBeReceived",R.drawable.to_be_received,"待收货"),
+            new Menu("toBeEvaluated",R.drawable.to_be_evaluated,"待评价"),
+            new Menu("closed",R.drawable.completed,"已结束")};
+    private List<Menu> productOrderMenuList = new ArrayList<>();
+    private MenuAdapter productOrderMenuAdapter;
 
     private RecyclerView mMenuRecycler;
     private Menu[] mMenus = {new Menu("myInformation",R.drawable.my_information,"我的信息"),
@@ -56,7 +57,8 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     private List<Menu> mMenuList = new ArrayList<>();
     private MenuAdapter mMenuAdapter;
 
-    private View allOrder;
+    private View allServiceOrder;
+    private View allProductOrder;
 
     private Customer customer;
     private SharedPreferences pref;
@@ -67,15 +69,18 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         View root = inflater.inflate(R.layout.fragment_personal_center, container, false);
 
         initMenus();
-        myOrderMenuRecycler = root.findViewById(R.id.recycler_menu_my_order);
-        GridLayoutManager layoutManager1 = new GridLayoutManager(getContext(), 4);
-        myOrderMenuRecycler.setLayoutManager(layoutManager1);
-        myOrderMenuAdapter = new MenuAdapter(myOrderMenuList);
-        myOrderMenuRecycler.setAdapter(myOrderMenuAdapter);
+        serviceOrderMenuRecycler = root.findViewById(R.id.recycler_menu_service_order);
+        serviceOrderMenuRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        serviceOrderMenuAdapter = new MenuAdapter(serviceOrderMenuList);
+        serviceOrderMenuRecycler.setAdapter(serviceOrderMenuAdapter);
+
+        productOrderMenuRecycler = root.findViewById(R.id.recycler_menu_produc_order);
+        productOrderMenuRecycler.setLayoutManager(new GridLayoutManager(getContext(),4));
+        productOrderMenuAdapter = new MenuAdapter(productOrderMenuList);
+        productOrderMenuRecycler.setAdapter(productOrderMenuAdapter);
 
         mMenuRecycler = root.findViewById(R.id.recycler_menu_me);
-        GridLayoutManager layoutManager2 = new GridLayoutManager(getContext(), 4);
-        mMenuRecycler.setLayoutManager(layoutManager2);
+        mMenuRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
         mMenuAdapter = new MenuAdapter(mMenuList);
         mMenuRecycler.setAdapter(mMenuAdapter);
 
@@ -94,8 +99,8 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         level.setText("Lv "+customer.getMemberLevel());
 
 
-        allOrder = root.findViewById(R.id.all_orders);
-        allOrder.setOnClickListener(new View.OnClickListener()
+        allServiceOrder = root.findViewById(R.id.all_service_orders);
+        allServiceOrder.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -106,15 +111,31 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
             }
         });
 
+        allProductOrder = root.findViewById(R.id.all_produc_orders);
+        allProductOrder.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+
+            }
+        });
+
         return root;
     }
 
     private void initMenus()
     {
-        myOrderMenuList.clear();
-        for(int i = 0; i < myOrderMenus.length; i++) {
-            myOrderMenus[i].setType("order");
-            myOrderMenuList.add(myOrderMenus[i]);
+        serviceOrderMenuList.clear();
+        for(int i = 0; i < serviceOrderMenus.length; i++) {
+            serviceOrderMenus[i].setType("serviceOrder");
+            serviceOrderMenuList.add(serviceOrderMenus[i]);
+        }
+
+        productOrderMenuList.clear();
+        for(int i = 0; i < productOrderMenus.length; i++){
+            productOrderMenus[i].setType("productOrder");
+            productOrderMenuList.add(productOrderMenus[i]);
         }
 
         mMenuList.clear();

@@ -74,7 +74,7 @@ public class FriendsCirclePresenter
     }
 
     public boolean createMenu(){
-        String userId = pref.getString("userID","");
+        String userId = pref.getString("userId","");
         Customer customer = LitePal.where("userId = ?",userId).findFirst(Customer.class);
         FriendsCircle friendsCircle = ((FriendsCircleActivity)context).getFriendsCircle();
         if(friendsCircle.getCustomerId().equals(customer.getInternetId())){
@@ -115,6 +115,7 @@ public class FriendsCirclePresenter
                             new AlertDialog.Builder(context)
                                     .setTitle("提示")
                                     .setMessage("删除成功")
+                                    .setCancelable(false)
                                     .setPositiveButton("确定", new
                                             DialogInterface.OnClickListener()
                                             {

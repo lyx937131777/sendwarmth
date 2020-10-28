@@ -2,8 +2,6 @@ package com.example.sendwarmth.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.sendwarmth.MyInformationActivity;
-import com.example.sendwarmth.OrderActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.ServiceWorkActivity;
-import com.example.sendwarmth.db.Customer;
-import com.example.sendwarmth.db.Menu;
 import com.example.sendwarmth.db.ServiceClass;
 import com.example.sendwarmth.util.HttpUtil;
-import com.example.sendwarmth.util.LogUtil;
-
-import org.litepal.LitePal;
 
 import java.util.List;
 
@@ -86,7 +77,7 @@ public class ServiceClassAdapter extends RecyclerView.Adapter<ServiceClassAdapte
         if(serviceClass.getName().equals("全部服务")){
             Glide.with(mContext).load(R.drawable.all_service).into(holder.serviceClassImage);
         }else{
-            Glide.with(mContext).load(HttpUtil.getPhotoURL(serviceClass.getImage())).into(holder.serviceClassImage);
+            Glide.with(mContext).load(HttpUtil.getResourceURL(serviceClass.getImage())).into(holder.serviceClassImage);
         }
         holder.serviceClassName.setText(serviceClass.getName());
     }

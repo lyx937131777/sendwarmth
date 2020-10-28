@@ -27,7 +27,8 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewFriendsCircleActivity"></activity>
+        <activity android:name=".ProductOrderingActivity"></activity>
+        <activity android:name=".NewFriendsCircleActivity" />
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

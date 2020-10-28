@@ -75,7 +75,7 @@ class ServiceSubjectAdapter extends RecyclerView.Adapter<ServiceSubjectAdapter.V
     public void onBindViewHolder(ServiceSubjectAdapter.ViewHolder holder, int position)
     {
         ServiceSubject serviceSubject = mList.get(position);
-        Glide.with(mContext).load(HttpUtil.getPhotoURL(serviceSubject.getImage())).into(holder.picture);
+        Glide.with(mContext).load(HttpUtil.getResourceURL(serviceSubject.getImage())).into(holder.picture);
         holder.title.setText(serviceSubject.getName());
         holder.description.setText(serviceSubject.getDescription());
         holder.price.setText(serviceSubject.getSalaryPerHour()+"元/时");

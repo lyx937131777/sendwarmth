@@ -9,6 +9,7 @@ import com.example.sendwarmth.presenter.NewFriendsCirclePresenter;
 import com.example.sendwarmth.presenter.NewHealthBroadcastPresenter;
 import com.example.sendwarmth.presenter.NewInterestingActivityPresenter;
 import com.example.sendwarmth.presenter.PensionInstitutionPresenter;
+import com.example.sendwarmth.presenter.ProductOrderingPresenter;
 import com.example.sendwarmth.presenter.RegisterPresenter;
 import com.example.sendwarmth.presenter.ServiceWorkPresenter;
 import com.example.sendwarmth.presenter.ShoppingMallPresenter;
@@ -41,4 +42,6 @@ public interface MyComponent
     NewHealthBroadcastPresenter newHealthBroadcastPresenter();
 
     NewFriendsCirclePresenter newFriendsCirclePresenter();
+
+    ProductOrderingPresenter productOrderingPresenter();
 }

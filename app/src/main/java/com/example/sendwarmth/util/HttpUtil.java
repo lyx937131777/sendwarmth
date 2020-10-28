@@ -7,9 +7,11 @@ import org.litepal.LitePal;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Callback;
 import okhttp3.Credentials;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -21,7 +23,7 @@ public class HttpUtil
     //正式
     public static final String LocalAddress = "http://47.101.68.214:8999";
 
-    public static String getPhotoURL(String url){
+    public static String getResourceURL(String url){
         return LocalAddress + "/resources/" + url;
     }
 
@@ -109,10 +111,10 @@ public class HttpUtil
     }
 
     //发布朋友圈
-    public static void postFriendsCircleRequest(String address, String userId, String credential, String content, String image, Callback callback){
+    public static void postFriendsCircleRequest(String address, String credential, String content, String image, Callback callback){
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        Customer customer = LitePal.where("userId = ?",userId).findFirst(Customer.class);
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
         HashMap<String, String> map = new HashMap<>();
         map.put("content",content);
         map.put("customerId",customer.getInternetId());
@@ -130,4 +132,40 @@ public class HttpUtil
         client.newCall(request).enqueue(callback);
     }
 
+    //新建购物车
+    public static void postShoppingCartRequest(String address, String credential, String productId, String productNum, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("customerId",customer.getInternetId());
+        map.put("productId",productId);
+        map.put("productNum",productNum);
+        String jsonStr = new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(jsonStr, JSON);
+        Request request = new Request.Builder().url(address).addHeader("Authorization",credential).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //新建产品订单
+    public static void postProductOrderRequest(String address, String credential, String contactPerson,
+                                               String contactTel, String deliveryAddress, List<String> shoppingCartIds, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("contactPerson", contactPerson)
+                .addFormDataPart("contactTel",contactTel)
+                .addFormDataPart("deliveryAddress",deliveryAddress)
+                .addFormDataPart("customerId",customer.getInternetId());
+//                .add("shoppingChartIds","25")
+//                .add("shoppingChartIds","26")
+//                .build();
+        for(String shoppingCartId : shoppingCartIds){
+            builder = builder.addFormDataPart("shoppingCartIds",shoppingCartId);
+        }
+        RequestBody requestBody = builder.build();
+        Request request = new Request.Builder().url(address).post(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
 }

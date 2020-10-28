@@ -76,7 +76,7 @@ public class PensionInstitutionAdapter extends RecyclerView.Adapter<PensionInsti
     public void onBindViewHolder(PensionInstitutionAdapter.ViewHolder holder, int position)
     {
         PensionInstitution pensionInstitution = mList.get(position);
-        Glide.with(mContext).load(HttpUtil.getPhotoURL(pensionInstitution.getInstitutionPic())).into(holder.picture);
+        Glide.with(mContext).load(HttpUtil.getResourceURL(pensionInstitution.getInstitutionPic())).into(holder.picture);
         holder.name.setText(pensionInstitution.getInstitutionName());
         holder.address.setText("地址："+pensionInstitution.getInstitutionLoc());
         holder.tel.setText("联系电话："+pensionInstitution.getInstitutionTel());

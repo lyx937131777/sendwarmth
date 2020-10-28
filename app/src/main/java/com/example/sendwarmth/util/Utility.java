@@ -212,6 +212,21 @@ public class Utility
         return null;
     }
 
+    //获得购物车Id
+    public static String handleShoppingCartId(String response){
+        if (!TextUtils.isEmpty(response)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                return dataObject.getString("id");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return ERROR_CODE;
+    }
+
     //后台给的日期格式 转化为日期Date
     public static Date stringToDate(String s){
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");

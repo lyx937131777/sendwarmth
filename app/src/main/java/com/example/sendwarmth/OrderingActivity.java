@@ -58,7 +58,7 @@ public class OrderingActivity extends AppCompatActivity
         TextView description = serviceWorkView.findViewById(R.id.description);
         TextView pricePerUnit = serviceWorkView.findViewById(R.id.price);
 
-        Glide.with(this).load(HttpUtil.getPhotoURL(serviceSubject.getImage())).into(picture);
+        Glide.with(this).load(HttpUtil.getResourceURL(serviceSubject.getImage())).into(picture);
         title.setText(serviceSubject.getName());
         description.setText(serviceSubject.getDescription());
         pricePerUnit.setText(serviceSubject.getSalaryPerHour()+"元/时");

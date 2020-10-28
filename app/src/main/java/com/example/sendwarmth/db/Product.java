@@ -2,7 +2,9 @@ package com.example.sendwarmth.db;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Product
+import org.litepal.crud.LitePalSupport;
+
+public class Product extends LitePalSupport
 {
     @SerializedName("id")
     private String internetId;
@@ -15,11 +17,13 @@ public class Product
     private ProductClass productClassInfo;
 
     private String businessId;
-    private String businessInfo;
+    private Business businessInfo;
     private String productBrand;
     private String producerName;
     private String productStatus;
     private int saleNum;
+
+    private int selectedCount;
 
     public String getInternetId()
     {
@@ -111,12 +115,12 @@ public class Product
         this.businessId = businessId;
     }
 
-    public String getBusinessInfo()
+    public Business getBusinessInfo()
     {
         return businessInfo;
     }
 
-    public void setBusinessInfo(String businessInfo)
+    public void setBusinessInfo(Business businessInfo)
     {
         this.businessInfo = businessInfo;
     }
@@ -159,5 +163,26 @@ public class Product
     public void setSaleNum(int saleNum)
     {
         this.saleNum = saleNum;
+    }
+
+    public int getSelectedCount()
+    {
+        return selectedCount;
+    }
+
+    public void setSelectedCount(int selectedCount)
+    {
+        this.selectedCount = selectedCount;
+    }
+
+    public void add(int num){
+        selectedCount += num;
+    }
+
+    public void minus(int num){
+        selectedCount -= num;
+        if(selectedCount < 0){
+            selectedCount = 0;
+        }
     }
 }

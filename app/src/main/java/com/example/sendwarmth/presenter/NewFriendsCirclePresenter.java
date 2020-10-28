@@ -35,7 +35,6 @@ public class NewFriendsCirclePresenter
         progressDialog = ProgressDialog.show(context,"","上传中...");
         String address = HttpUtil.LocalAddress + "/api/file";
         final String credential = pref.getString("credential","");
-        final String userId = pref.getString("userId","");
         String fileName = Utility.compressImagePathToImagePath(imagePath);
         HttpUtil.fileRequest(address, new File(fileName), new Callback()
         {
@@ -60,7 +59,7 @@ public class NewFriendsCirclePresenter
                 LogUtil.e("NewFriendsCirclePresenter",responsData);
                 String image = Utility.checkString(responsData,"msg");
                 String address = HttpUtil.LocalAddress + "/api/blog";
-                HttpUtil.postFriendsCircleRequest(address, userId, credential, content, image, new Callback()
+                HttpUtil.postFriendsCircleRequest(address, credential, content, image, new Callback()
                 {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e)

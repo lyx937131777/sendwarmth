@@ -3,7 +3,6 @@ package com.example.sendwarmth;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.db.PensionInstitution;
 import com.example.sendwarmth.util.HttpUtil;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -44,7 +42,7 @@ public class PensionInstitutionActivity extends AppCompatActivity
 //        TextView contact = findViewById(R.id.contact);
         TextView description = findViewById(R.id.description);
 
-        Glide.with(this).load(HttpUtil.getPhotoURL(pensionInstitution.getInstitutionPic())).into(pictrue);
+        Glide.with(this).load(HttpUtil.getResourceURL(pensionInstitution.getInstitutionPic())).into(pictrue);
         collapsingToolbarLayout.setTitle(pensionInstitution.getInstitutionName());
         address.setText(pensionInstitution.getInstitutionLoc());
         tel.setText(pensionInstitution.getInstitutionTel());

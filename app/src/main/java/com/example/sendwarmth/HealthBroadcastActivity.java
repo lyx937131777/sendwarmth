@@ -44,7 +44,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
         TextView time = findViewById(R.id.time);
         TextView description = findViewById(R.id.description);
 
-        Glide.with(this).load(HttpUtil.getPhotoURL(healthBroadcast.getTopicPic())).into(pictrue);
+        Glide.with(this).load(HttpUtil.getResourceURL(healthBroadcast.getTopicPic())).into(pictrue);
         collapsingToolbarLayout.setTitle(healthBroadcast.getTopicName());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         author.setText("王专家");

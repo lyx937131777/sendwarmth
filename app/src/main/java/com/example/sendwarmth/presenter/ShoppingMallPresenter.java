@@ -1,11 +1,16 @@
 package com.example.sendwarmth.presenter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sendwarmth.MainActivity;
+import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.ProductClassAdapter;
+import com.example.sendwarmth.adapter.ShoppingCartAdapter;
 import com.example.sendwarmth.adapter.TabAdapter;
 import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.db.Product;
@@ -15,6 +20,7 @@ import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.Utility;
 
 import org.jetbrains.annotations.NotNull;
+import org.litepal.LitePal;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +33,17 @@ public class ShoppingMallPresenter
 {
     private Context context;
     private SharedPreferences pref;
+
+    private List<Product> shoppingCartList;
+    private ShoppingCartAdapter shoppingCartAdapter;
+    private ProductClassAdapter productClassAdapter;
+    private int totalCount;
+    private double totalPrice;
+    private TextView totalCountText;
+    private TextView totalPriceText;
+    private Button goToOrder;
+
+    private Dialog dialog;
 
     public ShoppingMallPresenter(Context context, SharedPreferences pref){
         this.context = context;
@@ -96,6 +113,14 @@ public class ShoppingMallPresenter
                 final String responsData = response.body().string();
                 LogUtil.e("ProductClassPresenter",responsData);
                 List<Product> productList = Utility.handleProductList(responsData);
+                for(Product product : productList){
+                    Product localProduct = LitePal.where("internetId = ?",product.getInternetId()).findFirst(Product.class);
+                    if(localProduct == null){
+                        product.setSelectedCount(0);
+                    }else{
+                        product.setSelectedCount(localProduct.getSelectedCount());
+                    }
+                }
                 productClassAdapter.setProductList(productList);
                 ((MainActivity)context).runOnUiThread(new Runnable() {
                     @Override
@@ -105,5 +130,118 @@ public class ShoppingMallPresenter
                 });
             }
         });
+    }
+
+    public void refresh(){
+        shoppingCartList = LitePal.where("selectedCount > ?","0").find(Product.class);
+        shoppingCartAdapter.setmList(shoppingCartList);
+        shoppingCartAdapter.notifyDataSetChanged();
+        productClassAdapter.refresh();
+        totalCount = 0;
+        totalPrice = 0;
+        for(Product product : shoppingCartList){
+            totalCount += product.getSelectedCount();
+            totalPrice += product.getProductPrice() * product.getSelectedCount();
+        }
+        totalCountText.setText("" + totalCount);
+        totalPriceText.setText("￥" + totalPrice);
+        if(totalCount == 0){
+            dialog.cancel();
+            goToOrder.setEnabled(false);
+            goToOrder.setBackgroundResource(R.color.gainsboro);
+        }else {
+            goToOrder.setEnabled(true);
+            goToOrder.setBackgroundResource(R.color.colorAccent);
+        }
+    }
+
+    public ShoppingCartAdapter getShoppingCartAdapter()
+    {
+        return shoppingCartAdapter;
+    }
+
+    public void setShoppingCartAdapter(ShoppingCartAdapter shoppingCartAdapter)
+    {
+        this.shoppingCartAdapter = shoppingCartAdapter;
+    }
+
+    public int getTotalCount()
+    {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount)
+    {
+        this.totalCount = totalCount;
+    }
+
+    public double getTotalPrice()
+    {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice)
+    {
+        this.totalPrice = totalPrice;
+    }
+
+    public TextView getTotalCountText()
+    {
+        return totalCountText;
+    }
+
+    public void setTotalCountText(TextView totalCountText)
+    {
+        this.totalCountText = totalCountText;
+    }
+
+    public TextView getTotalPriceText()
+    {
+        return totalPriceText;
+    }
+
+    public void setTotalPriceText(TextView totalPriceText)
+    {
+        this.totalPriceText = totalPriceText;
+    }
+
+    public ProductClassAdapter getProductClassAdapter()
+    {
+        return productClassAdapter;
+    }
+
+    public void setProductClassAdapter(ProductClassAdapter productClassAdapter)
+    {
+        this.productClassAdapter = productClassAdapter;
+    }
+
+    public List<Product> getShoppingCartList()
+    {
+        return shoppingCartList;
+    }
+
+    public void setShoppingCartList(List<Product> shoppingCartList)
+    {
+        this.shoppingCartList = shoppingCartList;
+    }
+
+    public Dialog getDialog()
+    {
+        return dialog;
+    }
+
+    public void setDialog(Dialog dialog)
+    {
+        this.dialog = dialog;
+    }
+
+    public Button getGoToOrder()
+    {
+        return goToOrder;
+    }
+
+    public void setGoToOrder(Button goToOrder)
+    {
+        this.goToOrder = goToOrder;
     }
 }

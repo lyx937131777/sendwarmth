@@ -23,7 +23,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -159,7 +158,7 @@ public class NewInterestingActivityActivity extends AppCompatActivity
     private void initDialog()
     {
         dialog = new Dialog(this, R.style.AppTheme);
-        View view = View.inflate(this, R.layout.dialog_bottom, null);
+        View view = View.inflate(this, R.layout.dialog_choose_image, null);
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(true);
         //view.setMinimumHeight((int) (ScreenSizeUtils.getInstance(this).getScreenHeight() *

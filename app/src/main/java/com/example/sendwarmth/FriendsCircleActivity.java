@@ -16,7 +16,6 @@ import com.example.sendwarmth.dagger2.DaggerMyComponent;
 import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.FriendsCircle;
-import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.presenter.FriendsCirclePresenter;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.Utility;
@@ -56,7 +55,7 @@ public class FriendsCircleActivity extends AppCompatActivity
         TextView time = findViewById(R.id.time);
         TextView description = findViewById(R.id.description);
 
-        Glide.with(this).load(HttpUtil.getPhotoURL(friendsCircle.getPicture())).into(pictrue);
+        Glide.with(this).load(HttpUtil.getResourceURL(friendsCircle.getPicture())).into(pictrue);
         collapsingToolbarLayout.setTitle("");
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         author.setText(friendsCircle.getCustomerInfo().getName());

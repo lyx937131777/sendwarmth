@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.InterestringActivityActivity;
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.db.FriendsCircle;
 import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.util.HttpUtil;
 
@@ -79,7 +78,7 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
     public void onBindViewHolder(InterestingActivityAdapter.ViewHolder holder, int position)
     {
         InterestingActivity interestingActivity = mList.get(position);
-        Glide.with(mContext).load(HttpUtil.getPhotoURL(interestingActivity.getImage())).into(holder.picture);
+        Glide.with(mContext).load(HttpUtil.getResourceURL(interestingActivity.getImage())).into(holder.picture);
         Glide.with(mContext).load(R.drawable.profile_uri).into(holder.author);
         holder.title.setText(interestingActivity.getTitle());
         holder.description.setText(interestingActivity.getDescription());

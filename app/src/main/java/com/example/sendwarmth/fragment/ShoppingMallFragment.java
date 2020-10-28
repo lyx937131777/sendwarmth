@@ -1,19 +1,30 @@
 package com.example.sendwarmth.fragment;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.sendwarmth.ProductOrderingActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.ProductClassAdapter;
+import com.example.sendwarmth.adapter.ShoppingCartAdapter;
 import com.example.sendwarmth.adapter.TabAdapter;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
 import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
+import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.db.ProductClass;
 import com.example.sendwarmth.presenter.ShoppingMallPresenter;
-import com.example.sendwarmth.util.LogUtil;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +44,15 @@ public class ShoppingMallFragment extends Fragment
     private RecyclerView productClassRecycler;
     private ProductClassAdapter productClassAdapter;
 
+    private Dialog dialog;
+    private View shoppingCart;
+    private TextView totalCount;
+    private TextView totalPrice;
+    private Button goToOrder;
+
+    private RecyclerView shoppingCartRecycler;
+    private ShoppingCartAdapter shoppingCartAdapter;
+
     private ShoppingMallPresenter shoppingMallPresenter;
 
     @Override
@@ -41,6 +61,8 @@ public class ShoppingMallFragment extends Fragment
         View root = inflater.inflate(R.layout.fragment_shopping_mall, container, false);
         MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(getContext())).build();
         shoppingMallPresenter = myComponent.shoppingMallPresenter();
+
+        initDialog();
 
         initGoodsTypes();
         tabRecycler = root.findViewById(R.id.recycler_tab);
@@ -52,7 +74,7 @@ public class ShoppingMallFragment extends Fragment
         tabAdapter = new TabAdapter(productClassList,productClassRecycler);
         tabRecycler.setAdapter(tabAdapter);
 
-        productClassAdapter = new ProductClassAdapter(productClassList);
+        productClassAdapter = new ProductClassAdapter(productClassList,shoppingMallPresenter);
         productClassRecycler.setAdapter(productClassAdapter);
 
 
@@ -76,7 +98,65 @@ public class ShoppingMallFragment extends Fragment
                 tabAdapter.notifyDataSetChanged();
             }
         });
+
+        shoppingCart = root.findViewById(R.id.shopping_cart);
+        shoppingCart.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(shoppingMallPresenter.getTotalCount() > 0){
+                    dialog.show();
+                }
+            }
+        });
+
+        goToOrder = shoppingCart.findViewById(R.id.go_to_order);
+        goToOrder.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getContext(), ProductOrderingActivity.class);
+                intent.putExtra("totalCount",shoppingMallPresenter.getTotalCount());
+                intent.putExtra("totalPrice",shoppingMallPresenter.getTotalPrice());
+                startActivity(intent);
+            }
+        });
+
+        totalCount = shoppingCart.findViewById(R.id.total_count);
+        totalPrice = shoppingCart.findViewById(R.id.total_price);
+
+        shoppingMallPresenter.setShoppingCartAdapter(shoppingCartAdapter);
+        shoppingMallPresenter.setProductClassAdapter(productClassAdapter);
+        shoppingMallPresenter.setDialog(dialog);
+        shoppingMallPresenter.setTotalCountText(totalCount);
+        shoppingMallPresenter.setTotalPriceText(totalPrice);
+        shoppingMallPresenter.setGoToOrder(goToOrder);
+        shoppingMallPresenter.refresh();
         return root;
+    }
+
+    private void initDialog()
+    {
+        dialog = new Dialog(getContext(), R.style.AppTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_shopping_cart, null);
+        dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(true);
+        //view.setMinimumHeight((int) (ScreenSizeUtils.getInstance(this).getScreenHeight() *
+        // 0.23f));
+        Window dialogWindow = dialog.getWindow();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        //lp.width = (int) (ScreenSizeUtils.getInstance(this).getScreenWidth() * 0.9f);
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.BOTTOM;
+        lp.y = 278;
+        dialogWindow.setAttributes(lp);
+        shoppingCartRecycler = view.findViewById(R.id.recycler_shopping_cart);
+        shoppingCartRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        List<Product> productList = LitePal.where("selectedCount > ?","0").find(Product.class);
+        shoppingCartAdapter = new ShoppingCartAdapter(productList,shoppingMallPresenter);
+        shoppingCartRecycler.setAdapter(shoppingCartAdapter);
     }
 
     private void initGoodsTypes()
@@ -90,6 +170,7 @@ public class ShoppingMallFragment extends Fragment
     public void onStart()
     {
         super.onStart();
+        shoppingMallPresenter.refresh();
         shoppingMallPresenter.updateProductClass(productClassAdapter,tabAdapter,productClassList);
         shoppingMallPresenter.updateProduct(productClassAdapter);
     }

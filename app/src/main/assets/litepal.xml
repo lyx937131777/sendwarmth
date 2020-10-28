@@ -3,11 +3,12 @@
 
     <dbname value="send_warmth" />
 
-    <version value="4" />
+    <version value="5" />
 
     <list>
         <mapping class="com.example.sendwarmth.db.Customer" />
         <mapping class="com.example.sendwarmth.db.ServiceClass" />
+        <mapping class="com.example.sendwarmth.db.Product" />
     </list>
 
 </litepal>

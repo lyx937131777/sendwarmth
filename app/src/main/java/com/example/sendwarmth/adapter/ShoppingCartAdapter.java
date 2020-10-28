@@ -13,7 +13,6 @@ import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.presenter.ShoppingMallPresenter;
 import com.example.sendwarmth.util.HttpUtil;
-import com.example.sendwarmth.util.LogUtil;
 
 import org.litepal.LitePal;
 
@@ -21,10 +20,11 @@ import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder>
+public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapter.ViewHolder>
 {
     private Context mContext;
     private List<Product> mList;
+
     private ShoppingMallPresenter shoppingMallPresenter;
 
     static class ViewHolder extends RecyclerView.ViewHolder
@@ -32,7 +32,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         View view;
         ImageView picture;
         TextView title;
-        TextView description;
         TextView price;
         Button addButton;
         Button minusButton;
@@ -44,7 +43,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             this.view = view;
             picture = view.findViewById(R.id.picture);
             title = view.findViewById(R.id.title);
-            description = view.findViewById(R.id.description);
             price = view.findViewById(R.id.price);
             addButton = view.findViewById(R.id.add_button);
             count = view.findViewById(R.id.count);
@@ -52,20 +50,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
     }
 
-    public ProductAdapter(List<Product> productList, ShoppingMallPresenter shoppingMallPresenter){
+    public ShoppingCartAdapter(List<Product> productList, ShoppingMallPresenter shoppingMallPresenter){
         mList = productList;
         this.shoppingMallPresenter = shoppingMallPresenter;
     }
 
     @Override
-    public ProductAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public ShoppingCartAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         if(mContext == null)
         {
             mContext = parent.getContext();
         }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_product, parent,false);
-        final ProductAdapter.ViewHolder holder = new ProductAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_shopping_cart, parent,false);
+        final ShoppingCartAdapter.ViewHolder holder = new ShoppingCartAdapter.ViewHolder(view);
         holder.addButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -81,9 +79,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     localProduct.setSelectedCount(product.getSelectedCount());
                     localProduct.save();
                 }
-                notifyDataSetChanged();
                 shoppingMallPresenter.refresh();
-                LogUtil.e("GoodsAdapter", product.getProductName()+" "+ product.getProductDes());
             }
         });
         holder.minusButton.setOnClickListener(new View.OnClickListener()
@@ -101,20 +97,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     localProduct.setSelectedCount(product.getSelectedCount());
                     localProduct.save();
                 }
+                if(product.getSelectedCount() == 0){
+                    mList.remove(product);
+                }
                 shoppingMallPresenter.refresh();
-                notifyDataSetChanged();
             }
         });
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ProductAdapter.ViewHolder holder, int position)
+    public void onBindViewHolder(ShoppingCartAdapter.ViewHolder holder, int position)
     {
         Product product = mList.get(position);
         Glide.with(mContext).load(HttpUtil.getResourceURL(product.getProductPic())).into(holder.picture);
         holder.title.setText(product.getProductName());
-        holder.description.setText(product.getProductDes());
         holder.price.setText("￥"+ product.getProductPrice());
         if(product.getSelectedCount() > 0){
             holder.minusButton.setVisibility(View.VISIBLE);

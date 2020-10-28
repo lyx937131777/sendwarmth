@@ -139,7 +139,7 @@ public class NewFriendsCircleActivity extends AppCompatActivity
     private void initDialog()
     {
         dialog = new Dialog(this, R.style.AppTheme);
-        View view = View.inflate(this, R.layout.dialog_bottom, null);
+        View view = View.inflate(this, R.layout.dialog_choose_image, null);
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(true);
         //view.setMinimumHeight((int) (ScreenSizeUtils.getInstance(this).getScreenHeight() *

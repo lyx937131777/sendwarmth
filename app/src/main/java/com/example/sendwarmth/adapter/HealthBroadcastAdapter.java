@@ -75,7 +75,7 @@ public class HealthBroadcastAdapter extends RecyclerView.Adapter<HealthBroadcast
     public void onBindViewHolder(HealthBroadcastAdapter.ViewHolder holder, int position)
     {
         HealthBroadcast healthBroadcast = mList.get(position);
-        Glide.with(mContext).load(HttpUtil.getPhotoURL(healthBroadcast.getTopicPic())).into(holder.picture);
+        Glide.with(mContext).load(HttpUtil.getResourceURL(healthBroadcast.getTopicPic())).into(holder.picture);
         holder.title.setText(healthBroadcast.getTopicName());
         holder.description.setText(healthBroadcast.getDes());
         holder.time.setText(Utility.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
