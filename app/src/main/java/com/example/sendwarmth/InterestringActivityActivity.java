@@ -7,6 +7,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.LogUtil;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class InterestringActivityActivity extends AppCompatActivity
@@ -51,18 +53,33 @@ public class InterestringActivityActivity extends AppCompatActivity
         Glide.with(this).load(HttpUtil.getResourceURL(interestingActivity.getImage())).into(pictrue);
         collapsingToolbarLayout.setTitle(interestingActivity.getTitle());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
-        author.setText(interestingActivity.getPromoterName());
-        time.setText(interestingActivity.getTime());
+        author.setText(interestingActivity.getPromoter().getLoginName());
+        if(interestingActivity.getTime()!=null){
+            time.setText(interestingActivity.getTime());
+            LogUtil.d("will time be shown:","yes");
+        } else {
+            time.setVisibility(View.GONE);
+            LogUtil.d("will time be shown","no");
+        }
+
         if(interestingActivity.getDescription().length()<100){      //预设内容的TextView为wrap_content，低于一定长度的文本显示于固定大小的文本框中
             ViewGroup.LayoutParams params = description.getLayoutParams();
             params.height = 500;
             description.setLayoutParams(params);
         }
         description.setText(interestingActivity.getDescription());
-//        number.setText(interestingActivity.getMaxNum());
+        number.setText(String.valueOf(interestingActivity.getMaxNum()));
         location.setText(interestingActivity.getLocation());
-//        host.setText(interestingActivity.getPromoter().getName());
-//        tel.setText(interestingActivity.getContactTel());
+        if(interestingActivity.getPromoterName()!=null){
+            host.setText(interestingActivity.getPromoterName());
+        } else if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getLoginName()!=null){
+            host.setText(interestingActivity.getPromoter().getLoginName());
+        }
+        if(interestingActivity.getContactTel()!=null){
+            tel.setText(interestingActivity.getContactTel());
+        } else if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getCustomer()!=null&&interestingActivity.getPromoter().getCustomer().getTel()!=null){
+            tel.setText(String.valueOf(interestingActivity.getPromoter().getCustomer().getTel()));
+        }
     }
 
     @Override

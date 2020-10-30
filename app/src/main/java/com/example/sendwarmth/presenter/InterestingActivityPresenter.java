@@ -51,7 +51,7 @@ public class InterestingActivityPresenter
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
                 final String responsData = response.body().string();
-                LogUtil.e("InterestingActivityPresenter",responsData);
+                LogUtil.complete_e("InterestingActivityPresenter",responsData);
                 List<InterestingActivity> interestingActivityList = Utility.handleInterestingActivityList(responsData);
                 interestingActivityAdapter.setmList(interestingActivityList);
                 ((MainActivity)context).runOnUiThread(new Runnable() {

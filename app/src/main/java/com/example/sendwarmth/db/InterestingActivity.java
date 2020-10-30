@@ -28,9 +28,12 @@ public class InterestingActivity implements Serializable
     private String activityDeclarationStatus;
     private String audiStatus;
 
+    @SerializedName("promoterId")
     private String promoterId;
+    @SerializedName("promoterLoginName")
     private String promoterName;
-    private Customer promoter;
+    @SerializedName("promoter")
+    private Promoter promoter;
 
     private String time;
 
@@ -114,12 +117,12 @@ public class InterestingActivity implements Serializable
         this.reportedNum = reportedNum;
     }
 
-    public Customer getPromoter()
+    public Promoter getPromoter()
     {
         return promoter;
     }
 
-    public void setPromoter(Customer promoter)
+    public void setPromoter(Promoter promoter)
     {
         this.promoter = promoter;
     }

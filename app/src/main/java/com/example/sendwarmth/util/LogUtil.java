@@ -51,4 +51,16 @@ public class LogUtil
             Log.e(tag,msg);
         }
     }
+
+    public static void complete_e(String tag, String msg){
+        int maxLength = 1024;
+        if(level <= DEBUG)
+        {
+            while(msg.length()>maxLength){
+                String logContent = msg.substring(0,maxLength);
+                Log.e(tag,logContent);
+                msg = msg.replace(logContent,"");
+            }
+        }
+    }
 }

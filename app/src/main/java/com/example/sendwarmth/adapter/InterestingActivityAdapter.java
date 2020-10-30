@@ -33,6 +33,7 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
         TextView description;
         TextView time;
         CircleImageView author;
+        TextView authorName;
 
         public  ViewHolder(View view)
         {
@@ -43,6 +44,7 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
             description = view.findViewById(R.id.description);
             time = view.findViewById(R.id.time);
             author = view.findViewById(R.id.author);
+            authorName = view.findViewById(R.id.author_name);
         }
     }
 
@@ -82,7 +84,12 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
         Glide.with(mContext).load(R.drawable.profile_uri).into(holder.author);
         holder.title.setText(interestingActivity.getTitle());
         holder.description.setText(interestingActivity.getDescription());
-        holder.time.setText(interestingActivity.getContactTel());
+        if(interestingActivity.getPromoterName()!=null){
+            holder.authorName.setText(interestingActivity.getPromoterName());
+        } else if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getLoginName()!=null){
+            holder.authorName.setText(interestingActivity.getPromoter().getLoginName());
+        }
+        //holder.time.setText(interestingActivity.getContactTel());
     }
     @Override
     public int getItemCount()
