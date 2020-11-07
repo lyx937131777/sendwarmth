@@ -51,12 +51,12 @@
                     android:textColor="@color/black"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp" />
-                <TextView
-                    android:id="@+id/attendant"
+                <Spinner
+                    android:id="@+id/worker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
-                    android:text="请指定>"
+                    android:gravity="right|center_vertical"
                     android:textColor="@color/gray"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="center_vertical|right"/>
@@ -86,10 +86,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
-                    android:text=">"
                     android:textColor="@color/gray"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="50dp"
                     android:layout_gravity="center_vertical|right"/>
+                <Button
+                    android:id="@+id/location"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/location_black"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="10dp"/>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -144,12 +150,11 @@
                     android:textColor="@color/black"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp" />
-                <TextView
+                <EditText
                     android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
-                    android:text=">"
                     android:textColor="@color/gray"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="center_vertical|right"/>
@@ -174,12 +179,11 @@
                     android:textColor="@color/black"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp" />
-                <TextView
+                <EditText
                     android:id="@+id/message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
-                    android:text=">"
                     android:textColor="@color/gray"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="center_vertical|right"/>
@@ -204,12 +208,11 @@
                     android:textColor="@color/black"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp" />
-                <TextView
+                <Spinner
                     android:id="@+id/urgent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
-                    android:text=">"
                     android:textColor="@color/gray"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="center_vertical|right"/>
@@ -222,7 +225,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/message_card"
+                app:layout_constraintTop_toBottomOf="@id/urgent_card"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:cardCornerRadius="4dp">
@@ -245,14 +248,14 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/pay_card"
+                android:id="@+id/order_card"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                app:layout_constraintTop_toBottomOf="@id/urgent_card"
+                app:layout_constraintTop_toBottomOf="@id/tip_card"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -261,17 +264,17 @@
                     android:id="@+id/price_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="￥50"
+                    android:text="约￥50"
                     android:textSize="26sp"
                     android:textColor="@color/black"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp" />
                 <Button
-                    android:id="@+id/pay"
+                    android:id="@+id/order"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
-                    android:text="支付"
+                    android:text="下单"
                     android:background="@color/colorPrimary"
                     android:textColor="@color/white"
                     android:layout_marginRight="10dp"

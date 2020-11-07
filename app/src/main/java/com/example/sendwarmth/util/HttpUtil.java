@@ -168,4 +168,36 @@ public class HttpUtil
         Request request = new Request.Builder().url(address).post(requestBody).addHeader("Authorization",credential).build();
         client.newCall(request).enqueue(callback);
     }
+
+    //根据经纬度获取员工
+    public static void getStoreWorker(String address,String credential, double longitude, double latitude,  Callback callback)
+    {
+//        OkHttpClient client = buildBasicAuthClient(userID,"123456");
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(address+"?longitude="+longitude+"&latitude="+latitude).addHeader("Authorization",credential).build();
+//        LogUtil.e("Login","111111111   " + request.header("Authorization"));
+        client.newCall(request).enqueue(callback);
+    }
+
+    //新建服务订单
+    public static void postOrderRequest(String address, String credential, double longitude, double latitude,String deliveryPhone, String deliveryDetail,
+                                        String orderType, String serviceClassId, String serviceSubjectId, String tip, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("customerId",customer.getInternetId());
+        map.put("longitude", ""+longitude);
+        map.put("latitude", ""+latitude);
+        map.put("deliveryPhone",deliveryPhone);
+        map.put("deliveryDetail",deliveryDetail);
+        map.put("orderType",orderType);
+        map.put("serviceClassId",serviceClassId);
+        map.put("serviceSubjectId",serviceSubjectId);
+        map.put("tip",tip);
+        String jsonStr = new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(jsonStr, JSON);
+        Request request = new Request.Builder().url(address).addHeader("Authorization",credential).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
 }

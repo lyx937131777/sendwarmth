@@ -88,12 +88,15 @@ public class LoginPresenter
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
                         {
                             final String responsData = response.body().string();
-                            LogUtil.e("Login",responsData);
-                            if(Utility.getRole(responsData).equals("customer") || Utility.getRole(responsData).equals("expert")){
+                            LogUtil.e("LoginPresenter",responsData);
+                            String role = Utility.getRole(responsData);
+                            LogUtil.e("LoginPresenter","role: " + role);
+                            if(role.equals("customer") || role.equals("expert")){
                                 SharedPreferences.Editor editor = pref.edit();
                                 editor.putString("userId", tel);
                                 editor.putString("password", password);
                                 editor.putString("credential",credential);
+                                editor.putString("role",role);
                                 editor.putString("latest", String.valueOf(System.currentTimeMillis()));
                                 editor.apply();
                                 LitePal.deleteAll(Customer.class,"userId = ?",tel);

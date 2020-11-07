@@ -48,16 +48,22 @@ public class LogUtil
     {
         if(level <= ERROR)
         {
-            Log.e(tag,msg);
+            Log.e(tag, msg);
+//            int maxLength = 1024;
+//            while(msg.length() > 0){
+//                String logContent = msg.substring(0, Math.min(msg.length(), maxLength));
+//                Log.e(tag,logContent);
+//                msg = msg.replace(logContent,"");
+//            }
         }
     }
 
     public static void complete_e(String tag, String msg){
-        int maxLength = 1024;
-        if(level <= DEBUG)
+        int maxLength = 1024 * 3;
+        if(level <= ERROR)
         {
-            while(msg.length()>maxLength){
-                String logContent = msg.substring(0,maxLength);
+            while(msg.length() > 0){
+                String logContent = msg.substring(0,Math.min(msg.length(), maxLength));
                 Log.e(tag,logContent);
                 msg = msg.replace(logContent,"");
             }

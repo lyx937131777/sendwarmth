@@ -11,6 +11,7 @@ public class MapUtil
     private static Map<String,Integer> stateMap =new HashMap<>();
     private static Map<String,String> orderStateMap = new HashMap<>();
     private static Map<String,String> roleMap = new HashMap<>();
+    private static Map<String,String> orderType = new HashMap<>();
 
     static{
         tipMap.put("无",0);
@@ -43,6 +44,9 @@ public class MapUtil
         roleMap.put("角色","notSelected");
         roleMap.put("普通用户","customer");
         roleMap.put("专家","expert");
+
+        orderType.put("预约订单","book_order");
+        orderType.put("加急订单","expedited_order");
     }
 
     public static int getTip(String s){
@@ -59,5 +63,9 @@ public class MapUtil
 
     public static String getRole(String s){
         return roleMap.get(s);
+    }
+
+    public static String getOrderType(String s){
+        return orderType.get(s);
     }
 }

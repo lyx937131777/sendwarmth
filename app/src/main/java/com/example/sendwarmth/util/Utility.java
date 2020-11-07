@@ -15,6 +15,7 @@ import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.db.ProductClass;
 import com.example.sendwarmth.db.ServiceClass;
 import com.example.sendwarmth.db.ServiceSubject;
+import com.example.sendwarmth.db.Worker;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -205,6 +206,21 @@ public class Utility
                 JSONArray jsonArray = dataObject.getJSONArray("content");
                 String productJson = jsonArray.toString();
                 return new Gson().fromJson(productJson, new TypeToken<List<Product>>() {}.getType());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    //处理员工
+    public static List<Worker> handleWorkerList(String response){
+        if (!TextUtils.isEmpty(response)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                String workerJson = dataArray.toString();
+                return new Gson().fromJson(workerJson, new TypeToken<List<Worker>>() {}.getType());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
