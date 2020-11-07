@@ -18,21 +18,15 @@ public class InterestingActivity implements Serializable
     private String location;
     @SerializedName("activityBud")
     private String upBudget;
-    @SerializedName("contactTel")
     private String contactTel;
-    @SerializedName("maxNum")
     private int maxNum;
-    @SerializedName("reportedNum")
     private int reportedNum;
     private String activityStatus;
     private String activityDeclarationStatus;
     private String audiStatus;
 
-    @SerializedName("promoterId")
     private String promoterId;
-    @SerializedName("promoterLoginName")
     private String promoterName;
-    @SerializedName("promoter")
     private Promoter promoter;
 
     private String time;

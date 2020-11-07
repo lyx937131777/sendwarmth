@@ -220,6 +220,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tel_card"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:cardCornerRadius="4dp">
                 <TextView
                     android:id="@+id/description"

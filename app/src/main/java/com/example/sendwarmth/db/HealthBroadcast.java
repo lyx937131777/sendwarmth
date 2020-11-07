@@ -3,6 +3,7 @@ package com.example.sendwarmth.db;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class HealthBroadcast implements Serializable
 {
@@ -17,6 +18,15 @@ public class HealthBroadcast implements Serializable
     private String customerId;
     private Customer customerInfo;
     private int validTime;
+    private String commentInfos;
+
+    public String getCommentInfos() {
+        return commentInfos;
+    }
+
+    public void setCommentInfos(String commentInfos) {
+        this.commentInfos = commentInfos;
+    }
 
     public String getInternetId()
     {
