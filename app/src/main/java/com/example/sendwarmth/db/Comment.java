@@ -2,8 +2,9 @@ package com.example.sendwarmth.db;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Comment
-{
+import java.io.Serializable;
+
+public class Comment implements Serializable {
     @SerializedName("id")
     private String internetId;
     private String content;

@@ -104,12 +104,27 @@ public class HttpUtil
         map.put("contactTel",contactTel);
         map.put("activityDes",description);
         String jsonStr = new Gson().toJson(map);
-        LogUtil.e("HttpUtil","registerRequest: "+jsonStr);
+        LogUtil.e("HttpUtil","postInterestingActivityRequest: "+jsonStr);
         RequestBody requestBody = RequestBody.create(jsonStr, JSON);
-        Request request = new Request.Builder().url(address).addHeader("Authorization",credential).post(requestBody).build();
+        Request request = new Request.Builder().url(address).post(requestBody).addHeader("Authorization",credential).build();
         client.newCall(request).enqueue(callback);
     }
 
+    //发布评论
+    public static void putHealthBroadcastCommentRequest(String address,String credential, String content, String topicId,Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        String customerId = customer.getInternetId();
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("comment", content)
+                .addFormDataPart("customerId",customerId)
+                .addFormDataPart("id",topicId);
+        RequestBody requestBody = builder.build();
+        LogUtil.e("HttpUtil","postHealthBroadcastComment:"+address+"/"+topicId+" "+customerId+" "+topicId+" "+content);
+        Request request = new Request.Builder().url(address+"/"+topicId).addHeader("Authorization",credential).put(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
     //发布朋友圈
     public static void postFriendsCircleRequest(String address, String credential, String content, String image, Callback callback){
         OkHttpClient client = new OkHttpClient();
@@ -200,4 +215,5 @@ public class HttpUtil
         Request request = new Request.Builder().url(address).addHeader("Authorization",credential).post(requestBody).build();
         client.newCall(request).enqueue(callback);
     }
+
 }

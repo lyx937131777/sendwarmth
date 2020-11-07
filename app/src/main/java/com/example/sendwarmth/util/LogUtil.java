@@ -67,6 +67,7 @@ public class LogUtil
                 Log.e(tag,logContent);
                 msg = msg.replace(logContent,"");
             }
+            Log.e(tag,msg);
         }
     }
 }

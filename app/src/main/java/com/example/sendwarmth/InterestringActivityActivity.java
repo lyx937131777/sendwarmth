@@ -53,7 +53,6 @@ public class InterestringActivityActivity extends AppCompatActivity
         Glide.with(this).load(HttpUtil.getResourceURL(interestingActivity.getImage())).into(pictrue);
         collapsingToolbarLayout.setTitle(interestingActivity.getTitle());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
-        author.setText(interestingActivity.getPromoter().getLoginName());
         if(interestingActivity.getTime()!=null){
             time.setText(interestingActivity.getTime());
             LogUtil.d("will time be shown:","yes");
@@ -64,7 +63,7 @@ public class InterestringActivityActivity extends AppCompatActivity
 
         if(interestingActivity.getDescription().length()<100){      //预设内容的TextView为wrap_content，低于一定长度的文本显示于固定大小的文本框中
             ViewGroup.LayoutParams params = description.getLayoutParams();
-            params.height = 500;
+            params.height = 300;
             description.setLayoutParams(params);
         }
         description.setText(interestingActivity.getDescription());
@@ -72,8 +71,12 @@ public class InterestringActivityActivity extends AppCompatActivity
         location.setText(interestingActivity.getLocation());
         if(interestingActivity.getPromoterName()!=null){
             host.setText(interestingActivity.getPromoterName());
-        } else if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getLoginName()!=null){
-            host.setText(interestingActivity.getPromoter().getLoginName());
+            author.setText(interestingActivity.getPromoterName());
+        } else {
+            if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getLoginName()!=null){
+                host.setText(interestingActivity.getPromoter().getLoginName());
+                author.setText(interestingActivity.getPromoter().getLoginName());
+            }
         }
         if(interestingActivity.getContactTel()!=null){
             tel.setText(interestingActivity.getContactTel());

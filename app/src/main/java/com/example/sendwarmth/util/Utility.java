@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import com.example.sendwarmth.db.Comment;
 import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.FriendsCircle;
 import com.example.sendwarmth.db.HealthBroadcast;
@@ -145,6 +146,24 @@ public class Utility
         return null;
     }
 
+
+    //处理养生播报评论
+    public static List<Comment> handleHealthBroadcastCommentList(String response){
+        if (!TextUtils.isEmpty(response)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("commentInfos");
+                LogUtil.e("Utility","comment:"+jsonArray.toString());
+                String healthBroadcastCommentJson = jsonArray.toString();
+                return new Gson().fromJson(healthBroadcastCommentJson, new TypeToken<List<Comment>>() {}.getType());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
     //处理朋友圈
     public static List<FriendsCircle> handleFriendsCircleList(String response){
         if (!TextUtils.isEmpty(response)) {
