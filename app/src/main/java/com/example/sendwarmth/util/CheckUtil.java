@@ -26,7 +26,8 @@ public class CheckUtil
         return true;
     }
 
-    public boolean checkRegister(String tel, String password, String confirmPassword, String userName, String name, String address, String personalDescription)
+    public boolean checkRegister(String tel, String password, String confirmPassword, String userName, String name, String address,
+                                 double longitude, double latitude, String houseNum, String personalDescription)
     {
         //确认密码不正确、邮箱格式不正确、昵称已被占用
         if (tel.length() != 11) {
@@ -54,11 +55,51 @@ public class CheckUtil
             return false;
         }
         if(address.length() < 1){
-            Toast.makeText(context, "请填写地址", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "请选择地址", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(longitude == 0 || latitude == 0){
+            Toast.makeText(context, "经纬度信息获取失败", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(houseNum.length() < 1){
+            Toast.makeText(context, "请填写门牌号", Toast.LENGTH_LONG).show();
             return false;
         }
         if(personalDescription.length() < 1){
             Toast.makeText(context, "请填写个人描述", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkOrder(String tel, long startTime, long endTime, String houseNum, String address, double longitude, double latitude){
+        if(address.length() < 1){
+            Toast.makeText(context, "请选择地址", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(houseNum.length() < 1){
+            Toast.makeText(context, "请填写门牌号", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(longitude == 0 || latitude == 0){
+            Toast.makeText(context, "经纬度信息获取失败", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(tel.length() != 11){
+            Toast.makeText(context, "手机号码格式不正确", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(startTime == 0){
+            Toast.makeText(context, "请选择上门时间", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(endTime == 0){
+            Toast.makeText(context, "请选择结束时间", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(endTime < startTime){
+            Toast.makeText(context, "结束时间需晚于上门时间", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

@@ -26,6 +26,10 @@ public class Customer extends LitePalSupport implements Serializable
     private double balance;
     private int activity;
 
+    private double longitude;
+    private double latitude;
+    private String houseNum;
+
     private int memberLevel;
     private double memberPoints;
 
@@ -147,5 +151,35 @@ public class Customer extends LitePalSupport implements Serializable
     public void setCredential(String credential)
     {
         this.credential = credential;
+    }
+
+    public double getLongitude()
+    {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude)
+    {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude()
+    {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude)
+    {
+        this.latitude = latitude;
+    }
+
+    public String getHouseNum()
+    {
+        return houseNum;
+    }
+
+    public void setHouseNum(String houseNum)
+    {
+        this.houseNum = houseNum;
     }
 }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.sendwarmth.NewInterestingActivityActivity;
+import com.example.sendwarmth.util.FileUtil;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.Utility;
@@ -35,7 +36,7 @@ public class NewInterestingActivityPresenter
         String address = HttpUtil.LocalAddress + "/api/file";
         final String credential = pref.getString("credential","");
         final String userId = pref.getString("userId","");
-        String fileName = Utility.compressImagePathToImagePath(imagePath);
+        String fileName = FileUtil.compressImagePathToImagePath(imagePath);
         HttpUtil.fileRequest(address, new File(fileName), new Callback()
         {
             @Override

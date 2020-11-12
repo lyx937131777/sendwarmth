@@ -22,5 +22,6 @@
     <string name="role">角色</string>
     <string name="name">姓名</string>
     <string name="address">地址</string>
+    <string name="house_num">门牌号</string>
     <string name="personal_description">个人描述</string>
 </resources>

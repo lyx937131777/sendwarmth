@@ -81,12 +81,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>
     public void onBindViewHolder(@NonNull OrderAdapter.ViewHolder holder, int position)
     {
         Order order = mList.get(position);
-        holder.number.setText(order.getNumber());
-        holder.attendant.setText(order.getAttendant());
+        holder.number.setText(order.getOrderNo());
+//        holder.attendant.setText(order.getAttendant());
         long time = System.currentTimeMillis();
         Glide.with(mContext).load(MapUtil.getState(order.getState())).into(holder.state);
         holder.stateText.setText(MapUtil.getOrderState(order.getState()));
-        holder.time.setText(order.getTime());
+//        holder.time.setText(order.getTime());
         holder.serviceContent.setText(order.getServiceContent());
     }
 

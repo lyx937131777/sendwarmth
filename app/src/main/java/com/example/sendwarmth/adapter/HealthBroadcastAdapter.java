@@ -13,6 +13,7 @@ import com.example.sendwarmth.HealthBroadcastActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.TimeUtil;
 import com.example.sendwarmth.util.Utility;
 
 import java.util.List;
@@ -78,7 +79,7 @@ public class HealthBroadcastAdapter extends RecyclerView.Adapter<HealthBroadcast
         Glide.with(mContext).load(HttpUtil.getResourceURL(healthBroadcast.getTopicPic())).into(holder.picture);
         holder.title.setText(healthBroadcast.getTopicName());
         holder.description.setText(healthBroadcast.getDes());
-        holder.time.setText(Utility.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
+        holder.time.setText(TimeUtil.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
     }
     @Override
     public int getItemCount()

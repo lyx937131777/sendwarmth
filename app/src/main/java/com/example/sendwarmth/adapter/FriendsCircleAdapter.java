@@ -13,7 +13,7 @@ import com.example.sendwarmth.FriendsCircleActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.FriendsCircle;
 import com.example.sendwarmth.util.HttpUtil;
-import com.example.sendwarmth.util.Utility;
+import com.example.sendwarmth.util.TimeUtil;
 
 import java.util.List;
 
@@ -82,7 +82,7 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<FriendsCircleAdap
         Glide.with(mContext).load(R.drawable.profile_uri).into(holder.author);
         holder.title.setText(friendsCircle.getCustomerInfo().getName());
         holder.content.setText(friendsCircle.getContent());
-        holder.time.setText(Utility.timeStampToString(friendsCircle.getTimestamp(),"yyyy-MM-dd HH:mm"));
+        holder.time.setText(TimeUtil.timeStampToString(friendsCircle.getTimestamp(),"yyyy-MM-dd HH:mm"));
     }
     @Override
     public int getItemCount()

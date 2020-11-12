@@ -18,6 +18,7 @@ import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.FriendsCircle;
 import com.example.sendwarmth.presenter.FriendsCirclePresenter;
 import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.TimeUtil;
 import com.example.sendwarmth.util.Utility;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
@@ -59,7 +60,7 @@ public class FriendsCircleActivity extends AppCompatActivity
         collapsingToolbarLayout.setTitle("");
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         author.setText(friendsCircle.getCustomerInfo().getName());
-        time.setText(Utility.timeStampToString(friendsCircle.getTimestamp(),"yyyy-MM-dd HH:mm"));
+        time.setText(TimeUtil.timeStampToString(friendsCircle.getTimestamp(),"yyyy-MM-dd HH:mm"));
         description.setText(friendsCircle.getContent());
     }
 

@@ -30,6 +30,7 @@ import com.example.sendwarmth.presenter.HealthBroadcastCommentPresenter;
 import com.example.sendwarmth.presenter.HealthBroadcastPresenter;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
+import com.example.sendwarmth.util.TimeUtil;
 import com.example.sendwarmth.util.Utility;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
@@ -71,7 +72,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
         collapsingToolbarLayout.setTitle(healthBroadcast.getTopicName());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         author.setText("王专家");
-        time.setText(Utility.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
+        time.setText(TimeUtil.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
 
         if(healthBroadcast.getDes().length()<100){      //预设内容的TextView为wrap_content，低于一定长度的文本显示于固定大小的文本框中
             ViewGroup.LayoutParams params = description.getLayoutParams();

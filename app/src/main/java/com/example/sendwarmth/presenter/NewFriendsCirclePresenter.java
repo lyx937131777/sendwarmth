@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.example.sendwarmth.NewFriendsCircleActivity;
 import com.example.sendwarmth.NewInterestingActivityActivity;
+import com.example.sendwarmth.util.FileUtil;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.Utility;
@@ -35,7 +36,7 @@ public class NewFriendsCirclePresenter
         progressDialog = ProgressDialog.show(context,"","上传中...");
         String address = HttpUtil.LocalAddress + "/api/file";
         final String credential = pref.getString("credential","");
-        String fileName = Utility.compressImagePathToImagePath(imagePath);
+        String fileName = FileUtil.compressImagePathToImagePath(imagePath);
         HttpUtil.fileRequest(address, new File(fileName), new Callback()
         {
             @Override

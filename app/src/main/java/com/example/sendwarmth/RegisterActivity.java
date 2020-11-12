@@ -1,5 +1,6 @@
 package com.example.sendwarmth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
@@ -22,16 +24,19 @@ import com.example.sendwarmth.util.MapUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class RegisterActivity extends AppCompatActivity implements OnClickListener
 {
-    private EditText telText, passwordText, confirmPasswordText, userNameText,nameText,addressText,personalDescriptionText;
-    private Button telClearButton,passwordClearButton,confirmPasswordClearButton,userNameClearButton,nameClearButton,addressClearButton,personalDescriptionClearButton;
-    private Button registerButton;
-    private String tel, password, confirmPassword, userName, name, address, personalDescription;
+    private EditText telText, passwordText, confirmPasswordText, userNameText,nameText,houseNumText,personalDescriptionText;
+    private TextView addressText;
+    private Button telClearButton,passwordClearButton,confirmPasswordClearButton,userNameClearButton,nameClearButton,houseNumClearButton,personalDescriptionClearButton;
+    private Button registerButton,locationButton;
+    private String tel, password, confirmPassword, userName, name, address,houseNum, personalDescription;
+    private double longitude,latitude;
 
 //    private Spinner roleSpinner;
 //    private List<String> roleList = new ArrayList<>();
@@ -202,8 +207,8 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             }
         });
 
-        addressText = findViewById(R.id.address);
-        addressText.addTextChangedListener(new TextWatcher()
+        houseNumText = findViewById(R.id.house_num);
+        houseNumText.addTextChangedListener(new TextWatcher()
         {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
@@ -214,11 +219,11 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
             {
-                address = addressText.getText().toString();
-                if(address.equals("")){
-                    addressClearButton.setVisibility(View.INVISIBLE);
+                houseNum = houseNumText.getText().toString();
+                if(houseNum.equals("")){
+                    houseNumClearButton.setVisibility(View.INVISIBLE);
                 }else {
-                    addressClearButton.setVisibility(View.VISIBLE);
+                    houseNumClearButton.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -271,12 +276,15 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         userNameClearButton.setOnClickListener(this);
         nameClearButton = findViewById(R.id.name_clear);
         nameClearButton.setOnClickListener(this);
-        addressClearButton = findViewById(R.id.address_clear);
-        addressClearButton.setOnClickListener(this);
+        houseNumClearButton = findViewById(R.id.house_num_clear);
+        houseNumClearButton.setOnClickListener(this);
         personalDescriptionClearButton = findViewById(R.id.personal_description_clear);
         personalDescriptionClearButton.setOnClickListener(this);
         registerButton = findViewById(R.id.register);
         registerButton.setOnClickListener(this);
+        locationButton = findViewById(R.id.location);
+        locationButton.setOnClickListener(this);
+        addressText = findViewById(R.id.address);
     }
 
 //    private void initroleList()
@@ -324,12 +332,17 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             case R.id.name_clear:
                 nameText.setText("");
                 break;
-            case R.id.address_clear:
+            case R.id.house_num_clear:
                 addressText.setText("");
                 break;
             case R.id.personal_description_clear:
                 personalDescriptionText.setText("");
                 break;
+            case R.id.location:{
+                Intent intent = new Intent(this, LocationSelectActivity.class);
+                startActivityForResult(intent,1);
+                break;
+            }
 
             // TODO 注册按钮
             case R.id.register:
@@ -339,8 +352,9 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
                 userName = userNameText.getText().toString();
                 name = nameText.getText().toString();
                 address = addressText.getText().toString();
+                houseNum = houseNumText.getText().toString();
                 personalDescription = personalDescriptionText.getText().toString();
-                registerPresenter.register(tel,password,confirmPassword,userName,name,address,personalDescription);
+                registerPresenter.register(tel,password,confirmPassword,userName,name,address,longitude,latitude,houseNum,personalDescription);
                 break;
 
             default:
@@ -348,6 +362,28 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         }
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case 1:
+            {
+                if (resultCode == RESULT_OK)
+                {
+                    address = data.getStringExtra("address");
+                    addressText.setText(address);
+                    longitude = data.getDoubleExtra("longitude",0);
+                    latitude = data.getDoubleExtra("latitude",0);
+                }
+                break;
+            }
+            default:
+                break;
+        }
     }
 }
 

@@ -1,5 +1,7 @@
 package com.example.sendwarmth;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,14 +10,21 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -30,18 +39,27 @@ import com.bumptech.glide.Glide;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
 import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
+import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.ServiceSubject;
 import com.example.sendwarmth.db.Worker;
 import com.example.sendwarmth.presenter.OrderingPresenter;
+import com.example.sendwarmth.util.DateAndTimePickerDialog;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.MapUtil;
+import com.example.sendwarmth.util.TimeUtil;
 
+import org.litepal.LitePal;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-public class OrderingActivity extends AppCompatActivity
+public class OrderingActivity extends AppCompatActivity implements DateAndTimePickerDialog.DateAndTimePickerDialogInterface
 {
+    private static final int COMMAND_START = 0;
+    private static final int COMMAND_END = 1;
     private ServiceSubject serviceSubject;
     private Spinner tipSpinner;
     private List<String> tipList = new ArrayList<>();
@@ -49,7 +67,7 @@ public class OrderingActivity extends AppCompatActivity
     private Spinner workerSpiner;
     private List<Worker> workerList = new ArrayList<>();
     private ArrayAdapter<Worker> workerArraryAdapter;
-    private String workerId;
+    private String workerId, worker;
     private Spinner urgentSpiner;
     private List<String> urgentList = new ArrayList<>();
     private ArrayAdapter<String> urgentArraryAdapter;
@@ -57,19 +75,28 @@ public class OrderingActivity extends AppCompatActivity
 
     private int tip;
     private double price;
-    private double hour = 1;
+    private double hour = 0;
     private TextView priceText;
 
-
+    private Button locationButton;
     private TextView addressText;
+    private TextView defaultAddress;
+    private TextView startTimeText,endTimeText;
     private double longitude;
     private double latitude;
-    private EditText telText;
-    private EditText timeText;
-    private EditText messageText;
+    private String address;
+    private EditText houseNumText, telText,messageText;
     private Button orderButton;
 
-    public LocationClient mLocationClient;
+    private DateAndTimePickerDialog dateAndTimePickerDialog;
+    private long startTime,endTime;
+    private int command = 0;
+
+//    public LocationClient mLocationClient;
+
+    private SharedPreferences pref;
+    private String credential;
+    private Customer customer;
 
     private OrderingPresenter orderingPresenter;
 
@@ -77,8 +104,6 @@ public class OrderingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mLocationClient = new LocationClient(getApplicationContext());
-        mLocationClient.registerLocationListener(new OrderingActivity.MyLocationListener());
         setContentView(R.layout.activity_ordering);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,23 +116,6 @@ public class OrderingActivity extends AppCompatActivity
         orderingPresenter = myComponent.orderingPresenter();
 
         initServiceWork();
-
-        List<String> permissionList = new ArrayList<>();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.READ_PHONE_STATE);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (!permissionList.isEmpty()) {
-            String [] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(this, permissions, 1);
-        } else {
-            requestLocation();
-        }
 
     }
 
@@ -125,8 +133,11 @@ public class OrderingActivity extends AppCompatActivity
         description.setText(serviceSubject.getDescription());
         pricePerUnit.setText(serviceSubject.getSalaryPerHour()+"元/时");
         addressText = findViewById(R.id.address);
+        houseNumText = findViewById(R.id.house_num);
+        defaultAddress = findViewById(R.id.default_address);
         telText = findViewById(R.id.tel);
-        timeText = findViewById(R.id.time);
+        startTimeText = findViewById(R.id.start_time);
+        endTimeText = findViewById(R.id.end_time);
         messageText = findViewById(R.id.message);
         orderButton = findViewById(R.id.order);
         orderButton.setOnClickListener(new View.OnClickListener()
@@ -134,17 +145,21 @@ public class OrderingActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                new AlertDialog.Builder(OrderingActivity.this)
-                        .setTitle("提示")
-                        .setMessage("是否确认下单？")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-//                                        orderingPresenter.postOrder(longitude,latitude,);
-                                    }
-                                })
-                        .setNegativeButton("取消",null)
-                        .show();
+                if(orderingPresenter.checkOrder(telText.getText().toString(),startTime,endTime,houseNumText.getText().toString(),address,longitude,latitude)){
+                    new AlertDialog.Builder(OrderingActivity.this)
+                            .setTitle("提示")
+                            .setMessage("是否确认下单？")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                        orderingPresenter.postOrder(worker, longitude, latitude, telText.getText().toString(), address, houseNumText.getText().toString(), orderType,
+                                                serviceSubject.getServiceClassId(),serviceSubject.getInternetId(),startTime,endTime,messageText.getText().toString(),tip);
+                                }
+                            })
+                            .setNegativeButton("取消",null)
+                            .show();
+                }
+
             }
         });
 
@@ -165,6 +180,63 @@ public class OrderingActivity extends AppCompatActivity
         urgentArraryAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,urgentList);
         urgentArraryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         urgentSpiner.setAdapter(urgentArraryAdapter);
+
+        dateAndTimePickerDialog = new DateAndTimePickerDialog(this);
+        startTime = 0;
+        endTime = 0;
+        startTimeText.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                command = COMMAND_START;
+                dateAndTimePickerDialog.showDateAndTimePickerDialog(2,startTime);
+            }
+        });
+        endTimeText.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                command = COMMAND_END;
+                dateAndTimePickerDialog.showDateAndTimePickerDialog(2,endTime);
+            }
+        });
+        defaultAddress.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        defaultAddress.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                initDefaultAddress();
+            }
+        });
+        locationButton = findViewById(R.id.location);
+        locationButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(OrderingActivity.this, LocationSelectActivity.class);
+                startActivityForResult(intent,1);
+            }
+        });
+
+        initDefaultAddress();
+        telText.setText(customer.getTel());
+    }
+
+    private void initDefaultAddress()
+    {
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        credential = pref.getString("credential","");
+        customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        address = customer.getAddress();
+        addressText.setText(address);
+        houseNumText.setText(customer.getHouseNum());
+        longitude = customer.getLongitude();
+        latitude = customer.getLatitude();
+        orderingPresenter.updateWorker(longitude,latitude,workerArraryAdapter,workerList);
     }
 
     private void initTipList()
@@ -203,6 +275,7 @@ public class OrderingActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
                 workerId = workerList.get(i).getInternetId();
+                worker = workerList.get(i).toString();
             }
 
             @Override
@@ -236,60 +309,9 @@ public class OrderingActivity extends AppCompatActivity
     private void changePrice(){
         double priceBase = serviceSubject.getSalaryPerHour()*hour;
         price = priceBase + tip;
+        BigDecimal b = new BigDecimal(price);
+        price = b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
         priceText.setText("约：￥"+price);
-    }
-
-    private void requestLocation() {
-        initLocation();
-        mLocationClient.start();
-    }
-    private void initLocation(){
-        LocationClientOption option = new LocationClientOption();
-        option.setCoorType("bd09ll");//百度API保护隐私 默认获取火星坐标 加上这一行可直接获得真实坐标
-//        option.setScanSpan(5000);
-        option.setIsNeedAddress(true);
-        mLocationClient.setLocOption(option);
-    }
-
-
-    private class MyLocationListener extends BDAbstractLocationListener
-    {
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (location.getLocType() == BDLocation.TypeGpsLocation
-                    || location.getLocType() == BDLocation.TypeNetWorkLocation) {
-//                navigateTo(location);
-                addressText.setText(location.getCity() + " " + location.getDistrict() + " "+ location.getStreet());
-                longitude = location.getLongitude();
-                latitude = location.getLatitude();
-                LogUtil.e("OrderingActivity","longitude: " + longitude + "   latitude: " + latitude);
-                orderingPresenter.updateWorker(longitude,latitude,workerArraryAdapter,workerList);
-            }
-        }
-
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0) {
-                    for (int result : grantResults) {
-                        if (result != PackageManager.PERMISSION_GRANTED) {
-                            Toast.makeText(this, "必须同意所有权限才能使用相关功能", Toast.LENGTH_SHORT).show();
-                            ActivityCompat.requestPermissions(this, permissions, 1);
-                            return;
-                        }
-                    }
-                    requestLocation();
-                } else {
-                    Toast.makeText(this, "发生未知错误", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                break;
-            default:
-        }
     }
 
     @Override
@@ -305,8 +327,60 @@ public class OrderingActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mLocationClient.stop();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case 1:
+            {
+                if (resultCode == RESULT_OK)
+                {
+                    address = data.getStringExtra("address");
+                    addressText.setText(address);
+                    longitude = data.getDoubleExtra("longitude",0);
+                    latitude = data.getDoubleExtra("latitude",0);
+                    orderingPresenter.updateWorker(longitude,latitude,workerArraryAdapter,workerList);
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void positiveListener()
+    {
+        Calendar calendar = dateAndTimePickerDialog.getCalendar();
+        switch (command){
+            case COMMAND_START:
+                startTimeText.setText(TimeUtil.dateToString(calendar.getTime(),"yyyy-MM-dd HH:mm"));
+                startTime = calendar.getTimeInMillis();
+                break;
+            case COMMAND_END:
+                endTimeText.setText(TimeUtil.dateToString(calendar.getTime(),"yyyy-MM-dd HH:mm"));
+                endTime = calendar.getTimeInMillis();
+                break;
+        }
+        if(endTime > startTime){
+            long duration = endTime - startTime;
+            long minute = duration / 60000;
+            hour = (double)minute / 60;
+            changePrice();
+            LogUtil.e("OrderingActivity","time start: " + startTime + " end: "+ endTime +  " duration: " + duration + " minute: " + minute + " hour: " + hour);
+        }else{
+            hour = 0;
+            changePrice();
+            if(startTime != 0 && endTime != 0){
+                Toast.makeText(this,"提示：结束时间需晚于上门时间！",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void negativeListener()
+    {
+
     }
 }

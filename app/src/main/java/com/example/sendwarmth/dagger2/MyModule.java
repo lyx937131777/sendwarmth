@@ -117,11 +117,12 @@ public class MyModule
     }
 
     @Provides
-    public OrderingPresenter provideOrderingPresenter(Context context, SharedPreferences pref)
+    public OrderingPresenter provideOrderingPresenter(Context context, SharedPreferences pref, CheckUtil checkUtil)
     {
-        return new OrderingPresenter(context, pref);
+        return new OrderingPresenter(context, pref,checkUtil);
     }
 
+    @Provides
     public HealthBroadcastCommentPresenter healthBroadcastCommentPresenter(Context context, SharedPreferences pref){
         return new HealthBroadcastCommentPresenter(context, pref);
     }

@@ -10,10 +10,12 @@ import com.example.sendwarmth.fragment.CommunityFragment;
 import com.example.sendwarmth.fragment.HomeFragment;
 import com.example.sendwarmth.fragment.PersonalCenterFragment;
 import com.example.sendwarmth.fragment.adapter.MyFragAdapter;
+import com.example.sendwarmth.util.LogUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -124,6 +126,13 @@ public class MainActivity extends AppCompatActivity
 //        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 //        NavigationUI.setupWithNavController(navView, navController);
+
+        long time = System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        LogUtil.e("TimeTest","time(long): " + time);
+        LogUtil.e("TimeTest","calendar(default): " + calendar.getTimeInMillis());
+        LogUtil.e("TimeTest","calendar: year: " + calendar.get(Calendar.YEAR) + " month: " + (calendar.get(Calendar.MONTH)+1) + " day:" + calendar.get(Calendar.DAY_OF_MONTH));
+        LogUtil.e("TimeTest","calendar: hour: " + calendar.get(Calendar.HOUR_OF_DAY) + " minute: " + calendar.get(Calendar.PM) + " second: " +calendar.get(Calendar.AM_PM));
     }
 
     @Override
@@ -183,7 +192,6 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(this, NewFriendsCircleActivity.class);
                 startActivity(intent);
             }
-
         }
         return true;
     }

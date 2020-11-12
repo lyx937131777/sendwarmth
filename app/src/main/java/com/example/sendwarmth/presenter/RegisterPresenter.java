@@ -29,12 +29,13 @@ public class RegisterPresenter
         this.checkUtil = checkUtil;
     }
 
-    public void register(String tel, String password, String confirm, String userName, String name, String cusAddress, String personalDescription)
+    public void register(String tel, String password, String confirm, String userName, String name, String cusAddress,
+                         double longitude, double latitude, String houseNum, String personalDescription)
     {
-        if (!checkUtil.checkRegister(tel,password,confirm,userName,name,cusAddress,personalDescription))
+        if (!checkUtil.checkRegister(tel,password,confirm,userName,name,cusAddress,longitude,latitude,houseNum,personalDescription))
             return;
         String address = HttpUtil.LocalAddress + "/api/users/old";
-        HttpUtil.registerRequest(address, tel, password, userName, name, cusAddress,personalDescription, new
+        HttpUtil.registerRequest(address, tel, password, userName, name, cusAddress,longitude,latitude,houseNum,personalDescription, new
                 Callback()
                 {
                     @Override

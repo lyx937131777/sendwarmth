@@ -49,7 +49,8 @@ public class HttpUtil
         client.newCall(request).enqueue(callback);
     }
 
-    public static void registerRequest(String address, String tel, String password, String userName, String name, String cusAddress, String personalDescription, Callback callback){
+    public static void registerRequest(String address, String tel, String password, String userName, String name, String cusAddress,
+                                       double longitude, double latitude, String houseNum, String personalDescription, Callback callback){
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         HashMap<String, String> cusMap = new HashMap<>();
@@ -57,6 +58,9 @@ public class HttpUtil
         cusMap.put("customerName",name);
         cusMap.put("customerTel",tel);
         cusMap.put("userName",userName);
+        cusMap.put("longitude",String.valueOf(longitude));
+        cusMap.put("latitude",String.valueOf(latitude));
+        cusMap.put("houseNum",houseNum);
         cusMap.put("personalDescription",personalDescription);
         String customerInfo = new Gson().toJson(cusMap);
         HashMap<String, String> map = new HashMap<>();
@@ -125,6 +129,7 @@ public class HttpUtil
         Request request = new Request.Builder().url(address+"/"+topicId).addHeader("Authorization",credential).put(requestBody).build();
         client.newCall(request).enqueue(callback);
     }
+
     //发布朋友圈
     public static void postFriendsCircleRequest(String address, String credential, String content, String image, Callback callback){
         OkHttpClient client = new OkHttpClient();
@@ -195,21 +200,26 @@ public class HttpUtil
     }
 
     //新建服务订单
-    public static void postOrderRequest(String address, String credential, double longitude, double latitude,String deliveryPhone, String deliveryDetail,
-                                        String orderType, String serviceClassId, String serviceSubjectId, String tip, Callback callback){
+    public static void postOrderRequest(String address, String credential, String appointedPerson,double longitude, double latitude,String deliveryPhone, String deliveryDetail, String houseNum,
+                                        String orderType, String serviceClassId, String serviceSubjectId, long startTime, long endTime, String message, double tip, Callback callback){
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
         HashMap<String, String> map = new HashMap<>();
         map.put("customerId",customer.getInternetId());
+        map.put("appointedPerson", appointedPerson);
         map.put("longitude", ""+longitude);
         map.put("latitude", ""+latitude);
         map.put("deliveryPhone",deliveryPhone);
         map.put("deliveryDetail",deliveryDetail);
+        map.put("houseNum",houseNum);
+        map.put("expectStartTime", ""+startTime);
+        map.put("expectEndTime", ""+endTime);
+        map.put("message",message);
         map.put("orderType",orderType);
+        map.put("tip",""+tip);
         map.put("serviceClassId",serviceClassId);
         map.put("serviceSubjectId",serviceSubjectId);
-        map.put("tip",tip);
         String jsonStr = new Gson().toJson(map);
         RequestBody requestBody = RequestBody.create(jsonStr, JSON);
         Request request = new Request.Builder().url(address).addHeader("Authorization",credential).post(requestBody).build();

@@ -24,20 +24,20 @@ public class OrderFragment extends Fragment
     private int index;
 
     private RecyclerView recyclerView;
-    private Order[] orders = {
-            new Order("013","张小花","李思思","2020-08-07 14:00~15:00","toBePaid","","修理钟表",40),
-            new Order("012","张三","张小琴","2020-08-07 10:00~14:00","moving","","理发",50),
-            new Order("011","张三","张小琴","2020-08-07 10:00~14:00","arrived","","理发",50),
-            new Order("010","周五","李思思","2020-08-07 12:00~14:00","unstart","","护理",50),
-            new Order("009","李四","张小琴","2020-08-07 13:00~15:00","unstart","","修锁",20),
-            new Order("008","小红","未接单","2020-08-07 12:00~14:00","waiting","","打扫卫生",50),
-            new Order("007","小明","未接单","2020-08-07 11:00~12:00","waiting","","按摩",30),
-            new Order("006","小王","李思思","2020-08-06 15:00~16:00","toBeEvaluated","","陪聊",50),
-            new Order("005","小白","李思思","2020-08-06 13:00~15:00","toBeEvaluated","","修空调",60),
-            new Order("004","小李","李思思","2020-08-07 12:00~14:00","canceled","","修锁",20),
-            new Order("003","小许","未接单","2020-08-06 15:00~16:00","canceled","","裁缝",30),
-            new Order("002","小徐","李思思","2020-08-06 14:00~15:00","completed","","打扫卫生",50),
-            new Order("001","小黑","张小琴","2020-08-06 11:00~13:00","completed","","理发",60)};
+//    private Order[] orders = {
+//            new Order("013","张小花","李思思","2020-08-07 14:00~15:00","toBePaid","","修理钟表",40),
+//            new Order("012","张三","张小琴","2020-08-07 10:00~14:00","moving","","理发",50),
+//            new Order("011","张三","张小琴","2020-08-07 10:00~14:00","arrived","","理发",50),
+//            new Order("010","周五","李思思","2020-08-07 12:00~14:00","unstart","","护理",50),
+//            new Order("009","李四","张小琴","2020-08-07 13:00~15:00","unstart","","修锁",20),
+//            new Order("008","小红","未接单","2020-08-07 12:00~14:00","waiting","","打扫卫生",50),
+//            new Order("007","小明","未接单","2020-08-07 11:00~12:00","waiting","","按摩",30),
+//            new Order("006","小王","李思思","2020-08-06 15:00~16:00","toBeEvaluated","","陪聊",50),
+//            new Order("005","小白","李思思","2020-08-06 13:00~15:00","toBeEvaluated","","修空调",60),
+//            new Order("004","小李","李思思","2020-08-07 12:00~14:00","canceled","","修锁",20),
+//            new Order("003","小许","未接单","2020-08-06 15:00~16:00","canceled","","裁缝",30),
+//            new Order("002","小徐","李思思","2020-08-06 14:00~15:00","completed","","打扫卫生",50),
+//            new Order("001","小黑","张小琴","2020-08-06 11:00~13:00","completed","","理发",60)};
     private List<Order> orderList = new ArrayList<>();
     private OrderAdapter orderAdapter;
 
@@ -84,11 +84,11 @@ public class OrderFragment extends Fragment
         for(int i = 0; i < types.length; i++){
             typeList.add(types[i]);
         }
-        for(int i = 0; i < orders.length; i++){
-            if(typeList.contains(orders[i].getState())){
-                orderList.add(orders[i]);
-            }
-        }
+//        for(int i = 0; i < orders.length; i++){
+//            if(typeList.contains(orders[i].getState())){
+//                orderList.add(orders[i]);
+//            }
+//        }
     }
 
     private String getType(){

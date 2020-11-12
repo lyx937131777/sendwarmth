@@ -114,7 +114,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         attendantTelCard.setOnClickListener(this);
         attendantTel.setOnClickListener(this);
 
-        mapView = (MapView) findViewById(R.id.bmapView);
+        mapView = findViewById(R.id.bmapView);
         baiduMap = mapView.getMap();
         baiduMap.setMyLocationEnabled(true);
         List<String> permissionList = new ArrayList<>();
