@@ -1,7 +1,9 @@
 package com.example.sendwarmth;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     private ShoppingMallFragment shoppingMallFragment;
     private PersonalCenterFragment personalCenterFragment;
     private BottomNavigationView navView;
+    private SharedPreferences pref;
 
     public static MainActivity instance = null;
 
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity
 
         navView = findViewById(R.id.nav_view);
         viewPager = findViewById(R.id.view_pager);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
@@ -162,6 +166,11 @@ public class MainActivity extends AppCompatActivity
             case 1:
                 //第二个fragment的menu(无)
                 getMenuInflater().inflate(R.menu.community_menu, menu);
+                LogUtil.e("MainActivity",pref.getString("role","customer?"));
+                if(!pref.getString("role","").equals("expert")){
+                    LogUtil.e("MainActivity","Loginer is customer");
+                    menu.removeItem(R.id.menu_new_health_broadcast);
+                }
                 break;
             case 2:
                 //第三个fragment的menu
@@ -185,6 +194,11 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.menu_new_interesting_activity:{
                 Intent intent = new Intent(this,NewInterestingActivityActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.menu_new_health_broadcast:{
+                Intent intent = new Intent(this,NewHealthBroadcastActivity.class);
                 startActivity(intent);
                 break;
             }

@@ -8,11 +8,15 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.Comment;
+import com.example.sendwarmth.util.HttpUtil;
 
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HealthBroadcastCommentAdapter extends RecyclerView.Adapter<HealthBroadcastCommentAdapter.ViewHolder> {
     private Context mContext;
@@ -21,12 +25,16 @@ public class HealthBroadcastCommentAdapter extends RecyclerView.Adapter<HealthBr
     static class ViewHolder extends RecyclerView.ViewHolder
     {
         View view;
+        CircleImageView authorProflie;
+        TextView authorName;
         TextView content;
 
         public  ViewHolder(View view)
         {
             super(view);
             this.view = view;
+            authorProflie = view.findViewById(R.id.author_profile);
+            authorName = view.findViewById(R.id.author_name);
             content = view.findViewById(R.id.content);
         }
     }
@@ -63,8 +71,8 @@ public class HealthBroadcastCommentAdapter extends RecyclerView.Adapter<HealthBr
     public void onBindViewHolder(HealthBroadcastCommentAdapter.ViewHolder holder, int position)
     {
         Comment healthBroadcastComment = mList.get(position);
-//        Glide.with(mContext).load(HttpUtil.getResourceURL(health.getTopicPic())).into(holder.picture);
-//        holder.title.setText(healthBroadcast.getTopicName());
+        Glide.with(mContext).load(R.drawable.profile_uri).into(holder.authorProflie);
+        holder.authorName.setText(healthBroadcastComment.getCustomerInfo().getName());
 //        holder.description.setText(healthBroadcast.getDes());
 //        holder.time.setText(Utility.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
         holder.content.setText(healthBroadcastComment.getContent());

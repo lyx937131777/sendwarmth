@@ -3,12 +3,18 @@ package com.example.sendwarmth.presenter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.widget.NestedScrollView;
 
 import com.example.sendwarmth.HealthBroadcastActivity;
 import com.example.sendwarmth.MainActivity;
 import com.example.sendwarmth.NewFriendsCircleActivity;
 import com.example.sendwarmth.NewInterestingActivityActivity;
+import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.HealthBroadcastAdapter;
 import com.example.sendwarmth.adapter.HealthBroadcastCommentAdapter;
 import com.example.sendwarmth.db.Comment;
@@ -19,6 +25,7 @@ import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.Utility;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +41,7 @@ public class HealthBroadcastCommentPresenter
     private Context context;
     private SharedPreferences pref;
     private ProgressDialog progressDialog;
+
     public HealthBroadcastCommentPresenter(Context context, SharedPreferences pref){
         this.context = context;
         this.pref = pref;
@@ -47,7 +55,7 @@ public class HealthBroadcastCommentPresenter
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
                 e.printStackTrace();
-                ((MainActivity)context).runOnUiThread(new Runnable() {
+                ((HealthBroadcastActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
@@ -60,49 +68,27 @@ public class HealthBroadcastCommentPresenter
             {
                 final String responsData = response.body().string();
                 LogUtil.e("HealthBroadcastCommentPresenter",responsData);
-                List<Comment> healthBroadcastCommentList = Utility.handleHealthBroadcastCommentList(responsData);
-                healthBroadcastCommentAdapter.setmList(healthBroadcastCommentList);
-                ((HealthBroadcastActivity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        healthBroadcastCommentAdapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        });
-    }
-
-    public void getHealthBroadcastCommentByTopicId(final List<Comment>healthBroadcastCommentList, String topicId){
-        String address = HttpUtil.LocalAddress + "/api/topic/"+topicId;
-        String credential = pref.getString("credential",null);
-        HttpUtil.getHttp(address, credential, new Callback()
-        {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e)
-            {
-                e.printStackTrace();
-                ((HealthBroadcastActivity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
-            {
-                final String responsData = response.body().string();
-                LogUtil.e("HealthBroadcastCommentPresenter",responsData);
-                List<Comment>temCommentList = Utility.handleHealthBroadcastCommentList(responsData);
-                healthBroadcastCommentList.clear();
-                for (Comment comment:temCommentList
-                     ) {
-                    healthBroadcastCommentList.add(comment);
+                final List<Comment> healthBroadcastCommentList = Utility.handleHealthBroadcastCommentList(responsData);
+                if(healthBroadcastCommentList!=null){
+                    LogUtil.e("HealthBroadcastCommentPresenter","The number of comments is " + healthBroadcastCommentList.size());
+                    healthBroadcastCommentAdapter.setmList(healthBroadcastCommentList);
+                    ((HealthBroadcastActivity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            healthBroadcastCommentAdapter.notifyDataSetChanged();
+                            if(healthBroadcastCommentList.size()>0){
+                                ((HealthBroadcastActivity) context).findViewById(R.id.no_comment).setVisibility(View.GONE);
+                            }
+                            //NestedScrollView nestedScrollView = ((HealthBroadcastActivity) context).findViewById(R.id.nested_scroll_view);
+                            //LogUtil.e("HealthBroadcastCommentPresenter","nestedScrollView's height is " + nestedScrollView.getHeight());
+                        }
+                    });
                 }
             }
         });
     }
-    public void postHealthBroadcastComment(final String content,final String topicId){
+
+    public void putHealthBroadcastComment(final HealthBroadcastCommentAdapter healthBroadcastCommentAdapter, final String content,final String topicId){
         progressDialog = ProgressDialog.show(context,"","上传中...");
         String address = HttpUtil.LocalAddress + "/api/topic/comment";
         final String credential = pref.getString("credential","");
@@ -129,17 +115,19 @@ public class HealthBroadcastCommentPresenter
                 //LogUtil.e("HealthBroadcastCommentPresenter","response");
                 final String responsData = response.body().string();
                 LogUtil.e("HealthBroadcastCommentPresenter","response"+responsData);
-//                if(Utility.checkString(responsData,"code").equals("000")){
-//                    ((HealthBroadcastActivity)context).runOnUiThread(new Runnable()
-//                    {
-//                        @Override
-//                        public void run()
-//                        {
-//                            Toast.makeText(context, "发布成功", Toast.LENGTH_LONG).show();
-//                        }
-//                    });
-//                    ((HealthBroadcastActivity) context).finish();
-//                }
+                if(Utility.checkString(responsData,"code").equals("000")){
+                    updateHealthBroadcastComment(healthBroadcastCommentAdapter,topicId);
+                    ((HealthBroadcastActivity)context).runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            Toast.makeText(context, "发布成功", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    EditText comment_content = ((HealthBroadcastActivity)context).findViewById(R.id.comment_content);
+                    comment_content.setText("");
+                }
                 progressDialog.dismiss();
             }
         });

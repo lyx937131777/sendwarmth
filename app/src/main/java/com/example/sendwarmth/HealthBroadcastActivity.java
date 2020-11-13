@@ -24,17 +24,12 @@ import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.fragment.HealthBroadcastCommentFragment;
-import com.example.sendwarmth.fragment.HealthBroadcastFragment;
-import com.example.sendwarmth.fragment.NoCommentFragment;
 import com.example.sendwarmth.presenter.HealthBroadcastCommentPresenter;
-import com.example.sendwarmth.presenter.HealthBroadcastPresenter;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.TimeUtil;
 import com.example.sendwarmth.util.Utility;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-
-import org.w3c.dom.Text;
 
 public class HealthBroadcastActivity extends AppCompatActivity
 {
@@ -88,10 +83,6 @@ public class HealthBroadcastActivity extends AppCompatActivity
             LogUtil.e("HealthBroadcastActivity",healthBroadcast.getInternetId());
             healthBroadcastCommentFragment=new HealthBroadcastCommentFragment(healthBroadcast.getInternetId());
             transaction.replace(R.id.fragment_health_broadcast_comment, healthBroadcastCommentFragment);
-        } else{
-            //String commentInfos="[{\"id\":1,\"content\":\"test0\"},{\"id\":2,\"content\":\"test1\"},{\"id\":3,\"content\":\"test2\"},{\"id\":4,\"content\":\"test3\"}]";
-            //transaction.replace(R.id.fragment_health_broadcast_comment,new HealthBroadcastCommentFragment(commentInfos));
-            transaction.replace(R.id.fragment_health_broadcast_comment,new NoCommentFragment());
         }
         transaction.commit();
 
@@ -115,14 +106,13 @@ public class HealthBroadcastActivity extends AppCompatActivity
                                         public void onClick(DialogInterface dialog, int which)
                                         {
                                             LogUtil.e("HealthBroadcastActivity",comment_content.getText().toString());
-                                            healthBroadcastCommentPresenter.postHealthBroadcastComment(comment_content.getText().toString(),healthBroadcast.getInternetId());
+                                            healthBroadcastCommentPresenter.putHealthBroadcastComment(healthBroadcastCommentFragment.getHealthBroadcastCommentAdapter(),comment_content.getText().toString(),healthBroadcast.getInternetId());
                                         }
                                     })
                             .setNegativeButton("取消",null).show();
                 }
             }
         });
-        comment_content.getText();
     }
 
     @Override
@@ -136,6 +126,4 @@ public class HealthBroadcastActivity extends AppCompatActivity
         }
         return true;
     }
-
-
 }

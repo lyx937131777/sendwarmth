@@ -157,6 +157,8 @@ public class Utility
                 JSONArray jsonArray = dataObject.getJSONArray("commentInfos");
                 LogUtil.e("Utility","comment:"+jsonArray.toString());
                 String healthBroadcastCommentJson = jsonArray.toString();
+                //String healthBroadcastCommentJson = "[{\"id\":1,\"content\":\"test0\"},{\"id\":2,\"content\":\"test1\"},{\"id\":3,\"content\":\"test2\"},{\"id\":4,\"content\":\"test3\"}]";
+                //String healthBroadcastCommentJson = "";
                 return new Gson().fromJson(healthBroadcastCommentJson, new TypeToken<List<Comment>>() {}.getType());
             } catch (JSONException e) {
                 e.printStackTrace();

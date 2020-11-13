@@ -117,16 +117,22 @@ public class HttpUtil
     //发布评论
     public static void putHealthBroadcastCommentRequest(String address,String credential, String content, String topicId,Callback callback){
         OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
         String customerId = customer.getInternetId();
-        MultipartBody.Builder builder = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("comment", content)
-                .addFormDataPart("customerId",customerId)
-                .addFormDataPart("id",topicId);
-        RequestBody requestBody = builder.build();
-        LogUtil.e("HttpUtil","postHealthBroadcastComment:"+address+"/"+topicId+" "+customerId+" "+topicId+" "+content);
-        Request request = new Request.Builder().url(address+"/"+topicId).addHeader("Authorization",credential).put(requestBody).build();
+        HashMap<String, String> map = new HashMap<>();
+        //map.put("comment",content);
+        //map.put("customerId",customerId);
+        String jsonStr = new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(jsonStr, JSON);
+
+//        MultipartBody.Builder builder = new MultipartBody.Builder()
+//                .setType(MultipartBody.FORM)
+//                .addFormDataPart("comment", content)
+//                .addFormDataPart("customerId",customerId);
+//        RequestBody requestBody = builder.build();
+        LogUtil.e("HttpUtil","putHealthBroadcastComment:"+address+"/"+topicId+"?comment="+content+"&customerId="+customerId);
+        Request request = new Request.Builder().url(address+"/"+topicId+"?comment="+content+"&customerId="+customerId).addHeader("Authorization",credential).put(requestBody).build();
         client.newCall(request).enqueue(callback);
     }
 
