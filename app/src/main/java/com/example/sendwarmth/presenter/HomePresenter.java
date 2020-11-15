@@ -17,6 +17,7 @@ import org.litepal.LitePal;
 import java.io.IOException;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -40,7 +41,7 @@ public class HomePresenter
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
                 e.printStackTrace();
-                ((MainActivity)context).runOnUiThread(new Runnable() {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
@@ -51,52 +52,51 @@ public class HomePresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("HomePresenter",responsData);
-                List<ServiceClass> internetList = Utility.handleServiceClassList(responsData);
-                List<ServiceClass> localList = LitePal.findAll(ServiceClass.class);
-                for(ServiceClass localServiceClass : localList){
-                    String internetId = localServiceClass.getInternetId();
-                    boolean flag = true;
-                    for(ServiceClass internetServiceClass : internetList){
-                        if(internetServiceClass.getInternetId().equals(internetId)){
-                            flag = false;
-                            break;
+                final String responseData = response.body().string();
+                LogUtil.e("HomePresenter",responseData);
+                if(Utility.checkResponse(responseData,context)){
+                    List<ServiceClass> internetList = Utility.handleServiceClassList(responseData);
+                    List<ServiceClass> localList = LitePal.findAll(ServiceClass.class);
+                    for(ServiceClass localServiceClass : localList){
+                        String internetId = localServiceClass.getInternetId();
+                        boolean flag = true;
+                        for(ServiceClass internetServiceClass : internetList){
+                            if(internetServiceClass.getInternetId().equals(internetId)){
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if(flag){
+                            localServiceClass.delete();
                         }
                     }
-                    if(flag){
-                        localServiceClass.delete();
+                    LogUtil.e("HomePresenter","internetList number: " + internetList.size());
+                    for(ServiceClass serviceClass : internetList){
+                        ServiceClass temp = LitePal.where("internetId = ?",serviceClass.getInternetId()).findFirst(ServiceClass.class);
+                        if(temp == null){
+                            serviceClass.save();
+                            LogUtil.e("HomePresenter","save: " + serviceClass.getName());
+                        }else{
+                            temp.setImage(serviceClass.getImage());
+                            temp.setName(serviceClass.getName());
+                            temp.setOrderWorkType(serviceClass.getOrderWorkType());
+                            temp.setDes(serviceClass.getDes());
+                            temp.save();
+                        }
                     }
+                    List<ServiceClass> serviceClassList = LitePal.order("clickCount desc").limit(7).find(ServiceClass.class);
+                    LogUtil.e("HomePresenter","databaseList number: " + serviceClassList.size());
+                    ServiceClass serviceClass = new ServiceClass();
+                    serviceClass.setName("全部服务");
+                    serviceClassList.add(serviceClass);
+                    serviceClassAdapter.setmList(serviceClassList);
+                    ((AppCompatActivity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            serviceClassAdapter.notifyDataSetChanged();
+                        }
+                    });
                 }
-                LogUtil.e("HomePresenter","internetList number: " + internetList.size());
-                for(ServiceClass serviceClass : internetList){
-                    ServiceClass temp = LitePal.where("internetId = ?",serviceClass.getInternetId()).findFirst(ServiceClass.class);
-                    if(temp == null){
-                        serviceClass.save();
-                        LogUtil.e("HomePresenter","save: " + serviceClass.getName());
-                    }else{
-                        temp.setImage(serviceClass.getImage());
-                        temp.setName(serviceClass.getName());
-                        temp.setOrderWorkType(serviceClass.getOrderWorkType());
-                        temp.setDes(serviceClass.getDes());
-                        temp.save();
-                    }
-                }
-                List<ServiceClass> serviceClassList = LitePal.order("clickCount desc").limit(7).find(ServiceClass.class);
-                LogUtil.e("HomePresenter","databaseList number: " + serviceClassList.size());
-                ServiceClass serviceClass = new ServiceClass();
-                serviceClass.setName("全部服务");
-                serviceClassList.add(serviceClass);
-                serviceClassAdapter.setmList(serviceClassList);
-                ((MainActivity)context).runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        serviceClassAdapter.notifyDataSetChanged();
-                    }
-                });
-
             }
         });
     }

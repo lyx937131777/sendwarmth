@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import com.example.sendwarmth.MyInformationActivity;
 import com.example.sendwarmth.OrderActivity;
 import com.example.sendwarmth.R;
+import com.example.sendwarmth.SettingActivity;
 import com.example.sendwarmth.adapter.MenuAdapter;
 import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.Menu;
@@ -60,6 +62,11 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     private View allServiceOrder;
     private View allProductOrder;
 
+    private CircleImageView profile;
+    private TextView userName;
+    private TextView level;
+    private ImageView setting;
+
     private Customer customer;
     private SharedPreferences pref;
     private String credential;
@@ -84,13 +91,15 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         mMenuAdapter = new MenuAdapter(mMenuList);
         mMenuRecycler.setAdapter(mMenuAdapter);
 
-        CircleImageView profile = root.findViewById(R.id.profile);
-        final TextView userName = root.findViewById(R.id.user_name);
-        final TextView level = root.findViewById(R.id.level);
+        profile = root.findViewById(R.id.profile);
+        userName = root.findViewById(R.id.user_name);
+        level = root.findViewById(R.id.level);
+        setting = root.findViewById(R.id.setting);
 
         profile.setOnClickListener(this);
         userName.setOnClickListener(this);
         level.setOnClickListener(this);
+        setting.setOnClickListener(this);
 
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         credential = pref.getString("credential","");
@@ -157,6 +166,10 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
                 intent.putExtra("customer",customer);
                 startActivity(intent);
                 break;
+            }
+            case R.id.setting:{
+                Intent intent = new Intent(getContext(), SettingActivity.class);
+                startActivity(intent);
             }
         }
     }

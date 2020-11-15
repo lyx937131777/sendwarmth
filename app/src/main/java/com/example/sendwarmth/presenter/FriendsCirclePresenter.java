@@ -23,6 +23,7 @@ import org.litepal.LitePal;
 import java.io.IOException;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -48,7 +49,7 @@ public class FriendsCirclePresenter
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
                 e.printStackTrace();
-                ((MainActivity)context).runOnUiThread(new Runnable() {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
@@ -59,11 +60,11 @@ public class FriendsCirclePresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("FriendsCirclePresenter",responsData);
-                List<FriendsCircle> friendsCircleList = Utility.handleFriendsCircleList(responsData);
+                final String responseData = response.body().string();
+                LogUtil.e("FriendsCirclePresenter",responseData);
+                List<FriendsCircle> friendsCircleList = Utility.handleFriendsCircleList(responseData);
                 friendsCircleAdapter.setmList(friendsCircleList);
-                ((MainActivity)context).runOnUiThread(new Runnable() {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         friendsCircleAdapter.notifyDataSetChanged();
@@ -93,7 +94,7 @@ public class FriendsCirclePresenter
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
                 e.printStackTrace();
-                ((FriendsCircleActivity)context).runOnUiThread(new Runnable() {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
@@ -104,14 +105,12 @@ public class FriendsCirclePresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("FriendsCirclePresenter",responsData);
-                if(Utility.checkString(responsData,"code").equals("000")){
-                    ((FriendsCircleActivity)context).runOnUiThread(new Runnable()
-                    {
+                final String responseData = response.body().string();
+                LogUtil.e("FriendsCirclePresenter",responseData);
+                if(Utility.checkResponse(responseData,context)){
+                    ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             new AlertDialog.Builder(context)
                                     .setTitle("提示")
                                     .setMessage("删除成功")

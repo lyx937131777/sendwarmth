@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -42,11 +43,9 @@ public class NewFriendsCirclePresenter
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
-                ((NewFriendsCircleActivity)context).runOnUiThread(new Runnable()
-                {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -56,20 +55,18 @@ public class NewFriendsCirclePresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("NewFriendsCirclePresenter",responsData);
-                String image = Utility.checkString(responsData,"msg");
+                final String responseData = response.body().string();
+                LogUtil.e("NewFriendsCirclePresenter",responseData);
+                String image = Utility.checkString(responseData,"msg");
                 String address = HttpUtil.LocalAddress + "/api/blog";
                 HttpUtil.postFriendsCircleRequest(address, credential, content, image, new Callback()
                 {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e)
                     {
-                        ((NewFriendsCircleActivity)context).runOnUiThread(new Runnable()
-                        {
+                        ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                             @Override
-                            public void run()
-                            {
+                            public void run() {
                                 Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
                             }
                         });
@@ -79,14 +76,12 @@ public class NewFriendsCirclePresenter
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
                     {
-                        final String responsData = response.body().string();
-                        LogUtil.e("NewFriendsCirclePresenter",responsData);
-                        if(Utility.checkString(responsData,"code").equals("000")){
-                            ((NewFriendsCircleActivity)context).runOnUiThread(new Runnable()
-                            {
+                        final String responseData = response.body().string();
+                        LogUtil.e("NewFriendsCirclePresenter",responseData);
+                        if(Utility.checkString(responseData,"code").equals("000")){
+                            ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                                 @Override
-                                public void run()
-                                {
+                                public void run() {
                                     Toast.makeText(context, "发布成功", Toast.LENGTH_LONG).show();
                                 }
                             });

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -57,11 +58,9 @@ public class ProductOrderingPresenter
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e)
                 {
-                    ((ProductOrderingActivity)context).runOnUiThread(new Runnable()
-                    {
+                    ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
                         }
                     });
@@ -71,10 +70,10 @@ public class ProductOrderingPresenter
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
                 {
-                    final String responsData = response.body().string();
-                    LogUtil.e("ProductOrderingPresenter",responsData);
-                    if(Utility.checkString(responsData,"code") != null && Utility.checkString(responsData,"code").equals("000")){
-                        String shoppingCartId = Utility.handleShoppingCartId(responsData);
+                    final String responseData = response.body().string();
+                    LogUtil.e("ProductOrderingPresenter",responseData);
+                    if(Utility.checkResponse(responseData,context)){
+                        String shoppingCartId = Utility.handleShoppingCartId(responseData);
                         if(shoppingCartId.equals(Utility.ERROR_CODE)){
                             ((ProductOrderingActivity)context).runOnUiThread(new Runnable()
                             {
@@ -91,16 +90,6 @@ public class ProductOrderingPresenter
                         if(shoppingCartIds.size() == productList.size()){
                             postProductOrder();
                         }
-                    }else{
-                        ((ProductOrderingActivity)context).runOnUiThread(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                Toast.makeText(context, "数据传输发生错误", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        progressDialog.dismiss();
                     }
                 }
             });
@@ -116,7 +105,7 @@ public class ProductOrderingPresenter
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
-                ((ProductOrderingActivity)context).runOnUiThread(new Runnable()
+                ((AppCompatActivity)context).runOnUiThread(new Runnable()
                 {
                     @Override
                     public void run()
@@ -130,12 +119,12 @@ public class ProductOrderingPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("ProductOrderingPresenter",responsData);
-                if(Utility.checkString(responsData,"code") != null && Utility.checkString(responsData,"code").equals("000")){
+                final String responseData = response.body().string();
+                LogUtil.e("ProductOrderingPresenter",responseData);
+                if(Utility.checkResponse(responseData,context)){
                     LitePal.deleteAll(Product.class);
                     progressDialog.dismiss();
-                    ((ProductOrderingActivity)context).runOnUiThread(new Runnable()
+                    ((AppCompatActivity)context).runOnUiThread(new Runnable()
                     {
                         @Override
                         public void run()
@@ -159,16 +148,6 @@ public class ProductOrderingPresenter
                                     .show();
                         }
                     });
-                }else{
-                    ((ProductOrderingActivity)context).runOnUiThread(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            Toast.makeText(context, "数据传输发生错误", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    progressDialog.dismiss();
                 }
             }
         });

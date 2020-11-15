@@ -13,6 +13,7 @@ import com.example.sendwarmth.util.Utility;
 
 import java.io.IOException;
 
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -42,7 +43,7 @@ public class RegisterPresenter
                     public void onFailure(Call call, IOException e)
                     {
                         e.printStackTrace();
-                        ((RegisterActivity)context).runOnUiThread(new Runnable()
+                        ((AppCompatActivity)context).runOnUiThread(new Runnable()
                         {
                             @Override
                             public void run()
@@ -108,8 +109,7 @@ public class RegisterPresenter
                                     }
                                 });
                             }
-                        } else
-                        {
+                        } else {
                             ((RegisterActivity) context).runOnUiThread(new Runnable()
                             {
                                 @Override

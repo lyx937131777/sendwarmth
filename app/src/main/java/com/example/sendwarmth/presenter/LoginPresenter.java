@@ -23,6 +23,7 @@ import org.litepal.LitePal;
 
 import java.io.IOException;
 
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Credentials;
@@ -55,13 +56,10 @@ public class LoginPresenter
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
                 e.printStackTrace();
-                ((LoginActivity)context).runOnUiThread(new Runnable()
-                {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
-
                     }
                 });
                 progressDialog.dismiss();
@@ -87,9 +85,9 @@ public class LoginPresenter
                         @Override
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
                         {
-                            final String responsData = response.body().string();
-                            LogUtil.e("LoginPresenter",responsData);
-                            String role = Utility.getRole(responsData);
+                            final String responseData = response.body().string();
+                            LogUtil.e("LoginPresenter",responseData);
+                            String role = Utility.getRole(responseData);
                             LogUtil.e("LoginPresenter","role: " + role);
                             if(role.equals("customer") || role.equals("expert")){
                                 SharedPreferences.Editor editor = pref.edit();
@@ -100,7 +98,7 @@ public class LoginPresenter
                                 editor.putString("latest", String.valueOf(System.currentTimeMillis()));
                                 editor.apply();
                                 LitePal.deleteAll(Customer.class,"userId = ?",tel);
-                                Customer customer = Utility.handleCustomer(responsData);
+                                Customer customer = Utility.handleCustomer(responseData);
                                 customer.setUserId(tel);
                                 customer.setCredential(credential);
                                 customer.save();
@@ -108,7 +106,7 @@ public class LoginPresenter
                                 context.startActivity(intent_login);
                                 ((LoginActivity) context).finish();
                             }else{
-                                ((LoginActivity) context).runOnUiThread(new Runnable()
+                                ((AppCompatActivity) context).runOnUiThread(new Runnable()
                                 {
                                     @Override
                                     public void run()
@@ -127,7 +125,7 @@ public class LoginPresenter
 
                 }else if(Utility.checkString(responseData,"code").equals("500")){
                     if(Utility.checkString(responseData,"msg").equals("密码错误。")){
-                        ((LoginActivity) context).runOnUiThread(new Runnable()
+                        ((AppCompatActivity) context).runOnUiThread(new Runnable()
                         {
                             @Override
                             public void run()
@@ -140,7 +138,7 @@ public class LoginPresenter
                             }
                         });
                     }else{
-                        ((LoginActivity) context).runOnUiThread(new Runnable()
+                        ((AppCompatActivity) context).runOnUiThread(new Runnable()
                         {
                             @Override
                             public void run()

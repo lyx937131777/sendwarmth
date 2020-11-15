@@ -25,6 +25,7 @@ import org.litepal.LitePal;
 import java.io.IOException;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -59,7 +60,7 @@ public class ShoppingMallPresenter
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
                 e.printStackTrace();
-                ((MainActivity)context).runOnUiThread(new Runnable() {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
@@ -70,22 +71,24 @@ public class ShoppingMallPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("ShoppingMallPresenter",responsData);
-                List<ProductClass> tempList = Utility.handleProductClassList(responsData);
-                productClassList.clear();
-                if(tempList != null){
-                    productClassList.addAll(tempList);
-                }
-                productClassAdapter.setmList(productClassList);
-                tabAdapter.setmList(productClassList);
-                ((MainActivity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        productClassAdapter.notifyDataSetChanged();
-                        tabAdapter.notifyDataSetChanged();
+                final String responseData = response.body().string();
+                LogUtil.e("ShoppingMallPresenter",responseData);
+                if(Utility.checkResponse(responseData,context)){
+                    List<ProductClass> tempList = Utility.handleProductClassList(responseData);
+                    productClassList.clear();
+                    if(tempList != null){
+                        productClassList.addAll(tempList);
                     }
-                });
+                    productClassAdapter.setmList(productClassList);
+                    tabAdapter.setmList(productClassList);
+                    ((AppCompatActivity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            productClassAdapter.notifyDataSetChanged();
+                            tabAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
             }
         });
     }
@@ -99,7 +102,7 @@ public class ShoppingMallPresenter
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
                 e.printStackTrace();
-                ((MainActivity)context).runOnUiThread(new Runnable() {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
@@ -110,9 +113,9 @@ public class ShoppingMallPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("ProductClassPresenter",responsData);
-                List<Product> productList = Utility.handleProductList(responsData);
+                final String responseData = response.body().string();
+                LogUtil.e("ProductClassPresenter",responseData);
+                List<Product> productList = Utility.handleProductList(responseData);
                 for(Product product : productList){
                     Product localProduct = LitePal.where("internetId = ?",product.getInternetId()).findFirst(Product.class);
                     if(localProduct == null){
@@ -122,7 +125,7 @@ public class ShoppingMallPresenter
                     }
                 }
                 productClassAdapter.setProductList(productList);
-                ((MainActivity)context).runOnUiThread(new Runnable() {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         productClassAdapter.notifyDataSetChanged();

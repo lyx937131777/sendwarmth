@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -42,7 +43,7 @@ public class NewInterestingActivityPresenter
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
-                ((NewInterestingActivityActivity)context).runOnUiThread(new Runnable()
+                ((AppCompatActivity)context).runOnUiThread(new Runnable()
                 {
                     @Override
                     public void run()
@@ -56,20 +57,18 @@ public class NewInterestingActivityPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("NewInterestingActivityPresenter",responsData);
-                String image = Utility.checkString(responsData,"msg");
+                final String responseData = response.body().string();
+                LogUtil.e("NewInterestingActivityPresenter",responseData);
+                String image = Utility.checkString(responseData,"msg");
                 String address = HttpUtil.LocalAddress + "/api/activity";
                 HttpUtil.postInterestingActivityRequest(address, userId, credential, title, image, lowBudget, upBudget, maxNum, location, contactName, contactTel, description, new Callback()
                 {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e)
                     {
-                        ((NewInterestingActivityActivity)context).runOnUiThread(new Runnable()
-                        {
+                        ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                             @Override
-                            public void run()
-                            {
+                            public void run() {
                                 Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
                             }
                         });
@@ -79,14 +78,12 @@ public class NewInterestingActivityPresenter
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
                     {
-                        final String responsData = response.body().string();
-                        LogUtil.e("NewInterestingActivityPresenter",responsData);
-                        if(Utility.checkString(responsData,"code").equals("000")){
-                            ((NewInterestingActivityActivity)context).runOnUiThread(new Runnable()
-                            {
+                        final String responseData = response.body().string();
+                        LogUtil.e("NewInterestingActivityPresenter",responseData);
+                        if(Utility.checkString(responseData,"code").equals("000")){
+                            ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                                 @Override
-                                public void run()
-                                {
+                                public void run() {
                                     Toast.makeText(context, "发布成功", Toast.LENGTH_LONG).show();
                                 }
                             });

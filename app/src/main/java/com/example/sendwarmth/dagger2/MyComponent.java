@@ -14,6 +14,7 @@ import com.example.sendwarmth.presenter.PensionInstitutionPresenter;
 import com.example.sendwarmth.presenter.ProductOrderingPresenter;
 import com.example.sendwarmth.presenter.RegisterPresenter;
 import com.example.sendwarmth.presenter.ServiceWorkPresenter;
+import com.example.sendwarmth.presenter.SettingPresenter;
 import com.example.sendwarmth.presenter.ShoppingMallPresenter;
 
 import dagger.Component;
@@ -50,4 +51,6 @@ public interface MyComponent
     OrderingPresenter orderingPresenter();
 
     HealthBroadcastCommentPresenter healthBroadcastCommentPresenter();
+
+    SettingPresenter settingPresenter();
 }

@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 
 import com.example.sendwarmth.HealthBroadcastActivity;
@@ -55,7 +56,7 @@ public class HealthBroadcastCommentPresenter
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
                 e.printStackTrace();
-                ((HealthBroadcastActivity)context).runOnUiThread(new Runnable() {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
@@ -66,23 +67,25 @@ public class HealthBroadcastCommentPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("HealthBroadcastCommentPresenter",responsData);
-                final List<Comment> healthBroadcastCommentList = Utility.handleHealthBroadcastCommentList(responsData);
-                if(healthBroadcastCommentList!=null){
-                    LogUtil.e("HealthBroadcastCommentPresenter","The number of comments is " + healthBroadcastCommentList.size());
-                    healthBroadcastCommentAdapter.setmList(healthBroadcastCommentList);
-                    ((HealthBroadcastActivity)context).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            healthBroadcastCommentAdapter.notifyDataSetChanged();
-                            if(healthBroadcastCommentList.size()>0){
-                                ((HealthBroadcastActivity) context).findViewById(R.id.no_comment).setVisibility(View.GONE);
+                final String responseData = response.body().string();
+                LogUtil.e("HealthBroadcastCommentPresenter",responseData);
+                if(Utility.checkResponse(responseData,context)){
+                    final List<Comment> healthBroadcastCommentList = Utility.handleHealthBroadcastCommentList(responseData);
+                    if(healthBroadcastCommentList!=null){
+                        LogUtil.e("HealthBroadcastCommentPresenter","The number of comments is " + healthBroadcastCommentList.size());
+                        healthBroadcastCommentAdapter.setmList(healthBroadcastCommentList);
+                        ((AppCompatActivity)context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                healthBroadcastCommentAdapter.notifyDataSetChanged();
+                                if(healthBroadcastCommentList.size()>0){
+                                    ((HealthBroadcastActivity) context).findViewById(R.id.no_comment).setVisibility(View.GONE);
+                                }
+                                //NestedScrollView nestedScrollView = ((HealthBroadcastActivity) context).findViewById(R.id.nested_scroll_view);
+                                //LogUtil.e("HealthBroadcastCommentPresenter","nestedScrollView's height is " + nestedScrollView.getHeight());
                             }
-                            //NestedScrollView nestedScrollView = ((HealthBroadcastActivity) context).findViewById(R.id.nested_scroll_view);
-                            //LogUtil.e("HealthBroadcastCommentPresenter","nestedScrollView's height is " + nestedScrollView.getHeight());
-                        }
-                    });
+                        });
+                    }
                 }
             }
         });
@@ -98,11 +101,9 @@ public class HealthBroadcastCommentPresenter
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
-                ((HealthBroadcastActivity)context).runOnUiThread(new Runnable()
-                {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -113,12 +114,11 @@ public class HealthBroadcastCommentPresenter
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
                 //LogUtil.e("HealthBroadcastCommentPresenter","response");
-                final String responsData = response.body().string();
-                LogUtil.e("HealthBroadcastCommentPresenter","response"+responsData);
-                if(Utility.checkString(responsData,"code").equals("000")){
+                final String responseData = response.body().string();
+                LogUtil.e("HealthBroadcastCommentPresenter","response"+responseData);
+                if(Utility.checkString(responseData,"code").equals("000")){
                     updateHealthBroadcastComment(healthBroadcastCommentAdapter,topicId);
-                    ((HealthBroadcastActivity)context).runOnUiThread(new Runnable()
-                    {
+                    ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run()
                         {

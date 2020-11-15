@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -42,7 +43,7 @@ public class ServiceWorkPresenter
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
                 e.printStackTrace();
-                ((ServiceWorkActivity)context).runOnUiThread(new Runnable() {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
@@ -53,20 +54,19 @@ public class ServiceWorkPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("ServiceSubjectPresenter",responsData);
-                List<ServiceSubject> internetList = Utility.handleServiceSubjectList(responsData);
-                serviceClassRightAdapter.setServiceSubjectList(internetList);
-                ((ServiceWorkActivity)context).runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        serviceClassRightAdapter.notifyDataSetChanged();
-                        ((ServiceWorkActivity)context).scrollToInitialState();
-                    }
-                });
-
+                final String responseData = response.body().string();
+                LogUtil.e("ServiceSubjectPresenter",responseData);
+                if(Utility.checkResponse(responseData,context)){
+                    List<ServiceSubject> internetList = Utility.handleServiceSubjectList(responseData);
+                    serviceClassRightAdapter.setServiceSubjectList(internetList);
+                    ((AppCompatActivity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            serviceClassRightAdapter.notifyDataSetChanged();
+                            ((ServiceWorkActivity)context).scrollToInitialState();
+                        }
+                    });
+                }
             }
         });
     }
