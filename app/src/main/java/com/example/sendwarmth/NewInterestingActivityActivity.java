@@ -113,10 +113,26 @@ public class NewInterestingActivityActivity extends AppCompatActivity
                             .show();
                     break;
                 }
+                if(titleText.getText().toString().length() < 1){
+                    new AlertDialog.Builder(this)
+                            .setTitle("提示")
+                            .setMessage("请输入主题！")
+                            .setPositiveButton("确定", null)
+                            .show();
+                    break;
+                }
                 if(titleText.getText().toString().length() > 30){
                     new AlertDialog.Builder(this)
                             .setTitle("提示")
                             .setMessage("标题请限制在30字以内！")
+                            .setPositiveButton("确定", null)
+                            .show();
+                    break;
+                }
+                if(descriptionText.getText().toString().length() < 1){
+                    new AlertDialog.Builder(this)
+                            .setTitle("提示")
+                            .setMessage("请输入内容！")
                             .setPositiveButton("确定", null)
                             .show();
                     break;

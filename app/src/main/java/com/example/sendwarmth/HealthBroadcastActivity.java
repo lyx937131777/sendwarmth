@@ -10,7 +10,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,8 @@ public class HealthBroadcastActivity extends AppCompatActivity
     private HealthBroadcast healthBroadcast;
     private HealthBroadcastCommentPresenter healthBroadcastCommentPresenter;
     private HealthBroadcastCommentFragment healthBroadcastCommentFragment;
+    private SharedPreferences pref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -68,6 +72,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         author.setText("王专家");
         time.setText(TimeUtil.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         if(healthBroadcast.getDes().length()<100){      //预设内容的TextView为wrap_content，低于一定长度的文本显示于固定大小的文本框中
             ViewGroup.LayoutParams params = description.getLayoutParams();
@@ -81,6 +86,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
         //topicId在HealthBroadcastActivity中从Intent中获取后，才能传值给HealthBroadcastCommentFragment生成所需Fragment
         if(healthBroadcast.getInternetId()!=null){
             LogUtil.e("HealthBroadcastActivity",healthBroadcast.getInternetId());
+            comment_content.setText(pref.getString("comment_draft_"+healthBroadcast.getInternetId(),""));
             healthBroadcastCommentFragment=new HealthBroadcastCommentFragment(healthBroadcast.getInternetId());
             transaction.replace(R.id.fragment_health_broadcast_comment, healthBroadcastCommentFragment);
         }
@@ -125,5 +131,14 @@ public class HealthBroadcastActivity extends AppCompatActivity
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("comment_draft_"+healthBroadcast.getInternetId(), ((EditText)findViewById(R.id.comment_content)).getText().toString());
+        editor.apply();
+        LogUtil.e("HealthBroadcastActivity","comment draft is " + pref.getString("comment_draft"+healthBroadcast.getInternetId(),""));
     }
 }

@@ -114,6 +114,24 @@ public class HttpUtil
         client.newCall(request).enqueue(callback);
     }
 
+    //发布新健康播报
+    public static void postHealthBroadcastRequest(String address, String userId, String credential, String title, String image, String expireTime, String description, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        Customer customer = LitePal.where("userId = ?",userId).findFirst(Customer.class);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("creatorId",customer.getInternetId());
+        map.put("des",description);
+        map.put("expireTime",expireTime);
+        map.put("topicName",title);
+        map.put("topicPic",image);
+        String jsonStr = new Gson().toJson(map);
+        LogUtil.e("HttpUtil","postHealthBroadcastRequest: "+address + jsonStr);
+        RequestBody requestBody = RequestBody.create(jsonStr, JSON);
+        Request request = new Request.Builder().url(address).post(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
+
     //发布评论
     public static void putHealthBroadcastCommentRequest(String address,String credential, String content, String topicId,Callback callback){
         OkHttpClient client = new OkHttpClient();

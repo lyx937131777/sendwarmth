@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 
 import com.example.sendwarmth.db.FriendsCircle;
+import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.presenter.FriendsCirclePresenter;
 import com.example.sendwarmth.presenter.HealthBroadcastCommentPresenter;
 import com.example.sendwarmth.presenter.HealthBroadcastPresenter;
@@ -124,7 +125,7 @@ public class MyModule
     }
 
     @Provides
-    public HealthBroadcastCommentPresenter healthBroadcastCommentPresenter(Context context, SharedPreferences pref){
+    public HealthBroadcastCommentPresenter provideHealthBroadcastCommentPresenter(Context context, SharedPreferences pref){
         return new HealthBroadcastCommentPresenter(context, pref);
     }
 

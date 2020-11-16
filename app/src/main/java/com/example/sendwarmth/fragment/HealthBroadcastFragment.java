@@ -1,6 +1,8 @@
 package com.example.sendwarmth.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.presenter.HealthBroadcastPresenter;
+import com.example.sendwarmth.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +29,7 @@ public class HealthBroadcastFragment extends Fragment
     private RecyclerView recyclerView;
     private List<HealthBroadcast> healthBroadcastList = new ArrayList<>();
     private HealthBroadcastAdapter healthBroadcastAdapter;
-
     private HealthBroadcastPresenter healthBroadcastPresenter;
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View root = inflater.inflate(R.layout.fragment_health_broadcast, container, false);
@@ -53,5 +54,21 @@ public class HealthBroadcastFragment extends Fragment
     {
         super.onStart();
         healthBroadcastPresenter.updateHealthBroadcast(healthBroadcastAdapter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(healthBroadcastAdapter!=null){
+            healthBroadcastList = healthBroadcastAdapter.getmList();
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences.Editor editor = pref.edit();
+            for(HealthBroadcast healthBroadcast:healthBroadcastList){
+                editor.remove("comment_draft_"+healthBroadcast.getInternetId());
+            }
+            editor.commit();
+            LogUtil.e("HealthBroadcastFragment", "all the draft is cleaned");
+        }
+
     }
 }

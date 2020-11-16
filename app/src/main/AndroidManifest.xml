@@ -46,6 +46,7 @@
         <activity android:name=".OrderActivity" />
         <activity android:name=".NewInterestingActivityActivity" />
         <activity android:name=".MyInformationActivity" />
+        <activity android:name=".NewHealthBroadcastActivity"/>
         <activity
             android:name=".PensionInstitutionActivity"
             android:theme="@style/ImageFitSystemWindowsStyle" />
