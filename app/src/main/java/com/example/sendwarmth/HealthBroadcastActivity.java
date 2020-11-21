@@ -30,7 +30,6 @@ import com.example.sendwarmth.presenter.HealthBroadcastCommentPresenter;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.TimeUtil;
-import com.example.sendwarmth.util.Utility;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class HealthBroadcastActivity extends AppCompatActivity
@@ -59,7 +58,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
     private void initHealthBroadcast()
     {
         healthBroadcast = (HealthBroadcast) getIntent().getSerializableExtra("healthBroadcast");
-        ImageView pictrue = findViewById(R.id.picture);
+        ImageView picture = findViewById(R.id.picture);
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         CircleImageView authorProfile = findViewById(R.id.author_profile);
         TextView author = findViewById(R.id.author);
@@ -67,10 +66,11 @@ public class HealthBroadcastActivity extends AppCompatActivity
         TextView description = findViewById(R.id.description);
         final EditText comment_content = findViewById(R.id.comment_content);
         TextView release_button = findViewById(R.id.release_button);
-        Glide.with(this).load(HttpUtil.getResourceURL(healthBroadcast.getTopicPic())).into(pictrue);
+        Glide.with(this).load(HttpUtil.getResourceURL(healthBroadcast.getTopicPic())).into(picture);
         collapsingToolbarLayout.setTitle(healthBroadcast.getTopicName());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
-        author.setText("王专家");
+        if(healthBroadcast.getCreatorInfo() != null && healthBroadcast.getCreatorInfo().getCustomerInfo().getName()!=null)
+            author.setText(healthBroadcast.getCreatorInfo().getCustomerInfo().getName());
         time.setText(TimeUtil.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 

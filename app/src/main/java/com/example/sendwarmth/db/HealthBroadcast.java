@@ -1,9 +1,10 @@
 package com.example.sendwarmth.db;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class HealthBroadcast implements Serializable
 {
@@ -15,8 +16,8 @@ public class HealthBroadcast implements Serializable
     private String topicPic;
     private String topicClassType;
     private String topicStatus;
-    private String customerId;
-    private Customer customerInfo;
+    private String creatorId;
+    private HealthBroadcastCreator creatorInfo;
     private int validTime;
     private String commentInfos;
 
@@ -78,14 +79,14 @@ public class HealthBroadcast implements Serializable
         this.des = des;
     }
 
-    public String getCustomerId()
+    public String getCreatorId()
     {
-        return customerId;
+        return creatorId;
     }
 
-    public void setCustomerId(String customerId)
+    public void setCreatorId(String creatorId)
     {
-        this.customerId = customerId;
+        this.creatorId = creatorId;
     }
 
     public String getTopicPic()
@@ -108,14 +109,14 @@ public class HealthBroadcast implements Serializable
         this.topicStatus = topicStatus;
     }
 
-    public Customer getCustomerInfo()
+    public HealthBroadcastCreator getCreatorInfo()
     {
-        return customerInfo;
+        return creatorInfo;
     }
 
-    public void setCustomerInfo(Customer customerInfo)
+    public void setCreatorInfo(HealthBroadcastCreator creatorInfo)
     {
-        this.customerInfo = customerInfo;
+        this.creatorInfo = creatorInfo;
     }
 
     public int getValidTime()

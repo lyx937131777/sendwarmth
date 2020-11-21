@@ -71,6 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="26sp"
+                        android:text = "未知专家"
                         app:layout_constraintLeft_toRightOf="@id/author_profile"
                         app:layout_constraintTop_toTopOf="@id/author_profile"
                         android:layout_marginLeft="10dp"/>
