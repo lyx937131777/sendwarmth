@@ -52,7 +52,7 @@ public class ShoppingMallPresenter
     }
 
     public void updateProductClass(final ProductClassAdapter productClassAdapter, final TabAdapter tabAdapter, final List<ProductClass> productClassList){
-        String address = HttpUtil.LocalAddress + "/api/productclass/list";
+        final String address = HttpUtil.LocalAddress + "/api/productclass/list";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
         {
@@ -73,7 +73,7 @@ public class ShoppingMallPresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("ShoppingMallPresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     List<ProductClass> tempList = Utility.handleProductClassList(responseData);
                     productClassList.clear();
                     if(tempList != null){

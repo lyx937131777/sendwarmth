@@ -41,7 +41,7 @@ public class OrderingPresenter
     }
 
     public void updateWorker(double longitude, double latitude, final ArrayAdapter<Worker> workerArrayAdapter, final List<Worker> workerList){
-        String address = HttpUtil.LocalAddress + "/api/order/storeWorker";
+        final String address = HttpUtil.LocalAddress + "/api/order/storeWorker";
         final String credential = pref.getString("credential","");
         LogUtil.e("OrderingPresenter","longitude: " + longitude + "   latitude: " + latitude);
         HttpUtil.getStoreWorker(address, credential, longitude, latitude, new Callback()
@@ -62,7 +62,7 @@ public class OrderingPresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("OrderingPresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     workerList.clear();
                     Worker noWorker = new Worker();
                     noWorker.setWorkerName("不指定");
@@ -90,7 +90,7 @@ public class OrderingPresenter
     public void postOrder(String appointedPerson, double longitude, double latitude, String tel, String customerAddress, String houseNum, String orderType,
                           String serviceClassId, String serviceSubjectId, long startTime, long endTime, String message, double tip){
         progressDialog = ProgressDialog.show(context,"","生成订单中...");
-        String address = HttpUtil.LocalAddress + "/api/order";
+        final String address = HttpUtil.LocalAddress + "/api/order";
         String credential = pref.getString("credential","");
         HttpUtil.postOrderRequest(address, credential, appointedPerson, longitude, latitude, tel, customerAddress, houseNum, orderType,
                 serviceClassId, serviceSubjectId, startTime, endTime, message, tip, new Callback()
@@ -114,7 +114,7 @@ public class OrderingPresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("OrderingPresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     progressDialog.dismiss();
                     ((AppCompatActivity)context).runOnUiThread(new Runnable()
                     {

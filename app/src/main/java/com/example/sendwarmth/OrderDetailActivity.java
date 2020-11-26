@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +34,13 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.example.sendwarmth.dagger2.DaggerMyComponent;
+import com.example.sendwarmth.dagger2.MyComponent;
+import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.Order;
+import com.example.sendwarmth.presenter.OrderDetailPresenter;
 import com.example.sendwarmth.util.MapUtil;
+import com.example.sendwarmth.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,23 +48,25 @@ import java.util.List;
 public class OrderDetailActivity extends AppCompatActivity implements View.OnClickListener
 {
     private Order order;
+    private String state;
 
+    private TextView numberText,startTimeTypeText, endTimeTypeText,startTimeText,endTimeText,serviceClassText,serviceContentText,priceText,addressText,houseNumText,messageText;
+    private TextView tipText,orderTypeText,appointedPersonText,customerCommentText, attendantCommentText;
     private NestedScrollView nestedScrollView;
-    private CardView attendantNameCard;
-    private TextView attendantName;
-    private CardView attendantTelCard;
-    private TextView attendantTel;
-    private TextView state;
+    private CardView attendantNameCard,attendantTelCard;
+    private TextView attendantName,attendantTel;
+    private TextView stateText;
     private Button button;
-    private Button buttonLeft;
-    private Button buttonRight;
 
-
+    private CardView commentCard,customerCommentCard, attendantCommentCard;
+    private EditText commentText;
 
     public LocationClient mLocationClient;
     private MapView mapView;
     private BaiduMap baiduMap;
     private boolean isFirstLocate = true;
+
+    private OrderDetailPresenter orderDetailPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,8 +83,33 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(this)).build();
+        orderDetailPresenter = myComponent.orderDetailPresenter();
 
         order = (Order) getIntent().getSerializableExtra("order");
+        state = order.getState();
+
+        numberText = findViewById(R.id.number);
+        appointedPersonText = findViewById(R.id.appointed_person);
+        startTimeTypeText = findViewById(R.id.start_time_type);
+        endTimeTypeText = findViewById(R.id.end_time_type);
+        startTimeText = findViewById(R.id.start_time);
+        endTimeText = findViewById(R.id.end_time);
+        serviceClassText = findViewById(R.id.service_type);
+        serviceContentText = findViewById(R.id.service_content);
+        priceText = findViewById(R.id.price);
+        addressText = findViewById(R.id.address);
+        houseNumText = findViewById(R.id.house_num);
+        messageText = findViewById(R.id.message);
+        orderTypeText =  findViewById(R.id.order_type);
+        tipText = findViewById(R.id.tip);
+
+        customerCommentCard = findViewById(R.id.customer_comment_card);
+        customerCommentText = findViewById(R.id.customer_comment);
+        attendantCommentCard = findViewById(R.id.attendant_comment_card);
+        attendantCommentText = findViewById(R.id.attendant_comment);
+        commentCard = findViewById(R.id.comment_card);
+        commentText = findViewById(R.id.comment);
 
         nestedScrollView = findViewById(R.id.nested_scroll_view);
         attendantNameCard = findViewById(R.id.attendant_name_card);
@@ -84,36 +117,75 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         attendantTelCard = findViewById(R.id.attendant_tel_card);
         attendantTel = findViewById(R.id.attendant_tel);
 
-        state = findViewById(R.id.state);
+        stateText = findViewById(R.id.state);
         button = findViewById(R.id.button);
-        buttonLeft = findViewById(R.id.button_left);
-        buttonRight = findViewById(R.id.button_right);
 
-        state.setText(MapUtil.getOrderState(order.getState()));
-        if(order.getState().equals("toBePaid")){
+        numberText.setText(order.getOrderNo());
+        appointedPersonText.setText(order.getAppointedPerson());
+        if(state.equals("not_start") || state.equals("not_accepted") || state.equals("canceled")){
+            startTimeTypeText.setText("预计上门");
+            endTimeTypeText.setText("预计结束");
+            startTimeText.setText(TimeUtil.timeStampToString(order.getExpectStartTime(),"yyyy-MM-dd HH:mm"));
+            endTimeText.setText(TimeUtil.timeStampToString(order.getExpectEndTime(),"yyyy-MM-dd HH:mm"));
+        }else if(state.equals("on_going")){
+            startTimeTypeText.setText("上门时间");
+            endTimeTypeText.setText("预计结束");
+            startTimeText.setText(TimeUtil.timeStampToString(order.getStartTime(),"yyyy-MM-dd HH:mm"));
+            endTimeText.setText(TimeUtil.timeStampToString(order.getExpectEndTime(),"yyyy-MM-dd HH:mm"));
+        }else {
+            startTimeTypeText.setText("上门时间");
+            endTimeTypeText.setText("结束时间");
+            startTimeText.setText(TimeUtil.timeStampToString(order.getStartTime(),"yyyy-MM-dd HH:mm"));
+            endTimeText.setText(TimeUtil.timeStampToString(order.getEndTime(),"yyyy-MM-dd HH:mm"));
+        }
+        serviceClassText.setText(order.getServiceClassInfo().getName());
+        serviceContentText.setText(order.getServiceSubjectInfo().getName());
+        addressText.setText(order.getDeliveryDetail());
+        houseNumText.setText(order.getHouseNum());
+        messageText.setText(order.getMessage());
+        orderTypeText.setText(MapUtil.getOrderType(order.getOrderType()));
+        tipText.setText("" + order.getTip());
+
+
+        stateText.setText(MapUtil.getOrderState(state));
+        if(state.equals("not_accepted")){
+            button.setText("取消订单");
+        }else if(state.equals("un_evaluated")){
+            attendantCommentCard.setVisibility(View.VISIBLE);
+            if(order.getWorkerDes() != null){
+                attendantCommentText.setText(order.getWorkerDes());
+            }
+            commentCard.setVisibility(View.VISIBLE);
+            button.setText("评价订单");
+        } else if(state.equals("completed")){
+            customerCommentCard.setVisibility(View.VISIBLE);
+            if(order.getCustomerDes() != null){
+                customerCommentText.setText(order.getCustomerDes());
+            }
+            attendantCommentCard.setVisibility(View.VISIBLE);
+            if(order.getWorkerDes() != null){
+                attendantCommentText.setText(order.getWorkerDes());
+            }
             button.setVisibility(View.GONE);
-        }else if(order.getState().equals("unstart") || order.getState().equals("waiting")){
-            buttonLeft.setVisibility(View.GONE);
-            buttonRight.setVisibility(View.GONE);
-        }else if(order.getState().equals("moving")){
-            button.setText("确认到达");
-            buttonLeft.setVisibility(View.GONE);
-            buttonRight.setVisibility(View.GONE);
-        } else if(order.getState().equals("toBeEvaluated")) {
-            button.setText("评价此订单");
-            buttonLeft.setVisibility(View.GONE);
-            buttonRight.setVisibility(View.GONE);
         }else {
             button.setVisibility(View.GONE);
-            buttonLeft.setVisibility(View.GONE);
-            buttonRight.setVisibility(View.GONE);
         }
 
+        if(state.equals("not_accepted") || state.equals("not_start") || state.equals("on_going") || state.equals("canceled")){
+            priceText.setText(order.getSalaryHourly() + "元/时");
+        }else{
+            priceText.setText(order.getSalarySum() + "元");
+        }
+
+        attendantName.setText(order.getAttendantName());
+        attendantTel.setText(order.getAttendantTel());
         attendantNameCard.setOnClickListener(this);
         attendantName.setOnClickListener(this);
         attendantTelCard.setOnClickListener(this);
         attendantTel.setOnClickListener(this);
+        button.setOnClickListener(this);
 
+        //地图
         mapView = findViewById(R.id.bmapView);
         baiduMap = mapView.getMap();
         baiduMap.setMyLocationEnabled(true);
@@ -146,7 +218,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        if(!order.getState().equals("moving")){
+        if(!order.getState().equals("not_start")){
             mapView.setVisibility(View.GONE);
         }
     }
@@ -273,6 +345,13 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                             }
                         }).setNegativeButton("取消",null).show();
                 break;
+            }
+            case R.id.button:{
+                if(state.equals("not_accepted")){
+                    orderDetailPresenter.cancelOrder(order.getInternetId());
+                }else if(state.equals("un_evaluated")){
+                    orderDetailPresenter.commentOrder(order.getInternetId(),commentText.getText().toString(),5);
+                }
             }
         }
     }

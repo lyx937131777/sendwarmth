@@ -33,7 +33,7 @@ public class HomePresenter
     }
 
     public void updateServiceClass(final ServiceClassAdapter serviceClassAdapter){
-        String address = HttpUtil.LocalAddress + "/api/serviceclass/list";
+        final String address = HttpUtil.LocalAddress + "/api/serviceclass/list";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
         {
@@ -54,7 +54,7 @@ public class HomePresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("HomePresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     List<ServiceClass> internetList = Utility.handleServiceClassList(responseData);
                     List<ServiceClass> localList = LitePal.findAll(ServiceClass.class);
                     for(ServiceClass localServiceClass : localList){

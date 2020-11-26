@@ -85,7 +85,7 @@ public class FriendsCirclePresenter
     }
 
     public void delete(){
-        String address = HttpUtil.LocalAddress + "/api/blog";
+        final String address = HttpUtil.LocalAddress + "/api/blog";
         String credential = pref.getString("credential",null);
         FriendsCircle friendsCircle = ((FriendsCircleActivity)context).getFriendsCircle();
         HttpUtil.deleteFriendsCircleRequest(address, credential, friendsCircle.getInternetId(), new Callback()
@@ -107,7 +107,7 @@ public class FriendsCirclePresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("FriendsCirclePresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

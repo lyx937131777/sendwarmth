@@ -20,7 +20,7 @@ public class Order implements Serializable
     private String message;
     private double tip;
     @SerializedName("orderStatus")
-    private String state;//not_accepted, not_start, on_going, completed, canceled
+    private String state;//not_accepted, not_start, on_going, completed, canceled,un_evaluated
 
     private String serviceClassId;
     private ServiceClass serviceClassInfo;
@@ -65,6 +65,26 @@ public class Order implements Serializable
 //        this.serviceContent = serviceContent;
 //        this.salarySum = salarySum;
 //    }
+
+    public String getAttendantName(){
+        if(workerInfo != null){
+            return workerInfo.getWorkerName();
+        }
+        if(helperInfo != null){
+            return helperInfo.getName();
+        }
+        return "无";
+    }
+
+    public String getAttendantTel(){
+        if(workerInfo != null){
+            return workerInfo.getWorkerTel();
+        }
+        if(helperInfo != null){
+            return helperInfo.getTel();
+        }
+        return "无";
+    }
 
     public String getOrderNo()
     {

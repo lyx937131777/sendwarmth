@@ -69,10 +69,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                         Intent intent = new Intent(mContext, OrderActivity.class);
                         int index = 0;
                         switch (menu.getName()){
-                            case "toBePaid":
+                            case "toBeAccept":
                                 index = 1;
                                 break;
-                            case "toBeReceived":
+                            case "accepted":
                                 index = 2;
                                 break;
                             case "toBeEvaluated":

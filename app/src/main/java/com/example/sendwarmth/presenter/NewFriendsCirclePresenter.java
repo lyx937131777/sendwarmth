@@ -58,7 +58,7 @@ public class NewFriendsCirclePresenter
                 final String responseData = response.body().string();
                 LogUtil.e("NewFriendsCirclePresenter",responseData);
                 String image = Utility.checkString(responseData,"msg");
-                String address = HttpUtil.LocalAddress + "/api/blog";
+                final String address = HttpUtil.LocalAddress + "/api/blog";
                 HttpUtil.postFriendsCircleRequest(address, credential, content, image, new Callback()
                 {
                     @Override
@@ -78,7 +78,7 @@ public class NewFriendsCirclePresenter
                     {
                         final String responseData = response.body().string();
                         LogUtil.e("NewFriendsCirclePresenter",responseData);
-                        if(Utility.checkString(responseData,"code").equals("000")){
+                        if(Utility.checkResponse(responseData,context,address)){
                             ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

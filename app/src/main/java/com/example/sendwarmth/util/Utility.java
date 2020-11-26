@@ -13,6 +13,7 @@ import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.FriendsCircle;
 import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.db.InterestingActivity;
+import com.example.sendwarmth.db.Order;
 import com.example.sendwarmth.db.PensionInstitution;
 import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.db.ProductClass;
@@ -35,6 +36,7 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,77 +44,51 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Utility
 {
-
     public static final String ERROR_CODE = "-1";
+    public static final String TRUE_CODE = "000";
+    public static final String CODE_500 = "500";
 
-    //检查responseData的code是否为000，若不是则Toast问题所在
-    public static boolean checkResponse(String response, final Context context){
+    //检查responseData的code是否为000，若不是则返回问题所在
+    public static String checkResponse(String response){
         final String code = checkString(response,"code");
         if (code == null){
-            ((AppCompatActivity)(context)).runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    Toast.makeText(context, "后台code为null", Toast.LENGTH_LONG).show();
-                }
-            });
-            return false;
+            return "后台code为null";
         }
-        if(code.equals("000")){
-            return true;
+        if(code.equals(TRUE_CODE)){
+            return TRUE_CODE;
         }
         if(code.equals(ERROR_CODE)){
-            ((AppCompatActivity)(context)).runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    Toast.makeText(context, "数据返回格式有误", Toast.LENGTH_LONG).show();
-                }
-            });
-            return false;
+            return "数据返回格式有误";
         }
-        if(code.equals("500")){
-            final String msg = checkString(response,"msg");
+        if(code.equals(CODE_500)){
+            String msg = checkString(response,"msg");
             if(msg == null){
-                ((AppCompatActivity)(context)).runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        Toast.makeText(context, "code:500,msg为null", Toast.LENGTH_LONG).show();
-                    }
-                });
-            } else if(msg.equals(ERROR_CODE)){
-                ((AppCompatActivity)(context)).runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        Toast.makeText(context, "code:500,msg解析错误", Toast.LENGTH_LONG).show();
-                    }
-                });
-            } else {
-                ((AppCompatActivity)(context)).runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        Toast.makeText(context, "code:500, msg:" + msg, Toast.LENGTH_LONG).show();
-                    }
-                });
+                return "code:500,msg为null";
             }
-            return false;
+            if(msg.equals(ERROR_CODE)){
+                return "code:500,msg解析错误";
+            }
+            return "code:500, msg:" + msg;
         }
-        ((AppCompatActivity)(context)).runOnUiThread(new Runnable()
-        {
+        return "code:" + code;
+    }
+
+    //返回responseData的code是否为000，若不是则Toast接口名称和问题所在
+    public static boolean checkResponse(String response, final Context context, final String address){
+        final String result = checkResponse(response);
+        final String interfaceName = address.split(HttpUtil.LocalAddress)[1];
+        if(result.equals(TRUE_CODE)){
+            return true;
+        }
+        ((AppCompatActivity)context).runOnUiThread(new Runnable() {
             @Override
-            public void run()
-            {
-                Toast.makeText(context, "code:" + code, Toast.LENGTH_LONG).show();
+            public void run() {
+                Toast.makeText(context, interfaceName +":\n" + result, Toast.LENGTH_LONG).show();
             }
         });
+        LogUtil.e("Utility","interfaceName: " + interfaceName);
+        LogUtil.e("Utility","result: " + result);
+        LogUtil.e("Utility","response:" + response);
         return false;
     }
 
@@ -351,6 +327,26 @@ public class Utility
             }
         }
         return null;
+    }
+
+    //我的订单  订单列表
+    public static List<Order> handleOrderList(String response){
+        if (!TextUtils.isEmpty(response))
+        {
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String orderJson = jsonArray.toString();
+                return new Gson().fromJson(orderJson, new TypeToken<List<Order>>() {}.getType());
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return new ArrayList<>();
     }
 
 }

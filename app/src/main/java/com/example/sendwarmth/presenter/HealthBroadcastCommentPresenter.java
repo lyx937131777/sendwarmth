@@ -48,7 +48,7 @@ public class HealthBroadcastCommentPresenter
         this.pref = pref;
     }
     public void updateHealthBroadcastComment(final HealthBroadcastCommentAdapter healthBroadcastCommentAdapter,String topicId){
-        String address = HttpUtil.LocalAddress + "/api/topic/"+topicId;
+        final String address = HttpUtil.LocalAddress + "/api/topic/"+topicId;
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
         {
@@ -69,7 +69,7 @@ public class HealthBroadcastCommentPresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("HealthBroadcastCommentPresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     final List<Comment> healthBroadcastCommentList = Utility.handleHealthBroadcastCommentList(responseData);
                     if(healthBroadcastCommentList!=null){
                         LogUtil.e("HealthBroadcastCommentPresenter","The number of comments is " + healthBroadcastCommentList.size());

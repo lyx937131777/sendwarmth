@@ -33,7 +33,7 @@ public class PensionInstitutionPresenter
     }
 
     public void updatePensionInstitution(final PensionInstitutionAdapter pensionInstitutionAdapter){
-        String address = HttpUtil.LocalAddress + "/api/institution/list";
+        final String address = HttpUtil.LocalAddress + "/api/institution/list";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
         {
@@ -54,7 +54,7 @@ public class PensionInstitutionPresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("PensionInstitutionPresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     List<PensionInstitution> pensionInstitutionList = Utility.handlePensionInstitutionList(responseData);
                     pensionInstitutionAdapter.setmList(pensionInstitutionList);
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {

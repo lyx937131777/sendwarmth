@@ -33,7 +33,7 @@ public class HealthBroadcastPresenter
     }
 
     public void updateHealthBroadcast(final HealthBroadcastAdapter healthBroadcastAdapter){
-        String address = HttpUtil.LocalAddress + "/api/topic/unexpired";
+        final String address = HttpUtil.LocalAddress + "/api/topic/unexpired";
 //        String address = HttpUtil.LocalAddress + "/api/topic/list";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
@@ -55,7 +55,7 @@ public class HealthBroadcastPresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("HealthBroadcastPresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     List<HealthBroadcast> healthBroadcastList = Utility.handleHealthBroadcastList(responseData);
                     healthBroadcastAdapter.setmList(healthBroadcastList);
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {

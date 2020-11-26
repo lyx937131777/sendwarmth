@@ -32,7 +32,7 @@ public class InterestingActivityPresenter
     }
 
     public void updateInterestingActivity(final InterestingActivityAdapter interestingActivityAdapter){
-        String address = HttpUtil.LocalAddress + "/api/activity/list?activityStatus=pass";
+        final String address = HttpUtil.LocalAddress + "/api/activity/list?activityStatus=pass";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
         {
@@ -54,7 +54,7 @@ public class InterestingActivityPresenter
                 final String responseData = response.body().string();
 //                LogUtil.complete_e("InterestingActivityPresenter",responseData);
                 LogUtil.e("InterestringActivityPresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     List<InterestingActivity> interestingActivityList = Utility.handleInterestingActivityList(responseData);
                     interestingActivityAdapter.setmList(interestingActivityList);
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {

@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -44,7 +45,7 @@ public class NewHealthBroadcastPresenter
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
-                ((NewInterestingActivityActivity)context).runOnUiThread(new Runnable()
+                ((AppCompatActivity)context).runOnUiThread(new Runnable()
                 {
                     @Override
                     public void run()
@@ -61,13 +62,13 @@ public class NewHealthBroadcastPresenter
                 final String responsData = response.body().string();
                 LogUtil.e("NewInterestingActivityPresenter",responsData);
                 String image = Utility.checkString(responsData,"msg");
-                String address = HttpUtil.LocalAddress + "/api/topic";
+                final String address = HttpUtil.LocalAddress + "/api/topic";
                 HttpUtil.postHealthBroadcastRequest(address, userId, credential, title, image, expireTime, description, new Callback()
                 {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e)
                     {
-                        ((NewHealthBroadcastActivity)context).runOnUiThread(new Runnable()
+                        ((AppCompatActivity)context).runOnUiThread(new Runnable()
                         {
                             @Override
                             public void run()
@@ -83,8 +84,8 @@ public class NewHealthBroadcastPresenter
                     {
                         final String responsData = response.body().string();
                         LogUtil.e("NewHealthBroadcastPresenter",responsData);
-                        if(Utility.checkString(responsData,"code").equals("000")){
-                            ((NewHealthBroadcastActivity)context).runOnUiThread(new Runnable()
+                        if(Utility.checkResponse(responsData,context,address)){
+                            ((AppCompatActivity)context).runOnUiThread(new Runnable()
                             {
                                 @Override
                                 public void run()

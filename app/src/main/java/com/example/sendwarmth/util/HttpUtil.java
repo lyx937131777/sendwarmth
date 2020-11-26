@@ -250,4 +250,25 @@ public class HttpUtil
         client.newCall(request).enqueue(callback);
     }
 
+    //取消订单
+    public static void cancelOrderRequest(String address, String credential, String orderId,Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("orderId", orderId)
+                .build();
+        Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //评价订单
+    public static void commentOrderRequest(String address, String credential, String orderId, String comment, int score,Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("orderId", orderId)
+                .add("customerDes",comment)
+                .add("score",String.valueOf(score))
+                .build();
+        Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
 }

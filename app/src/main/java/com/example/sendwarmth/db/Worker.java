@@ -2,13 +2,15 @@ package com.example.sendwarmth.db;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Worker
+import java.io.Serializable;
+
+public class Worker implements Serializable
 {
     @SerializedName("id")
     private String internetId;
 
     private String workerName;
-    private String wokrerTel;
+    private String workerTel;
     private String employeeId;
     private int level;
     private double score;
@@ -52,14 +54,14 @@ public class Worker
         this.workerName = workerName;
     }
 
-    public String getWokrerTel()
+    public String getWorkerTel()
     {
-        return wokrerTel;
+        return workerTel;
     }
 
-    public void setWokrerTel(String wokrerTel)
+    public void setWorkerTel(String workerTel)
     {
-        this.wokrerTel = wokrerTel;
+        this.workerTel = workerTel;
     }
 
     public String getEmployeeId()

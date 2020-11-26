@@ -32,8 +32,8 @@ import java.util.List;
 public class PersonalCenterFragment extends Fragment implements View.OnClickListener
 {
     private RecyclerView serviceOrderMenuRecycler;
-    private Menu[] serviceOrderMenus = {new Menu("toBePaid",R.drawable.to_be_paid,"待付款"),
-            new Menu("toBeReceived",R.drawable.to_be_received,"待收货"),
+    private Menu[] serviceOrderMenus = {new Menu("toBeAccept",R.drawable.to_be_paid,"待接单"),
+            new Menu("accepted",R.drawable.to_be_received,"已接单"),
             new Menu("toBeEvaluated",R.drawable.to_be_evaluated,"待评价"),
             new Menu("closed",R.drawable.completed,"已结束")};
     private List<Menu> serviceOrderMenuList = new ArrayList<>();

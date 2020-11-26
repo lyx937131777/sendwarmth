@@ -48,7 +48,7 @@ public class ProductOrderingPresenter
         this.contactPerson = contactPerson;
         this.contactTel = contactTel;
         this.deliveryAddress = deliveryAddress;
-        String address = HttpUtil.LocalAddress + "/api/shoppingcart";
+        final String address = HttpUtil.LocalAddress + "/api/shoppingcart";
         final String credential = pref.getString("credential","");
         productList = LitePal.where("selectedCount > ?","0").find(Product.class);
         shoppingCartIds.clear();
@@ -72,7 +72,7 @@ public class ProductOrderingPresenter
                 {
                     final String responseData = response.body().string();
                     LogUtil.e("ProductOrderingPresenter",responseData);
-                    if(Utility.checkResponse(responseData,context)){
+                    if(Utility.checkResponse(responseData,context,address)){
                         String shoppingCartId = Utility.handleShoppingCartId(responseData);
                         if(shoppingCartId.equals(Utility.ERROR_CODE)){
                             ((ProductOrderingActivity)context).runOnUiThread(new Runnable()
@@ -98,7 +98,7 @@ public class ProductOrderingPresenter
     }
 
     public void postProductOrder(){
-        String address = HttpUtil.LocalAddress + "/api/orderproduct/create";
+        final String address = HttpUtil.LocalAddress + "/api/orderproduct/create";
         final String credential = pref.getString("credential","");
         HttpUtil.postProductOrderRequest(address, credential, contactPerson, contactTel, deliveryAddress, shoppingCartIds, new Callback()
         {
@@ -121,7 +121,7 @@ public class ProductOrderingPresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("ProductOrderingPresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     LitePal.deleteAll(Product.class);
                     progressDialog.dismiss();
                     ((AppCompatActivity)context).runOnUiThread(new Runnable()

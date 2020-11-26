@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 public class OrderPagerAdapter extends FragmentStatePagerAdapter
 {
     @StringRes
-    private static final int[] TAB_TITLES = new int[] {R.string.title_all_orders, R.string.title_to_be_paid_orders,R.string.title_to_be_received_orders,R.string.title_to_be_evaluated_orders,R.string.title_closed_orders};
+    private static final int[] TAB_TITLES = new int[] {R.string.title_all_orders, R.string.title_to_be_accepted_orders,R.string.title_accepted_orders,R.string.title_to_be_evaluated_orders,R.string.title_closed_orders};
     private final Context mContext;
 
     public OrderPagerAdapter(Context context, FragmentManager fm)

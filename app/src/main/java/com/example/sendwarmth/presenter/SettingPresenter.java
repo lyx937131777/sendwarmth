@@ -22,7 +22,7 @@ import okhttp3.Response;
 public class SettingPresenter
 {
     //TODO 上一个在服务器上的版本
-    public static final String LAST_VERSION = "0.3.0";
+    public static final String LAST_VERSION = "0.4.0";
     private Context context;
     private SharedPreferences pref;
 
@@ -32,7 +32,7 @@ public class SettingPresenter
     }
 
     public void getLatestVersion(final String version){
-        String address = HttpUtil.LocalAddress + "/api/version/newest?isTendant=false";
+        final String address = HttpUtil.LocalAddress + "/api/version/newest?isTendant=false";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
         {
@@ -52,7 +52,7 @@ public class SettingPresenter
             {
                 String responseData = response.body().string();
                 LogUtil.e("SettingPresenter",responseData);
-                if(Utility.checkResponse(responseData,context)){
+                if(Utility.checkResponse(responseData,context,address)){
                     String latestVersion = Utility.checkDataString(responseData,"versionNo");
                     if(latestVersion == null || latestVersion.equals(Utility.ERROR_CODE)){
                         ((AppCompatActivity)context).runOnUiThread(new Runnable() {
