@@ -49,14 +49,14 @@ public class FriendsCircleActivity extends AppCompatActivity
     private void initFriendsCircle()
     {
         friendsCircle= (FriendsCircle) getIntent().getSerializableExtra("friendsCircle");
-        ImageView pictrue = findViewById(R.id.picture);
+        ImageView picture = findViewById(R.id.picture);
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         CircleImageView authorProfile = findViewById(R.id.author_profile);
         TextView author = findViewById(R.id.author);
         TextView time = findViewById(R.id.time);
         TextView description = findViewById(R.id.description);
 
-        Glide.with(this).load(HttpUtil.getResourceURL(friendsCircle.getPicture())).into(pictrue);
+        Glide.with(this).load(HttpUtil.getResourceURL(friendsCircle.getPicture())).into(picture);
         collapsingToolbarLayout.setTitle("");
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         author.setText(friendsCircle.getCustomerInfo().getName());

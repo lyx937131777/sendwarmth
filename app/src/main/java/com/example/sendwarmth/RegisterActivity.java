@@ -344,7 +344,6 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
                 break;
             }
 
-            // TODO 注册按钮
             case R.id.register:
                 tel = telText.getText().toString();
                 password = passwordText.getText().toString();

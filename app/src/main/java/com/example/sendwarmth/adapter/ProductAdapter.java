@@ -1,6 +1,7 @@
 package com.example.sendwarmth.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.sendwarmth.ProductActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.presenter.ShoppingMallPresenter;
@@ -103,6 +105,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 }
                 shoppingMallPresenter.refresh();
                 notifyDataSetChanged();
+            }
+        });
+        holder.view.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                int position = holder.getAdapterPosition();
+                Product product = mList.get(position);
+                Intent intent = new Intent(mContext, ProductActivity.class);
+                intent.putExtra("product",product);
+                mContext.startActivity(intent);
             }
         });
         return holder;

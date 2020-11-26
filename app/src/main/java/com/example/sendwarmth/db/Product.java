@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import org.litepal.crud.LitePalSupport;
 
-public class Product extends LitePalSupport
+import java.io.Serializable;
+
+public class Product extends LitePalSupport implements Serializable
 {
     @SerializedName("id")
     private String internetId;
@@ -24,6 +26,21 @@ public class Product extends LitePalSupport
     private int saleNum;
 
     private int selectedCount;
+
+
+    public String getProductClassName(){
+        if(productClassInfo != null){
+            return productClassInfo.getName();
+        }
+        return "未知类别";
+    }
+
+    public String getBusinessName(){
+        if(businessInfo != null){
+            return businessInfo.getBusinessName();
+        }
+        return "未知商家";
+    }
 
     public String getInternetId()
     {
