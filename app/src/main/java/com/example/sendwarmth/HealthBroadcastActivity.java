@@ -27,6 +27,7 @@ import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.fragment.HealthBroadcastCommentFragment;
 import com.example.sendwarmth.presenter.HealthBroadcastCommentPresenter;
+import com.example.sendwarmth.presenter.HealthBroadcastSubCommentPresenter;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.TimeUtil;
@@ -36,6 +37,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
 {
     private HealthBroadcast healthBroadcast;
     private HealthBroadcastCommentPresenter healthBroadcastCommentPresenter;
+    private HealthBroadcastSubCommentPresenter healthBroadcastSubCommentPresenter;
     private HealthBroadcastCommentFragment healthBroadcastCommentFragment;
     private SharedPreferences pref;
 
@@ -52,6 +54,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
         }
         MyComponent myComponent=DaggerMyComponent.builder().myModule(new MyModule(this)).build();
         healthBroadcastCommentPresenter = myComponent.healthBroadcastCommentPresenter();
+        healthBroadcastSubCommentPresenter = myComponent.healthBroadcastSubCommentPresenter();
         initHealthBroadcast();
     }
 
@@ -73,6 +76,10 @@ public class HealthBroadcastActivity extends AppCompatActivity
             author.setText(healthBroadcast.getCreatorInfo().getCustomerInfo().getName());
         time.setText(TimeUtil.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove("commentId");
+        editor.apply();
 
         if(healthBroadcast.getDes().length()<100){      //预设内容的TextView为wrap_content，低于一定长度的文本显示于固定大小的文本框中
             ViewGroup.LayoutParams params = description.getLayoutParams();
@@ -112,7 +119,14 @@ public class HealthBroadcastActivity extends AppCompatActivity
                                         public void onClick(DialogInterface dialog, int which)
                                         {
                                             LogUtil.e("HealthBroadcastActivity",comment_content.getText().toString());
-                                            healthBroadcastCommentPresenter.putHealthBroadcastComment(healthBroadcastCommentFragment.getHealthBroadcastCommentAdapter(),comment_content.getText().toString(),healthBroadcast.getInternetId());
+
+                                            String commentId = pref.getString("commentId","");
+                                            if(commentId.equals("")){
+                                                healthBroadcastCommentPresenter.putHealthBroadcastComment(healthBroadcastCommentFragment.getHealthBroadcastCommentAdapter(),comment_content.getText().toString(),healthBroadcast.getInternetId());
+                                            } else{
+                                                healthBroadcastSubCommentPresenter.putHealthBroadcastSubComment(healthBroadcastCommentFragment.findAdapterByCommentId(commentId),comment_content.getText().toString(),commentId);
+                                            }
+
                                         }
                                     })
                             .setNegativeButton("取消",null).show();
@@ -140,5 +154,19 @@ public class HealthBroadcastActivity extends AppCompatActivity
         editor.putString("comment_draft_"+healthBroadcast.getInternetId(), ((EditText)findViewById(R.id.comment_content)).getText().toString());
         editor.apply();
         LogUtil.e("HealthBroadcastActivity","comment draft is " + pref.getString("comment_draft"+healthBroadcast.getInternetId(),""));
+    }
+
+    @Override
+    public void onBackPressed() {
+        String commentId = pref.getString("commentId", "");
+        if(!commentId.equals("")){
+            EditText comment_content = findViewById(R.id.comment_content);
+            comment_content.setHint("");
+            SharedPreferences.Editor editor = pref.edit();
+            editor.remove("commentId");
+            editor.apply();
+        } else{
+            super.onBackPressed();
+        }
     }
 }

@@ -4,23 +4,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.adapter.HealthBroadcastAdapter;
 import com.example.sendwarmth.adapter.HealthBroadcastCommentAdapter;
+import com.example.sendwarmth.adapter.HealthBroadcastSubCommentAdapter;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
 import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.Comment;
-import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.presenter.HealthBroadcastCommentPresenter;
-import com.example.sendwarmth.presenter.HealthBroadcastPresenter;
 import com.example.sendwarmth.util.LogUtil;
 
 import java.util.ArrayList;
@@ -30,6 +28,7 @@ public class HealthBroadcastCommentFragment extends Fragment {
     private RecyclerView recyclerView;
     private String topicId;
     private List<Comment> healthBroadcastCommentList = new ArrayList<>();
+    private List<HealthBroadcastSubCommentAdapter> healthBroadcastSubCommentAdapterList = new ArrayList<>();
     private HealthBroadcastCommentAdapter healthBroadcastCommentAdapter;
     private HealthBroadcastCommentPresenter healthBroadcastCommentPresenter;
 
@@ -45,7 +44,7 @@ public class HealthBroadcastCommentFragment extends Fragment {
         initHealthBroadcastComment();
         recyclerView = root.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        healthBroadcastCommentAdapter = new HealthBroadcastCommentAdapter(healthBroadcastCommentList);
+        healthBroadcastCommentAdapter = new HealthBroadcastCommentAdapter(healthBroadcastCommentList, healthBroadcastSubCommentAdapterList);
         recyclerView.setAdapter(healthBroadcastCommentAdapter);
         return root;
     }
@@ -53,6 +52,7 @@ public class HealthBroadcastCommentFragment extends Fragment {
     private void initHealthBroadcastComment()
     {
         healthBroadcastCommentList.clear();
+        healthBroadcastSubCommentAdapterList.clear();
     }
 
     @Override
@@ -64,5 +64,23 @@ public class HealthBroadcastCommentFragment extends Fragment {
 
     public HealthBroadcastCommentAdapter getHealthBroadcastCommentAdapter() {
         return healthBroadcastCommentAdapter;
+    }
+
+    public List<HealthBroadcastSubCommentAdapter> getHealthBroadcastSubCommentAdapterList() {
+        return healthBroadcastSubCommentAdapterList;
+    }
+
+    public HealthBroadcastSubCommentAdapter findAdapterByCommentId(String commentId){
+        int sub, len = healthBroadcastCommentAdapter.getmList().size();
+        for (sub = 0; sub < len; sub++) {
+            LogUtil.e("HealthBroadcastCommentFragment",healthBroadcastCommentAdapter.getmList().get(sub).getInternetId());
+            if(healthBroadcastCommentAdapter.getmList().get(sub).getInternetId().equals(commentId)){
+                break;
+            }
+        }
+        if(sub != len){
+            return healthBroadcastSubCommentAdapterList.get(sub);
+        }
+        return null;
     }
 }

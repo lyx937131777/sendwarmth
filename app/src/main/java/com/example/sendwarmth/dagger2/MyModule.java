@@ -10,6 +10,7 @@ import com.example.sendwarmth.db.HealthBroadcast;
 import com.example.sendwarmth.presenter.FriendsCirclePresenter;
 import com.example.sendwarmth.presenter.HealthBroadcastCommentPresenter;
 import com.example.sendwarmth.presenter.HealthBroadcastPresenter;
+import com.example.sendwarmth.presenter.HealthBroadcastSubCommentPresenter;
 import com.example.sendwarmth.presenter.HomePresenter;
 import com.example.sendwarmth.presenter.InterestingActivityPresenter;
 import com.example.sendwarmth.presenter.LoginPresenter;
@@ -144,5 +145,10 @@ public class MyModule
     @Provides
     public OrderDetailPresenter provideOrderDetailPresenter(Context context, SharedPreferences pref){
         return new OrderDetailPresenter(context, pref);
+    }
+
+    @Provides
+    public HealthBroadcastSubCommentPresenter healthBroadcastSubCommentPresenter(Context context, SharedPreferences pref){
+        return new HealthBroadcastSubCommentPresenter(context, pref);
     }
 }

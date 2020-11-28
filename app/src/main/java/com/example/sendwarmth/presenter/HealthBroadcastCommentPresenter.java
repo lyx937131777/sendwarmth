@@ -5,32 +5,21 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.NestedScrollView;
 
 import com.example.sendwarmth.HealthBroadcastActivity;
-import com.example.sendwarmth.MainActivity;
-import com.example.sendwarmth.NewFriendsCircleActivity;
-import com.example.sendwarmth.NewInterestingActivityActivity;
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.adapter.HealthBroadcastAdapter;
 import com.example.sendwarmth.adapter.HealthBroadcastCommentAdapter;
 import com.example.sendwarmth.db.Comment;
-import com.example.sendwarmth.db.HealthBroadcast;
-import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.Utility;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -96,7 +85,7 @@ public class HealthBroadcastCommentPresenter
         String address = HttpUtil.LocalAddress + "/api/topic/comment";
         final String credential = pref.getString("credential","");
 
-        HttpUtil.putHealthBroadcastCommentRequest(address, credential, content, topicId,new Callback()
+        HttpUtil.putCommentRequest(address, credential, content, topicId,new Callback()
         {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
@@ -125,8 +114,8 @@ public class HealthBroadcastCommentPresenter
                             Toast.makeText(context, "发布成功", Toast.LENGTH_LONG).show();
                         }
                     });
-                    EditText comment_content = ((HealthBroadcastActivity)context).findViewById(R.id.comment_content);
-                    comment_content.setText("");
+                    EditText commentContent = ((AppCompatActivity)context).findViewById(R.id.comment_content);
+                    commentContent.setText("");
                 }
                 progressDialog.dismiss();
             }

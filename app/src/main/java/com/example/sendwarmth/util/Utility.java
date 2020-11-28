@@ -246,6 +246,25 @@ public class Utility
         }
         return null;
     }
+
+    public static Comment handleHealthBroadcastSubComment(String response){
+        if (!TextUtils.isEmpty(response)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                LogUtil.e("Utility","comment:"+dataObject.toString());
+                String subCommentJson = dataObject.toString();
+                //String healthBroadcastCommentJson = "[{\"id\":1,\"content\":\"test0\"},{\"id\":2,\"content\":\"test1\"},{\"id\":3,\"content\":\"test2\"},{\"id\":4,\"content\":\"test3\"}]";
+                //String healthBroadcastCommentJson = "";
+                return new Gson().fromJson(subCommentJson, new TypeToken<Comment>() {}.getType());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     //处理朋友圈
     public static List<FriendsCircle> handleFriendsCircleList(String response){
         if (!TextUtils.isEmpty(response)) {

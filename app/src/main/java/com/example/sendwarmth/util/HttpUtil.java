@@ -133,7 +133,7 @@ public class HttpUtil
     }
 
     //发布评论
-    public static void putHealthBroadcastCommentRequest(String address,String credential, String content, String topicId,Callback callback){
+    public static void putCommentRequest(String address, String credential, String content, String targetId, Callback callback){
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
@@ -149,8 +149,8 @@ public class HttpUtil
 //                .addFormDataPart("comment", content)
 //                .addFormDataPart("customerId",customerId);
 //        RequestBody requestBody = builder.build();
-        LogUtil.e("HttpUtil","putHealthBroadcastComment:"+address+"/"+topicId+"?comment="+content+"&customerId="+customerId);
-        Request request = new Request.Builder().url(address+"/"+topicId+"?comment="+content+"&customerId="+customerId).addHeader("Authorization",credential).put(requestBody).build();
+        LogUtil.e("HttpUtil","putComment:"+address+"/"+targetId+"?comment="+content+"&customerId="+customerId);
+        Request request = new Request.Builder().url(address+"/"+targetId+"?comment="+content+"&customerId="+customerId).addHeader("Authorization",credential).put(requestBody).build();
         client.newCall(request).enqueue(callback);
     }
 

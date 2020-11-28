@@ -3,6 +3,7 @@ package com.example.sendwarmth.db;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Comment implements Serializable {
     @SerializedName("id")
@@ -13,6 +14,8 @@ public class Comment implements Serializable {
     private String customerId;
     private Customer customerInfo;
     private String timestamp;
+    @SerializedName("commentInfos")
+    private List<Comment> subComment;
 
     public String getInternetId()
     {
@@ -82,5 +85,13 @@ public class Comment implements Serializable {
     public void setTimestamp(String timestamp)
     {
         this.timestamp = timestamp;
+    }
+
+    public List<Comment> getSubComment() {
+        return subComment;
+    }
+
+    public void setSubComment(List<Comment> subComment) {
+        this.subComment = subComment;
     }
 }
