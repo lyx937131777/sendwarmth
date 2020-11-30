@@ -72,7 +72,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
         Glide.with(this).load(HttpUtil.getResourceURL(healthBroadcast.getTopicPic())).into(picture);
         collapsingToolbarLayout.setTitle(healthBroadcast.getTopicName());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
-        if(healthBroadcast.getCreatorInfo() != null && healthBroadcast.getCreatorInfo().getCustomerInfo().getName()!=null)
+        if(healthBroadcast.getCreatorInfo() != null && healthBroadcast.getCreatorInfo().getCustomerInfo()!=null && healthBroadcast.getCreatorInfo().getCustomerInfo().getName()!=null)
             author.setText(healthBroadcast.getCreatorInfo().getCustomerInfo().getName());
         time.setText(TimeUtil.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
         pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -94,7 +94,8 @@ public class HealthBroadcastActivity extends AppCompatActivity
         if(healthBroadcast.getInternetId()!=null){
             LogUtil.e("HealthBroadcastActivity",healthBroadcast.getInternetId());
             comment_content.setText(pref.getString("comment_draft_"+healthBroadcast.getInternetId(),""));
-            healthBroadcastCommentFragment=new HealthBroadcastCommentFragment(healthBroadcast.getInternetId());
+            if(healthBroadcast.getCreatorInfo()!=null)
+                healthBroadcastCommentFragment=new HealthBroadcastCommentFragment(healthBroadcast.getInternetId(), healthBroadcast.getCreatorInfo().getInternetId());
             transaction.replace(R.id.fragment_health_broadcast_comment, healthBroadcastCommentFragment);
         }
         transaction.commit();
@@ -102,13 +103,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
         release_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(comment_content.getText().length()<6){
-                    new AlertDialog.Builder(HealthBroadcastActivity.this)
-                            .setTitle("提示")
-                            .setMessage("留言至少为6个字符")
-                            .setPositiveButton("确定",null)
-                            .show();
-                } else{
+
                     new AlertDialog.Builder(HealthBroadcastActivity.this)
                             .setTitle("提示")
                             .setMessage("确定发布该评论么？")
@@ -130,7 +125,6 @@ public class HealthBroadcastActivity extends AppCompatActivity
                                         }
                                     })
                             .setNegativeButton("取消",null).show();
-                }
             }
         });
     }

@@ -4,9 +4,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,13 +16,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.db.Customer;
-import com.example.sendwarmth.db.User;
-import com.example.sendwarmth.util.HttpUtil;
-import com.example.sendwarmth.util.Utility;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
 
 public class MyInformationActivity extends AppCompatActivity
 {
@@ -36,7 +26,6 @@ public class MyInformationActivity extends AppCompatActivity
     private TextView tel;
     private TextView personalDescription;
 
-    private User user;
 
     private Customer customer;
     private SharedPreferences pref;

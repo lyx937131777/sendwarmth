@@ -118,9 +118,9 @@ public class HttpUtil
     public static void postHealthBroadcastRequest(String address, String userId, String credential, String title, String image, String expireTime, String description, Callback callback){
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        Customer customer = LitePal.where("userId = ?",userId).findFirst(Customer.class);
         HashMap<String, String> map = new HashMap<>();
-        map.put("creatorId",customer.getInternetId());
+        Customer customer = LitePal.where("userId = ?",userId).findFirst(Customer.class);
+        map.put("creatorId",customer.getAccountId());
         map.put("des",description);
         map.put("expireTime",expireTime);
         map.put("topicName",title);

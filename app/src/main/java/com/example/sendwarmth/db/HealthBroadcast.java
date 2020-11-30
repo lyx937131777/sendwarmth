@@ -17,7 +17,7 @@ public class HealthBroadcast implements Serializable
     private String topicClassType;
     private String topicStatus;
     private String creatorId;
-    private HealthBroadcastCreator creatorInfo;
+    private Account creatorInfo;
     private int validTime;
     private String commentInfos;
 
@@ -109,12 +109,12 @@ public class HealthBroadcast implements Serializable
         this.topicStatus = topicStatus;
     }
 
-    public HealthBroadcastCreator getCreatorInfo()
+    public Account getCreatorInfo()
     {
         return creatorInfo;
     }
 
-    public void setCreatorInfo(HealthBroadcastCreator creatorInfo)
+    public void setCreatorInfo(Account creatorInfo)
     {
         this.creatorInfo = creatorInfo;
     }

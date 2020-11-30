@@ -36,7 +36,7 @@ public class HealthBroadcastCommentPresenter
         this.context = context;
         this.pref = pref;
     }
-    public void updateHealthBroadcastComment(final HealthBroadcastCommentAdapter healthBroadcastCommentAdapter,String topicId){
+    public void updateHealthBroadcastComment(final HealthBroadcastCommentAdapter healthBroadcastCommentAdapter, String topicId){
         final String address = HttpUtil.LocalAddress + "/api/topic/"+topicId;
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()

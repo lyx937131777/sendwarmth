@@ -27,13 +27,15 @@ import java.util.List;
 public class HealthBroadcastCommentFragment extends Fragment {
     private RecyclerView recyclerView;
     private String topicId;
+    private String topicCreatorId;
     private List<Comment> healthBroadcastCommentList = new ArrayList<>();
     private List<HealthBroadcastSubCommentAdapter> healthBroadcastSubCommentAdapterList = new ArrayList<>();
     private HealthBroadcastCommentAdapter healthBroadcastCommentAdapter;
     private HealthBroadcastCommentPresenter healthBroadcastCommentPresenter;
 
-    public HealthBroadcastCommentFragment(String topicId){
+    public HealthBroadcastCommentFragment(String topicId, String topicCreatorId){
         this.topicId = topicId;
+        this.topicCreatorId = topicCreatorId;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class HealthBroadcastCommentFragment extends Fragment {
         initHealthBroadcastComment();
         recyclerView = root.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        healthBroadcastCommentAdapter = new HealthBroadcastCommentAdapter(healthBroadcastCommentList, healthBroadcastSubCommentAdapterList);
+        healthBroadcastCommentAdapter = new HealthBroadcastCommentAdapter(healthBroadcastCommentList, healthBroadcastSubCommentAdapterList, topicCreatorId);
         recyclerView.setAdapter(healthBroadcastCommentAdapter);
         return root;
     }
@@ -59,7 +61,7 @@ public class HealthBroadcastCommentFragment extends Fragment {
     public void onStart()
     {
         super.onStart();
-        healthBroadcastCommentPresenter.updateHealthBroadcastComment(healthBroadcastCommentAdapter,topicId);
+        healthBroadcastCommentPresenter.updateHealthBroadcastComment(healthBroadcastCommentAdapter, topicId);
     }
 
     public HealthBroadcastCommentAdapter getHealthBroadcastCommentAdapter() {

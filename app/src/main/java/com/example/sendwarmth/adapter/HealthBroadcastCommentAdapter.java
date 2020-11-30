@@ -18,7 +18,10 @@ import com.bumptech.glide.Glide;
 import com.example.sendwarmth.R;
 
 import com.example.sendwarmth.db.Comment;
+import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.util.LogUtil;
+
+import org.litepal.LitePal;
 
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class HealthBroadcastCommentAdapter extends RecyclerView.Adapter<HealthBr
     private Context mContext;
     private List<Comment> mList;
     private List<HealthBroadcastSubCommentAdapter> healthBroadcastSubCommentAdapterList;
+    private String mId;
 
     static class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -47,9 +51,11 @@ public class HealthBroadcastCommentAdapter extends RecyclerView.Adapter<HealthBr
         }
     }
 
-    public HealthBroadcastCommentAdapter(List<Comment> commentList, List<HealthBroadcastSubCommentAdapter> adapterList){
+    public HealthBroadcastCommentAdapter(List<Comment> commentList, List<HealthBroadcastSubCommentAdapter> adapterList, String topicCreatorId
+    ){
         mList = commentList;
         healthBroadcastSubCommentAdapterList = adapterList;
+        mId = topicCreatorId;
     }
 
     @Override
@@ -62,24 +68,30 @@ public class HealthBroadcastCommentAdapter extends RecyclerView.Adapter<HealthBr
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_health_broadcast_comment, parent,false);
         final HealthBroadcastCommentAdapter.ViewHolder holder = new HealthBroadcastCommentAdapter.ViewHolder(view);
 
-        holder.view.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String userId = pref.getString("userId",null);
+        Customer customer = LitePal.where("userId=?",userId).findFirst(Customer.class);
+        if(customer.getAccountId().equals(mId)){
+            holder.view.setOnClickListener(new View.OnClickListener()
             {
-                int position = holder.getAdapterPosition();
-                Comment healthBroadcastComment = mList.get(position);
-                EditText commentContent = ((AppCompatActivity)mContext).findViewById(R.id.comment_content);
-                commentContent.requestFocus();
-                InputMethodManager inputMethodManager = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
-                commentContent.setHint("回复@" + healthBroadcastComment.getCustomerInfo().getName() + ":");
-                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("commentId", healthBroadcastComment.getInternetId());
-                editor.apply();
-            }
-        });
+                @Override
+                public void onClick(View view)
+                {
+                    int position = holder.getAdapterPosition();
+                    Comment healthBroadcastComment = mList.get(position);
+                    EditText commentContent = ((AppCompatActivity)mContext).findViewById(R.id.comment_content);
+                    commentContent.requestFocus();
+                    InputMethodManager inputMethodManager = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+                    commentContent.setHint("回复@" + healthBroadcastComment.getCustomerInfo().getName() + ":");
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("commentId", healthBroadcastComment.getInternetId());
+                    editor.apply();
+                }
+            });
+        }
+
         return holder;
     }
 

@@ -10,6 +10,7 @@ public class Customer extends LitePalSupport implements Serializable
 {
     @SerializedName("id")
     private String internetId;
+    private String accountId;
 
     private String userId;
     private String credential;
@@ -32,6 +33,14 @@ public class Customer extends LitePalSupport implements Serializable
 
     private int memberLevel;
     private double memberPoints;
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 
     public int getMemberLevel()
     {
