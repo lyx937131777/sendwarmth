@@ -69,20 +69,23 @@ public class InterestringActivityActivity extends AppCompatActivity
         description.setText(interestingActivity.getDescription());
         number.setText(String.valueOf(interestingActivity.getMaxNum()));
         location.setText(interestingActivity.getLocation());
-        if(interestingActivity.getPromoterName()!=null){
-            host.setText(interestingActivity.getPromoterName());
-            author.setText(interestingActivity.getPromoterName());
-        } else {
-            if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getLoginName()!=null){
-                host.setText(interestingActivity.getPromoter().getLoginName());
-                author.setText(interestingActivity.getPromoter().getLoginName());
-            }
-        }
-        if(interestingActivity.getContactTel()!=null){
-            tel.setText(interestingActivity.getContactTel());
-        } else if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getCustomer()!=null&&interestingActivity.getPromoter().getCustomer().getTel()!=null){
-            tel.setText(String.valueOf(interestingActivity.getPromoter().getCustomer().getTel()));
-        }
+        host.setText(interestingActivity.getHost());
+        author.setText(interestingActivity.getPromoterName());
+        tel.setText(interestingActivity.getContactTel());
+//        if(interestingActivity.getPromoterName()!=null){
+//            host.setText(interestingActivity.getPromoterName());
+//            author.setText(interestingActivity.getPromoterName());
+//        } else {
+//            if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getLoginName()!=null){
+//                host.setText(interestingActivity.getPromoter().getLoginName());
+//                author.setText(interestingActivity.getPromoter().getLoginName());
+//            }
+//        }
+//        if(interestingActivity.getContactTel()!=null){
+//            tel.setText(interestingActivity.getContactTel());
+//        } else if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getCustomer()!=null&&interestingActivity.getPromoter().getCustomer().getTel()!=null){
+//            tel.setText(String.valueOf(interestingActivity.getPromoter().getCustomer().getTel()));
+//        }
     }
 
     @Override

@@ -26,11 +26,17 @@ public class InterestingActivity implements Serializable
     private String audiStatus;
 
     private String promoterId;
-    private String promoterName;
-    private Promoter promoter;
+    private String host;
+    private Account promoter;
 
     private String time;
 
+    public String getPromoterName(){
+        if(promoter != null){
+            return promoter.getName();
+        }
+        return "未知发起人";
+    }
     public String getInternetId()
     {
         return internetId;
@@ -111,12 +117,12 @@ public class InterestingActivity implements Serializable
         this.reportedNum = reportedNum;
     }
 
-    public Promoter getPromoter()
+    public Account getPromoter()
     {
         return promoter;
     }
 
-    public void setPromoter(Promoter promoter)
+    public void setPromoter(Account promoter)
     {
         this.promoter = promoter;
     }
@@ -151,13 +157,13 @@ public class InterestingActivity implements Serializable
         this.description = description;
     }
 
-    public String getPromoterName()
+    public String getHost()
     {
-        return promoterName;
+        return host;
     }
 
-    public void setPromoterName(String promoterName)
+    public void setHost(String host)
     {
-        this.promoterName = promoterName;
+        this.host = host;
     }
 }

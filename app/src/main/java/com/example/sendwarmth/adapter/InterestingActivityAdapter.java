@@ -84,8 +84,8 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
         Glide.with(mContext).load(R.drawable.profile_uri).into(holder.author);
         holder.title.setText(interestingActivity.getTitle());
         holder.description.setText(interestingActivity.getDescription());
-        if(interestingActivity.getPromoterName()!=null){
-            holder.authorName.setText(interestingActivity.getPromoterName());
+        if(interestingActivity.getHost()!=null){
+            holder.authorName.setText(interestingActivity.getHost());
         } else if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getLoginName()!=null){
             holder.authorName.setText(interestingActivity.getPromoter().getLoginName());
         }

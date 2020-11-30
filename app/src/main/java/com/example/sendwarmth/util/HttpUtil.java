@@ -99,8 +99,8 @@ public class HttpUtil
         Customer customer = LitePal.where("userId = ?",userId).findFirst(Customer.class);
         HashMap<String, String> map = new HashMap<>();
         map.put("activityName",title);
-        map.put("promoterLoginName",userId);
-        map.put("promoterId",customer.getInternetId());
+        map.put("host", contactName);
+        map.put("promoterId",customer.getAccountId());
         map.put("activityPic",image);
         map.put("activityBud",upBudget);
         map.put("maxNum",maxNum);

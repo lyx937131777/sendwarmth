@@ -23,6 +23,19 @@ public class Account implements Serializable
     private String helperId;
     private Helper helperInfo;
 
+    public String getName(){
+        if(customerInfo != null){
+            return customerInfo.getName();
+        }
+        if(workerInfo != null){
+            return workerInfo.getWorkerName();
+        }
+        if(helperInfo != null){
+            return helperInfo.getName();
+        }
+        return "未知账户";
+    }
+
     public String getInternetId() {
         return internetId;
     }
