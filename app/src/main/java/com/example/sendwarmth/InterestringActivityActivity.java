@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,7 +60,7 @@ public class InterestringActivityActivity extends AppCompatActivity
         TextView host = findViewById(R.id.host);
         TextView tel = findViewById(R.id.tel);
         TextView description = findViewById(R.id.description);
-        FloatingActionButton addButton = findViewById(R.id.add_button);
+        Button addButton = findViewById(R.id.button);
 
         Glide.with(this).load(HttpUtil.getResourceURL(interestingActivity.getImage())).into(pictrue);
         collapsingToolbarLayout.setTitle(" ");

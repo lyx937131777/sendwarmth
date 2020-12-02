@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#ff9800</color>
     <color name="colorPrimaryDark">@android:color/holo_orange_dark</color>
-    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="colorAccent">#304ffe</color>
 
     <color name="white">#FFFFFF</color><!-- 白色 -->
     <color name="ivory">#FFFFF0</color><!--象牙色 -->
