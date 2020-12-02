@@ -36,7 +36,7 @@ public class InterestingActivityFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View root = inflater.inflate(R.layout.fragment_interesting_activity, container, false);
         MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(getContext())).build();
-        interestingActivityPresenter = myComponent.interestingActivity();
+        interestingActivityPresenter = myComponent.interestingActivityPresenter();
 
         initInterestingActivities();
         recyclerView = root.findViewById(R.id.recycler);

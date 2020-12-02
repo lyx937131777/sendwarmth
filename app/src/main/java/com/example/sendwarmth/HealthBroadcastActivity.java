@@ -63,6 +63,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
         healthBroadcast = (HealthBroadcast) getIntent().getSerializableExtra("healthBroadcast");
         ImageView picture = findViewById(R.id.picture);
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        TextView title = findViewById(R.id.title);
         CircleImageView authorProfile = findViewById(R.id.author_profile);
         TextView author = findViewById(R.id.author);
         TextView time = findViewById(R.id.time);
@@ -70,7 +71,8 @@ public class HealthBroadcastActivity extends AppCompatActivity
         final EditText comment_content = findViewById(R.id.comment_content);
         TextView release_button = findViewById(R.id.release_button);
         Glide.with(this).load(HttpUtil.getResourceURL(healthBroadcast.getTopicPic())).into(picture);
-        collapsingToolbarLayout.setTitle(healthBroadcast.getTopicName());
+        collapsingToolbarLayout.setTitle(" ");
+        title.setText(healthBroadcast.getTopicName());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         if(healthBroadcast.getCreatorInfo() != null && healthBroadcast.getCreatorInfo().getCustomerInfo()!=null && healthBroadcast.getCreatorInfo().getCustomerInfo().getName()!=null)
             author.setText(healthBroadcast.getCreatorInfo().getCustomerInfo().getName());

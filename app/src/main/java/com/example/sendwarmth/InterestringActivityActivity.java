@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,15 +15,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.sendwarmth.dagger2.DaggerMyComponent;
+import com.example.sendwarmth.dagger2.MyComponent;
+import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.InterestingActivity;
+import com.example.sendwarmth.presenter.InterestingActivityPresenter;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class InterestringActivityActivity extends AppCompatActivity
 {
     private InterestingActivity interestingActivity;
-
+    private InterestingActivityPresenter interestingActivityPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -33,6 +40,8 @@ public class InterestringActivityActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(InterestringActivityActivity.this)).build();
+        interestingActivityPresenter = myComponent.interestingActivityPresenter();
         initInterestingActivity();
     }
 
@@ -42,6 +51,7 @@ public class InterestringActivityActivity extends AppCompatActivity
         ImageView pictrue = findViewById(R.id.picture);
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         CircleImageView authorProfile = findViewById(R.id.author_profile);
+        TextView title = findViewById(R.id.title);
         TextView author = findViewById(R.id.author);
         TextView time = findViewById(R.id.time);
         TextView number = findViewById(R.id.number);
@@ -49,9 +59,12 @@ public class InterestringActivityActivity extends AppCompatActivity
         TextView host = findViewById(R.id.host);
         TextView tel = findViewById(R.id.tel);
         TextView description = findViewById(R.id.description);
+        FloatingActionButton addButton = findViewById(R.id.add_button);
 
         Glide.with(this).load(HttpUtil.getResourceURL(interestingActivity.getImage())).into(pictrue);
-        collapsingToolbarLayout.setTitle(interestingActivity.getTitle());
+        collapsingToolbarLayout.setTitle(" ");
+        title.setText(interestingActivity.getTitle());
+
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         if(interestingActivity.getTime()!=null){
             time.setText(interestingActivity.getTime());
@@ -72,6 +85,26 @@ public class InterestringActivityActivity extends AppCompatActivity
         host.setText(interestingActivity.getHost());
         author.setText(interestingActivity.getPromoterName());
         tel.setText(interestingActivity.getContactTel());
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(InterestringActivityActivity.this)
+                        .setTitle("提示")
+                        .setMessage("确定参加该活动么？")
+                        .setPositiveButton("确定", new
+                                DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which)
+                                    {
+                                        LogUtil.e("InterestingActivityActivity",interestingActivity.getInternetId());
+                                        interestingActivityPresenter.addParticipant(interestingActivity.getInternetId());
+                                    }
+                                })
+                        .setNegativeButton("取消",null).show();
+            }
+        });
+
 //        if(interestingActivity.getPromoterName()!=null){
 //            host.setText(interestingActivity.getPromoterName());
 //            author.setText(interestingActivity.getPromoterName());

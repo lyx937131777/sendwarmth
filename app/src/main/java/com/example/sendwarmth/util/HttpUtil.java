@@ -113,7 +113,28 @@ public class HttpUtil
         Request request = new Request.Builder().url(address).post(requestBody).addHeader("Authorization",credential).build();
         client.newCall(request).enqueue(callback);
     }
+    //参加活动
+    public static void putInterestingActivityParticipantRequest(String address,String credential,String activityId,Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        String customerId = customer.getInternetId();
+        HashMap<String, String> map = new HashMap<>();
+        //map.put("comment",content);
+        //map.put("customerId",customerId);
+        String jsonStr = new Gson().toJson(map);
+        RequestBody requestBody = RequestBody.create(jsonStr, JSON);
 
+//        MultipartBody.Builder builder = new MultipartBody.Builder()
+//                .setType(MultipartBody.FORM)
+//                .addFormDataPart("comment", content)
+//                .addFormDataPart("customerId",customerId);
+//        RequestBody requestBody = builder.build();
+        LogUtil.e("HttpUtil","putParticipant:"+address+"/"+activityId+"?customerId="+customerId);
+        Request request = new Request.Builder().url(address+"/"+activityId+"?customerId="+customerId).addHeader("Authorization",credential).put(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+    
     //发布新健康播报
     public static void postHealthBroadcastRequest(String address, String userId, String credential, String title, String image, String expireTime, String description, Callback callback){
         OkHttpClient client = new OkHttpClient();

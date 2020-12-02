@@ -31,7 +31,7 @@ public interface MyComponent
 
     HomePresenter homePresenter();
 
-    InterestingActivityPresenter interestingActivity();
+    InterestingActivityPresenter interestingActivityPresenter();
 
     NewInterestingActivityPresenter newInterestingActivityPresenter();
 

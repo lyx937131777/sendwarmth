@@ -86,11 +86,11 @@ public class HealthBroadcastSubCommentPresenter
                         {
                             healthBroadcastSubCommentAdapter.notifyDataSetChanged();
                             Toast.makeText(context, "发布成功", Toast.LENGTH_LONG).show();
+                            EditText comment_content = ((HealthBroadcastActivity)context).findViewById(R.id.comment_content);
+                            comment_content.setText("");
+                            comment_content.clearFocus();
                         }
                     });
-                    EditText comment_content = ((HealthBroadcastActivity)context).findViewById(R.id.comment_content);
-                    comment_content.setText("");
-                    comment_content.clearFocus();
                 }
                 progressDialog.dismiss();
             }
