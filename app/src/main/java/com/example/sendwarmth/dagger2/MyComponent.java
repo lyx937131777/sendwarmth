@@ -14,6 +14,7 @@ import com.example.sendwarmth.presenter.OrderDetailPresenter;
 import com.example.sendwarmth.presenter.OrderPresenter;
 import com.example.sendwarmth.presenter.OrderingPresenter;
 import com.example.sendwarmth.presenter.PensionInstitutionPresenter;
+import com.example.sendwarmth.presenter.ProductOrderPresenter;
 import com.example.sendwarmth.presenter.ProductOrderingPresenter;
 import com.example.sendwarmth.presenter.RegisterPresenter;
 import com.example.sendwarmth.presenter.ServiceWorkPresenter;
@@ -62,4 +63,6 @@ public interface MyComponent
     OrderDetailPresenter orderDetailPresenter();
 
     HealthBroadcastSubCommentPresenter healthBroadcastSubCommentPresenter();
+
+    ProductOrderPresenter productOrderPresenter();
 }

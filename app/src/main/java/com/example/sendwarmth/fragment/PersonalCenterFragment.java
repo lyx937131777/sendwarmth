@@ -18,6 +18,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import com.example.sendwarmth.MyInformationActivity;
 import com.example.sendwarmth.OrderActivity;
+import com.example.sendwarmth.ProductOrderActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.SettingActivity;
 import com.example.sendwarmth.adapter.MenuAdapter;
@@ -126,7 +127,9 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
             @Override
             public void onClick(View view)
             {
-
+                Intent intent = new Intent(getContext(), ProductOrderActivity.class);
+                intent.putExtra("index",0);
+                startActivity(intent);
             }
         });
 

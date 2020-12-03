@@ -17,6 +17,7 @@ import com.example.sendwarmth.db.Order;
 import com.example.sendwarmth.db.PensionInstitution;
 import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.db.ProductClass;
+import com.example.sendwarmth.db.ProductOrder;
 import com.example.sendwarmth.db.ServiceClass;
 import com.example.sendwarmth.db.ServiceSubject;
 import com.example.sendwarmth.db.Worker;
@@ -348,7 +349,7 @@ public class Utility
         return null;
     }
 
-    //我的订单  订单列表
+    //我的服务订单  订单列表
     public static List<Order> handleOrderList(String response){
         if (!TextUtils.isEmpty(response))
         {
@@ -360,6 +361,26 @@ public class Utility
                 JSONArray jsonArray = dataObject.getJSONArray("content");
                 String orderJson = jsonArray.toString();
                 return new Gson().fromJson(orderJson, new TypeToken<List<Order>>() {}.getType());
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    //我的商品订单  订单列表
+    public static List<ProductOrder> handleProductOrderList(String response){
+        if (!TextUtils.isEmpty(response))
+        {
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String productOrderJson = jsonArray.toString();
+                return new Gson().fromJson(productOrderJson, new TypeToken<List<ProductOrder>>() {}.getType());
             } catch (JSONException e)
             {
                 e.printStackTrace();

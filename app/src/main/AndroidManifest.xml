@@ -32,7 +32,7 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".ProductOrderActivity"></activity>
         <activity android:name=".SettingActivity" />
         <activity android:name=".LocationSelectActivity" />
         <activity android:name=".ProductOrderingActivity" />
@@ -50,7 +50,7 @@
         <activity android:name=".NewHealthBroadcastActivity" />
         <activity
             android:name=".ProductActivity"
-            android:theme="@style/ImageFitSystemWindowsStyle"/>
+            android:theme="@style/ImageFitSystemWindowsStyle" />
         <activity
             android:name=".PensionInstitutionActivity"
             android:theme="@style/ImageFitSystemWindowsStyle" />

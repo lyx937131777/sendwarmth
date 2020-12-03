@@ -9,7 +9,9 @@ public class MapUtil
 {
     private static Map<String,Integer> tipMap = new HashMap<>();
     private static Map<String,Integer> stateMap =new HashMap<>();
+    private static Map<String,Integer> productStateMap = new HashMap<>();
     private static Map<String,String> orderStateMap = new HashMap<>();
+    private static Map<String,String> productOrderStateMap = new HashMap<>();
     private static Map<String,String> roleMap = new HashMap<>();
     private static Map<String,String> orderType = new HashMap<>();
 
@@ -33,6 +35,20 @@ public class MapUtil
         orderStateMap.put("un_evaluated","待评价");
         orderStateMap.put("not_accepted","待接单");
 
+        productStateMap.put("un_paid",R.drawable.state_red);
+        productStateMap.put("paid",R.drawable.state_green);
+        productStateMap.put("dilivered",R.drawable.state_yellow);
+        productStateMap.put("received",R.drawable.state_blue);
+        productStateMap.put("cancel",R.drawable.state_red);
+        productStateMap.put("evaluated",R.drawable.state_green);
+
+        productOrderStateMap.put("un_paid","待付款");
+        productOrderStateMap.put("paid","待发货");
+        productOrderStateMap.put("dilivered","待收货");
+        productOrderStateMap.put("received","待评价");
+        productOrderStateMap.put("cancel","已取消");
+        productOrderStateMap.put("evaluated","已结束");
+
 
         roleMap.put("角色","notSelected");
         roleMap.put("普通用户","customer");
@@ -52,10 +68,16 @@ public class MapUtil
         return stateMap.get(s);
     }
 
+    public static int getProductState(String s){
+        return productStateMap.get(s);
+    }
     public static String getOrderState(String s){
         return orderStateMap.get(s);
     }
 
+    public static String getProductOrderState(String s){
+        return productOrderStateMap.get(s);
+    }
     public static String getRole(String s){
         return roleMap.get(s);
     }

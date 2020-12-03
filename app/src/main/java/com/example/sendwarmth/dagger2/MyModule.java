@@ -21,6 +21,7 @@ import com.example.sendwarmth.presenter.OrderDetailPresenter;
 import com.example.sendwarmth.presenter.OrderPresenter;
 import com.example.sendwarmth.presenter.OrderingPresenter;
 import com.example.sendwarmth.presenter.PensionInstitutionPresenter;
+import com.example.sendwarmth.presenter.ProductOrderPresenter;
 import com.example.sendwarmth.presenter.ProductOrderingPresenter;
 import com.example.sendwarmth.presenter.RegisterPresenter;
 import com.example.sendwarmth.presenter.ServiceWorkPresenter;
@@ -148,7 +149,12 @@ public class MyModule
     }
 
     @Provides
-    public HealthBroadcastSubCommentPresenter healthBroadcastSubCommentPresenter(Context context, SharedPreferences pref){
+    public HealthBroadcastSubCommentPresenter provideHealthBroadcastSubCommentPresenter(Context context, SharedPreferences pref){
         return new HealthBroadcastSubCommentPresenter(context, pref);
+    }
+
+    @Provides
+    public ProductOrderPresenter provideProductOrderPresenter(Context context, SharedPreferences pref){
+        return new ProductOrderPresenter(context, pref);
     }
 }
