@@ -53,7 +53,7 @@ public class InterestringActivityActivity extends AppCompatActivity
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         CircleImageView authorProfile = findViewById(R.id.author_profile);
         TextView title = findViewById(R.id.title);
-        TextView author = findViewById(R.id.author);
+        TextView author = findViewById(R.id.profile);
         TextView time = findViewById(R.id.time);
         TextView number = findViewById(R.id.number);
         TextView location = findViewById(R.id.location);

@@ -65,7 +65,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         TextView title = findViewById(R.id.title);
         CircleImageView authorProfile = findViewById(R.id.author_profile);
-        TextView author = findViewById(R.id.author);
+        TextView author = findViewById(R.id.profile);
         TextView time = findViewById(R.id.time);
         TextView description = findViewById(R.id.description);
         final EditText comment_content = findViewById(R.id.comment_content);
@@ -74,8 +74,8 @@ public class HealthBroadcastActivity extends AppCompatActivity
         collapsingToolbarLayout.setTitle(" ");
         title.setText(healthBroadcast.getTopicName());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
-        if(healthBroadcast.getCreatorInfo() != null && healthBroadcast.getCreatorInfo().getCustomerInfo()!=null && healthBroadcast.getCreatorInfo().getCustomerInfo().getName()!=null)
-            author.setText(healthBroadcast.getCreatorInfo().getCustomerInfo().getName());
+        if(healthBroadcast.getCreatorInfo() != null && healthBroadcast.getCreatorInfo().getCustomerInfo()!=null)
+            author.setText(healthBroadcast.getCreatorInfo().getCustomerInfo().getUserNameWithRole());
         time.setText(TimeUtil.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 

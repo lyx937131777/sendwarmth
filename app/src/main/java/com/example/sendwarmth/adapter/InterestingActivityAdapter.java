@@ -32,7 +32,7 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
         TextView title;
         TextView description;
         TextView time;
-        CircleImageView author;
+//        CircleImageView author;
         TextView authorName;
 
         public  ViewHolder(View view)
@@ -43,7 +43,7 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
             title = view.findViewById(R.id.title);
             description = view.findViewById(R.id.description);
             time = view.findViewById(R.id.time);
-            author = view.findViewById(R.id.author);
+//            author = view.findViewById(R.id.profile);
             authorName = view.findViewById(R.id.author_name);
         }
     }
@@ -81,13 +81,13 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
     {
         InterestingActivity interestingActivity = mList.get(position);
         Glide.with(mContext).load(HttpUtil.getResourceURL(interestingActivity.getImage())).into(holder.picture);
-        Glide.with(mContext).load(R.drawable.profile_uri).into(holder.author);
+//        Glide.with(mContext).load(R.drawable.profile_uri).into(holder.author);
         holder.title.setText(interestingActivity.getTitle());
         holder.description.setText(interestingActivity.getDescription());
         if(interestingActivity.getHost()!=null){
             holder.authorName.setText(interestingActivity.getHost());
-        } else if(interestingActivity.getPromoter()!=null&&interestingActivity.getPromoter().getLoginName()!=null){
-            holder.authorName.setText(interestingActivity.getPromoter().getLoginName());
+        } else if(interestingActivity.getPromoter()!=null){
+            holder.authorName.setText(interestingActivity.getPromoter().getName());
         }
         //holder.time.setText(interestingActivity.getContactTel());
     }

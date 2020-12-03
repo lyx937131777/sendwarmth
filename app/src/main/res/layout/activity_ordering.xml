@@ -101,7 +101,7 @@
                     <androidx.cardview.widget.CardView
                         android:id="@+id/area_card"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/whole_address"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
@@ -117,14 +117,6 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="5dp"
                             android:textSize="18sp"/>
-                        <TextView
-                            android:id="@+id/address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="18sp"
-                            android:textColor="@color/gray"
-                            android:layout_marginRight="50dp"
-                            android:layout_gravity="center_vertical|right"/>
                         <Button
                             android:id="@+id/location"
                             android:layout_width="25dp"
@@ -132,6 +124,25 @@
                             android:background="@drawable/location_black"
                             android:layout_gravity="center_vertical|right"
                             android:layout_marginRight="10dp"/>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:id="@+id/address"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:textSize="18sp"
+                                android:textColor="@color/gray"
+                                android:gravity="right|center_vertical"
+                                android:layout_marginLeft="100dp"
+                                android:layout_marginRight="50dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -156,7 +167,8 @@
                             android:id="@+id/house_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="3幢504"
+                            android:hint="例：3幢504"
+                            android:background="@null"
                             android:layout_gravity="center_vertical|right"
                             android:gravity="right"
                             android:layout_marginRight="10dp"/>
@@ -189,6 +201,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
                     android:hint="请输入手机号"
+                    android:background="@null"
                     android:gravity="right|center_vertical"
                     android:inputType="number"
                     android:textColor="@color/gray"
@@ -259,7 +272,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/message_card"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
@@ -275,14 +288,28 @@
                     android:textColor="@color/black"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp" />
-                <EditText
-                    android:id="@+id/message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:textColor="@color/gray"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center_vertical|right"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/message"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textColor="@color/gray"
+                        android:background="@null"
+                        android:hint="..."
+                        android:gravity="right|center_vertical"
+                        android:layout_marginLeft="100dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView

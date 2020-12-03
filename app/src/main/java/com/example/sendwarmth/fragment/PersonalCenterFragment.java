@@ -104,7 +104,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         credential = pref.getString("credential","");
         customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
-        userName.setText(customer.getUserName());
+        userName.setText(customer.getUserNameWithRole());
         level.setText("Lv "+customer.getMemberLevel());
 
 

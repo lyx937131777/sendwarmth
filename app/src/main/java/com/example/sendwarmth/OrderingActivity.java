@@ -307,6 +307,7 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
     }
 
     private void changePrice(){
+
         double priceBase = serviceSubject.getSalaryPerHour()*hour;
         price = priceBase + tip;
         BigDecimal b = new BigDecimal(price);

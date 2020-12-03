@@ -34,6 +34,38 @@ public class Customer extends LitePalSupport implements Serializable
     private int memberLevel;
     private double memberPoints;
 
+    private String roleType;
+
+    public String getNameWithRole(){
+        if(roleType.equals("customer")){
+            return name;
+        }
+        if(roleType.equals("expert")){
+            return name + "（专家）";
+        }
+        return name + "（未知角色）";
+    }
+
+    public String getUserNameWithRole(){
+        if(roleType.equals("customer")){
+            return userName;
+        }
+        if(roleType.equals("expert")){
+            return userName + "（专家）";
+        }
+        return userName + "（未知角色）";
+    }
+
+    public String getRoleType()
+    {
+        return roleType;
+    }
+
+    public void setRoleType(String roleType)
+    {
+        this.roleType = roleType;
+    }
+
     public String getAccountId() {
         return accountId;
     }

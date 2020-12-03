@@ -19,7 +19,6 @@ import com.example.sendwarmth.db.FriendsCircle;
 import com.example.sendwarmth.presenter.FriendsCirclePresenter;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.TimeUtil;
-import com.example.sendwarmth.util.Utility;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class FriendsCircleActivity extends AppCompatActivity
@@ -52,14 +51,14 @@ public class FriendsCircleActivity extends AppCompatActivity
         ImageView picture = findViewById(R.id.picture);
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         CircleImageView authorProfile = findViewById(R.id.author_profile);
-        TextView author = findViewById(R.id.author);
+        TextView author = findViewById(R.id.profile);
         TextView time = findViewById(R.id.time);
         TextView description = findViewById(R.id.description);
 
         Glide.with(this).load(HttpUtil.getResourceURL(friendsCircle.getPicture())).into(picture);
         collapsingToolbarLayout.setTitle("");
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
-        author.setText(friendsCircle.getCustomerInfo().getName());
+        author.setText(friendsCircle.getCustomerInfo().getUserName());
         time.setText(TimeUtil.timeStampToString(friendsCircle.getTimestamp(),"yyyy-MM-dd HH:mm"));
         description.setText(friendsCircle.getContent());
     }

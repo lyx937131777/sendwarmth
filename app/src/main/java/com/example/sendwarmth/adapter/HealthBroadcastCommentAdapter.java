@@ -100,7 +100,7 @@ public class HealthBroadcastCommentAdapter extends RecyclerView.Adapter<HealthBr
     {
         Comment healthBroadcastComment = mList.get(position);
         Glide.with(mContext).load(R.drawable.profile_uri).into(holder.authorProfile);
-        holder.authorName.setText(healthBroadcastComment.getCustomerInfo().getName());
+        holder.authorName.setText(healthBroadcastComment.getCustomerInfo().getUserNameWithRole());
 //        holder.description.setText(healthBroadcast.getDes());
 //        holder.time.setText(Utility.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
         holder.content.setText(healthBroadcastComment.getContent());

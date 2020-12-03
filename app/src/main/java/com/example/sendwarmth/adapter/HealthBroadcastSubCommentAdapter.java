@@ -65,7 +65,7 @@ public class HealthBroadcastSubCommentAdapter extends RecyclerView.Adapter<Healt
     public void onBindViewHolder(ViewHolder holder, int position)
     {
         Comment healthBroadcastComment = mList.get(position);
-        holder.authorName.setText(healthBroadcastComment.getCustomerInfo().getName());
+        holder.authorName.setText(healthBroadcastComment.getCustomerInfo().getUserNameWithRole());
 //        holder.description.setText(healthBroadcast.getDes());
 //        holder.time.setText(Utility.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
         holder.content.setText(healthBroadcastComment.getContent());

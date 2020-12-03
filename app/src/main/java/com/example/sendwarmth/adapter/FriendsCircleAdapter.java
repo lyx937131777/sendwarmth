@@ -29,20 +29,20 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<FriendsCircleAdap
     {
         View view;
         ImageView picture;
-        TextView title;
+        TextView authorName;
         TextView content;
         TextView time;
-        CircleImageView author;
+        CircleImageView authorProfile;
 
         public  ViewHolder(View view)
         {
             super(view);
             this.view = view;
             picture = view.findViewById(R.id.picture);
-            title = view.findViewById(R.id.title);
+            authorName = view.findViewById(R.id.author_name);
             content = view.findViewById(R.id.content);
             time = view.findViewById(R.id.time);
-            author = view.findViewById(R.id.author);
+            authorProfile = view.findViewById(R.id.author_profile);
         }
     }
 
@@ -79,8 +79,8 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<FriendsCircleAdap
     {
         FriendsCircle friendsCircle = mList.get(position);
         Glide.with(mContext).load(HttpUtil.getResourceURL(friendsCircle.getPicture())).into(holder.picture);
-        Glide.with(mContext).load(R.drawable.profile_uri).into(holder.author);
-        holder.title.setText(friendsCircle.getCustomerInfo().getName());
+        Glide.with(mContext).load(R.drawable.profile_uri).into(holder.authorProfile);
+        holder.authorName.setText(friendsCircle.getCustomerInfo().getUserName());
         holder.content.setText(friendsCircle.getContent());
         holder.time.setText(TimeUtil.timeStampToString(friendsCircle.getTimestamp(),"yyyy-MM-dd HH:mm"));
     }
