@@ -10,39 +10,32 @@ public class ServiceSubject implements Serializable
     private String internetId;
     @SerializedName("classId")
     private String serviceClassId;
-    @SerializedName("subjectName")
-    private String name;
+    private ServiceClass serviceClassInfo;
+    private String subjectName;
     private String type;
-    @SerializedName("subjectDes")
-    private String description;
-    @SerializedName("salaryPerHour")
+    private String subjectDes;
     private double salaryPerHour;
-
+    private double hurrySalaryPerHour;
     private String image;
 
-    private double hurrySalaryPerHour;
-    private String unit;
-    private int picture;
-
-    public ServiceSubject(String name, String type, String description, double salaryPerHour, String unit,
-                          int picture)
+    public ServiceClass getServiceClassInfo()
     {
-        this.name = name;
-        this.type = type;
-        this.description = description;
-        this.salaryPerHour = salaryPerHour;
-        this.unit = unit;
-        this.picture = picture;
+        return serviceClassInfo;
     }
 
-    public String getName()
+    public void setServiceClassInfo(ServiceClass serviceClassInfo)
     {
-        return name;
+        this.serviceClassInfo = serviceClassInfo;
     }
 
-    public void setName(String name)
+    public String getSubjectName()
     {
-        this.name = name;
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName)
+    {
+        this.subjectName = subjectName;
     }
 
     public String getType()
@@ -55,14 +48,14 @@ public class ServiceSubject implements Serializable
         this.type = type;
     }
 
-    public String getDescription()
+    public String getSubjectDes()
     {
-        return description;
+        return subjectDes;
     }
 
-    public void setDescription(String description)
+    public void setSubjectDes(String subjectDes)
     {
-        this.description = description;
+        this.subjectDes = subjectDes;
     }
 
     public double getSalaryPerHour()
@@ -73,26 +66,6 @@ public class ServiceSubject implements Serializable
     public void setSalaryPerHour(double salaryPerHour)
     {
         this.salaryPerHour = salaryPerHour;
-    }
-
-    public String getUnit()
-    {
-        return unit;
-    }
-
-    public void setUnit(String unit)
-    {
-        this.unit = unit;
-    }
-
-    public int getPicture()
-    {
-        return picture;
-    }
-
-    public void setPicture(int picture)
-    {
-        this.picture = picture;
     }
 
     public String getInternetId()

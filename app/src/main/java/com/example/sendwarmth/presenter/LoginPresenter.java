@@ -72,7 +72,7 @@ public class LoginPresenter
                 final String responseData = response.body().string();
                 LogUtil.e("LoginPresenter", responseData);
                 if(state == 200){
-                    String address = HttpUtil.LocalAddress + "/api/users/me";
+                    final String address = HttpUtil.LocalAddress + "/api/users/me";
                     final String credential = Credentials.basic(tel, password);
                     HttpUtil.getHttp(address, credential, new Callback()
                     {
@@ -87,39 +87,41 @@ public class LoginPresenter
                         {
                             final String responseData = response.body().string();
                             LogUtil.e("LoginPresenter",responseData);
-                            String role = Utility.getRole(responseData);
-                            LogUtil.e("LoginPresenter","role: " + role);
-                            if(role.equals("customer") || role.equals("expert")){
-                                SharedPreferences.Editor editor = pref.edit();
-                                editor.putString("userId", tel);
-                                editor.putString("password", password);
-                                editor.putString("credential",credential);
-                                editor.putString("role",role);
-                                editor.putString("latest", String.valueOf(System.currentTimeMillis()));
-                                editor.apply();
-                                LitePal.deleteAll(Customer.class,"userId = ?",tel);
-                                Customer customer = Utility.handleCustomer(responseData);
-                                customer.setUserId(tel);
-                                customer.setCredential(credential);
-                                customer.save();
-                                Intent intent_login = new Intent(context, MainActivity.class);
-                                context.startActivity(intent_login);
-                                ((LoginActivity) context).finish();
-                            }else{
-                                ((AppCompatActivity) context).runOnUiThread(new Runnable()
-                                {
-                                    @Override
-                                    public void run()
+                            if(Utility.checkResponse(responseData,context,address)){
+                                String role = Utility.getRole(responseData);
+                                LogUtil.e("LoginPresenter","role: " + role);
+                                if(role.equals("customer") || role.equals("expert")){
+                                    SharedPreferences.Editor editor = pref.edit();
+                                    editor.putString("userId", tel);
+                                    editor.putString("password", password);
+                                    editor.putString("credential",credential);
+                                    editor.putString("role",role);
+                                    editor.putString("latest", String.valueOf(System.currentTimeMillis()));
+                                    editor.apply();
+                                    LitePal.deleteAll(Customer.class,"userId = ?",tel);
+                                    Customer customer = Utility.handleCustomer(responseData);
+                                    customer.setUserId(tel);
+                                    customer.setCredential(credential);
+                                    customer.save();
+                                    Intent intent_login = new Intent(context, MainActivity.class);
+                                    context.startActivity(intent_login);
+                                    ((LoginActivity) context).finish();
+                                }else{
+                                    ((AppCompatActivity) context).runOnUiThread(new Runnable()
                                     {
-                                        new AlertDialog.Builder(context)
-                                                .setTitle("提示")
-                                                .setMessage("该账号无权登录此APP！")
-                                                .setPositiveButton("确定", null)
-                                                .show();
-                                    }
-                                });
+                                        @Override
+                                        public void run()
+                                        {
+                                            new AlertDialog.Builder(context)
+                                                    .setTitle("提示")
+                                                    .setMessage("该账号无权登录此APP！")
+                                                    .setPositiveButton("确定", null)
+                                                    .show();
+                                        }
+                                    });
+                                }
+                                progressDialog.dismiss();
                             }
-                            progressDialog.dismiss();
                         }
                     });
 

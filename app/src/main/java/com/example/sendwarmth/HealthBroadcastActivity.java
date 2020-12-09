@@ -96,9 +96,10 @@ public class HealthBroadcastActivity extends AppCompatActivity
         if(healthBroadcast.getInternetId()!=null){
             LogUtil.e("HealthBroadcastActivity",healthBroadcast.getInternetId());
             comment_content.setText(pref.getString("comment_draft_"+healthBroadcast.getInternetId(),""));
-            if(healthBroadcast.getCreatorInfo()!=null)
-                healthBroadcastCommentFragment=new HealthBroadcastCommentFragment(healthBroadcast.getInternetId(), healthBroadcast.getCreatorInfo().getInternetId());
-            transaction.replace(R.id.fragment_health_broadcast_comment, healthBroadcastCommentFragment);
+            if(healthBroadcast.getCreatorInfo() != null){
+                healthBroadcastCommentFragment = new HealthBroadcastCommentFragment(healthBroadcast.getInternetId(), healthBroadcast.getCreatorInfo().getInternetId());
+                transaction.replace(R.id.fragment_health_broadcast_comment, healthBroadcastCommentFragment);
+            }
         }
         transaction.commit();
 

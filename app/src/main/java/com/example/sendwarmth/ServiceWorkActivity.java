@@ -94,6 +94,8 @@ public class ServiceWorkActivity extends AppCompatActivity
                 serviceClassTabAdapter.notifyDataSetChanged();
             }
         });
+
+        serviceWorkPresenter.updateServiceSubject(serviceClassRightAdapter);
     }
 
     private void initServiceClass()
@@ -126,7 +128,7 @@ public class ServiceWorkActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-        serviceWorkPresenter.updateServiceSubject(serviceClassRightAdapter);
+//        serviceWorkPresenter.updateServiceSubject(serviceClassRightAdapter);
     }
 
     @Override

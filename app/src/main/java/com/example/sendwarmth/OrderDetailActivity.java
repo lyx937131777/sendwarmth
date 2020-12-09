@@ -139,7 +139,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
             endTimeText.setText(TimeUtil.timeStampToString(order.getEndTime(),"yyyy-MM-dd HH:mm"));
         }
         serviceClassText.setText(order.getServiceClassInfo().getName());
-        serviceContentText.setText(order.getServiceSubjectInfo().getName());
+        serviceContentText.setText(order.getServiceSubjectInfo().getSubjectName());
         addressText.setText(order.getDeliveryDetail());
         houseNumText.setText(order.getHouseNum());
         messageText.setText(order.getMessage());

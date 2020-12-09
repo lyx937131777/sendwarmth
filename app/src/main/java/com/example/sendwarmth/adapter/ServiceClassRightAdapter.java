@@ -67,7 +67,7 @@ public class ServiceClassRightAdapter extends RecyclerView.Adapter<ServiceClassR
     public void onBindViewHolder(ServiceClassRightAdapter.ViewHolder holder, int position)
     {
         ServiceClass serviceClass = mList.get(position);
-        holder.serviceClass.setText(serviceClass.getName());
+        holder.serviceClass.setText("---------------------------------------");
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         List<ServiceSubject> mServiceSubjectList = new ArrayList<>();
         for(ServiceSubject serviceSubject : serviceSubjectList){
@@ -77,6 +77,17 @@ public class ServiceClassRightAdapter extends RecyclerView.Adapter<ServiceClassR
         }
         ServiceSubjectAdapter serviceSubjectAdapter = new ServiceSubjectAdapter(mServiceSubjectList);
         holder.recyclerView.setAdapter(serviceSubjectAdapter);
+        if(mServiceSubjectList.size() == 0){
+            holder.serviceClass.setVisibility(View.GONE);
+            holder.recyclerView.setVisibility(View.GONE);
+        }else if(position == 0){
+            holder.serviceClass.setVisibility(View.GONE);
+            holder.recyclerView.setVisibility(View.VISIBLE);
+        }else {
+            holder.serviceClass.setVisibility(View.VISIBLE);
+            holder.recyclerView.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
