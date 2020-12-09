@@ -24,7 +24,6 @@ import com.example.sendwarmth.presenter.InterestingActivityPresenter;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class InterestringActivityActivity extends AppCompatActivity
 {
@@ -60,7 +59,7 @@ public class InterestringActivityActivity extends AppCompatActivity
         TextView host = findViewById(R.id.host);
         TextView tel = findViewById(R.id.tel);
         TextView description = findViewById(R.id.description);
-        Button addButton = findViewById(R.id.button);
+        Button joinButton = findViewById(R.id.join_button);
 
         Glide.with(this).load(HttpUtil.getResourceURL(interestingActivity.getImage())).into(pictrue);
         collapsingToolbarLayout.setTitle(" ");
@@ -86,7 +85,7 @@ public class InterestringActivityActivity extends AppCompatActivity
         host.setText(interestingActivity.getHost());
         author.setText(interestingActivity.getPromoterName());
         tel.setText(interestingActivity.getContactTel());
-        addButton.setOnClickListener(new View.OnClickListener() {
+        joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(InterestringActivityActivity.this)
@@ -107,8 +106,8 @@ public class InterestringActivityActivity extends AppCompatActivity
         });
 
         if(getIntent().getBooleanExtra("joined",false)){
-            addButton.setClickable(false);
-            addButton.setText("已参加");
+            joinButton.setClickable(false);
+            joinButton.setText("已参加");
         }
 //        if(interestingActivity.getPromoterName()!=null){
 //            host.setText(interestingActivity.getPromoterName());

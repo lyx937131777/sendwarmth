@@ -2,8 +2,10 @@ package com.example.sendwarmth.presenter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.sendwarmth.R;
 import com.example.sendwarmth.adapter.InterestingActivityAdapter;
 import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.util.HttpUtil;
@@ -127,6 +129,9 @@ public class InterestingActivityPresenter
                         @Override
                         public void run() {
                             Toast.makeText(context,"加入活动成功",Toast.LENGTH_LONG).show();
+                            Button joinButton = ((AppCompatActivity) context).findViewById(R.id.join_button);
+                            joinButton.setClickable(false);
+                            joinButton.setText("已参加");
                         }
                     });
                 } else if(Utility.checkString(responseData,"code").equals("500")){
