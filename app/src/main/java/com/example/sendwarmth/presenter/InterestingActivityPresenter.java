@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
-import com.example.sendwarmth.MainActivity;
 import com.example.sendwarmth.adapter.InterestingActivityAdapter;
 import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.util.HttpUtil;
@@ -53,7 +52,7 @@ public class InterestingActivityPresenter
             {
                 final String responseData = response.body().string();
 //                LogUtil.complete_e("InterestingActivityPresenter",responseData);
-                LogUtil.e("InterestringActivityPresenter",responseData);
+                LogUtil.e("InterestingActivityPresenter",responseData);
                 if(Utility.checkResponse(responseData,context,address)){
                     List<InterestingActivity> interestingActivityList = Utility.handleInterestingActivityList(responseData);
                     interestingActivityAdapter.setmList(interestingActivityList);
@@ -63,6 +62,39 @@ public class InterestingActivityPresenter
                             interestingActivityAdapter.notifyDataSetChanged();
                         }
                     });
+                    updateJoinedInterestingActivity(interestingActivityAdapter);
+                }
+            }
+        });
+    }
+    public void updateJoinedInterestingActivity(final InterestingActivityAdapter interestingActivityAdapter){
+        final String address = HttpUtil.LocalAddress + "/api/activity/my";
+        String credential = pref.getString("credential",null);
+        String type = "join";
+
+        HttpUtil.getJoinedActivity(address, credential, type, new Callback()
+        {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e)
+            {
+                e.printStackTrace();
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
+            {
+                final String responseData = response.body().string();
+//                LogUtil.complete_e("InterestingActivityPresenter",responseData);
+                LogUtil.e("InterestingActivityPresenter",responseData);
+                if(Utility.checkResponse(responseData,context,address)){
+                    List<InterestingActivity> joinedInterestingActivityList = Utility.handleInterestingActivityList(responseData);
+                    interestingActivityAdapter.setJoinedList(joinedInterestingActivityList);
                 }
             }
         });
@@ -89,7 +121,7 @@ public class InterestingActivityPresenter
             {
                 final String responseData = response.body().string();
 //                LogUtil.complete_e("InterestingActivityPresenter",responseData);
-                LogUtil.e("InterestringActivityPresenter",responseData);
+                LogUtil.e("InterestingActivityPresenter",responseData);
                 if(Utility.checkString(responseData,"code").equals("000")) {
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override

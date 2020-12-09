@@ -106,6 +106,10 @@ public class InterestringActivityActivity extends AppCompatActivity
             }
         });
 
+        if(getIntent().getBooleanExtra("joined",false)){
+            addButton.setClickable(false);
+            addButton.setText("已参加");
+        }
 //        if(interestingActivity.getPromoterName()!=null){
 //            host.setText(interestingActivity.getPromoterName());
 //            author.setText(interestingActivity.getPromoterName());

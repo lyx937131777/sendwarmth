@@ -13,17 +13,18 @@ import com.example.sendwarmth.InterestringActivityActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.LogUtil;
 
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public
-class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivityAdapter.ViewHolder>
+public class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivityAdapter.ViewHolder>
 {
     private Context mContext;
     private List<InterestingActivity> mList;
+    private List<InterestingActivity> joinedList;
 
     static class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -48,8 +49,9 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
         }
     }
 
-    public InterestingActivityAdapter(List<InterestingActivity> menuList){
+    public InterestingActivityAdapter(List<InterestingActivity> menuList, List<InterestingActivity> joinedList){
         mList = menuList;
+        this.joinedList = joinedList;
     }
 
     @Override
@@ -70,6 +72,8 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
                 InterestingActivity interestingActivity = mList.get(position);
                 Intent intent = new Intent(mContext, InterestringActivityActivity.class);
                 intent.putExtra("interestingActivity",interestingActivity);
+                LogUtil.e("InterestingActivityAdapter",String.valueOf(joinedList.contains(interestingActivity)));
+                intent.putExtra("joined", joinedList.contains(interestingActivity));
                 mContext.startActivity(intent);
             }
         });
@@ -105,5 +109,9 @@ class InterestingActivityAdapter extends RecyclerView.Adapter<InterestingActivit
     public void setmList(List<InterestingActivity> mList)
     {
         this.mList = mList;
+    }
+
+    public void setJoinedList(List<InterestingActivity> joinedList){
+        this.joinedList = joinedList;
     }
 }

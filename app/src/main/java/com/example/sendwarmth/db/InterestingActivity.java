@@ -1,5 +1,7 @@
 package com.example.sendwarmth.db;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -165,5 +167,13 @@ public class InterestingActivity implements Serializable
     public void setHost(String host)
     {
         this.host = host;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(this == obj) return true;
+        if(!(obj instanceof InterestingActivity)) return false;
+        InterestingActivity interestingActivity = (InterestingActivity)obj;
+        return internetId.equals(interestingActivity.internetId);
     }
 }

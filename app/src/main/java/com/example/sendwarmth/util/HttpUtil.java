@@ -134,7 +134,15 @@ public class HttpUtil
         Request request = new Request.Builder().url(address+"/"+activityId+"?customerId="+customerId).addHeader("Authorization",credential).put(requestBody).build();
         client.newCall(request).enqueue(callback);
     }
-    
+    //获取我参加的活动
+    public static void getJoinedActivity(String address, String credential, String type, Callback callback)
+    {
+        OkHttpClient client = new OkHttpClient();
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        String customerId = customer.getAccountId();
+        Request request = new Request.Builder().url(address+"?customerId=" + customerId +"&type=" + type).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
     //发布新健康播报
     public static void postHealthBroadcastRequest(String address, String userId, String credential, String title, String image, String expireTime, String description, Callback callback){
         OkHttpClient client = new OkHttpClient();

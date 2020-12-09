@@ -28,6 +28,7 @@ public class InterestingActivityFragment extends Fragment
 //            new InterestingActivity("趣味活动2","2020-05-05 11:30",R.drawable.temp,"跳舞活动xxxxxxxxxxxx","幸福社区"),
 //            new InterestingActivity("趣味活动3","2020-05-05 11:30",R.drawable.temp,"跳舞活动xxxxxxxxxxxx","幸福社区")};
     private List<InterestingActivity> interestingActivityList = new ArrayList<>();
+    private List<InterestingActivity> joinedInterestingActivityList = new ArrayList<>();
     private InterestingActivityAdapter interestingActivityAdapter;
 
     private InterestingActivityPresenter interestingActivityPresenter;
@@ -41,7 +42,7 @@ public class InterestingActivityFragment extends Fragment
         initInterestingActivities();
         recyclerView = root.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        interestingActivityAdapter = new InterestingActivityAdapter(interestingActivityList);
+        interestingActivityAdapter = new InterestingActivityAdapter(interestingActivityList, joinedInterestingActivityList);
         recyclerView.setAdapter(interestingActivityAdapter);
         return root;
     }
@@ -49,6 +50,7 @@ public class InterestingActivityFragment extends Fragment
     private void initInterestingActivities()
     {
         interestingActivityList.clear();
+        joinedInterestingActivityList.clear();
     }
 
     @Override
