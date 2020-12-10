@@ -1,22 +1,16 @@
 package com.example.sendwarmth;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Paint;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -24,17 +18,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
 import com.example.sendwarmth.dagger2.MyComponent;
@@ -71,13 +60,14 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
     private Spinner urgentSpiner;
     private List<String> urgentList = new ArrayList<>();
     private ArrayAdapter<String> urgentArraryAdapter;
-    private String orderType;
+    private String orderType = "book_order";
 
     private int tip;
     private double price;
     private double hour = 0;
     private TextView priceText;
 
+    private CardView attendantCard;
     private Button locationButton;
     private TextView addressText;
     private TextView defaultAddress;
@@ -129,9 +119,10 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
         TextView pricePerUnit = serviceWorkView.findViewById(R.id.price);
 
         Glide.with(this).load(HttpUtil.getResourceURL(serviceSubject.getImage())).into(picture);
-        title.setText(serviceSubject.getName());
-        description.setText(serviceSubject.getDescription());
-        pricePerUnit.setText(serviceSubject.getSalaryPerHour()+"元/时");
+        title.setText(serviceSubject.getSubjectName());
+        description.setText(serviceSubject.getSubjectDes());
+        pricePerUnit.setText(serviceSubject.getSalaryPerHour() +"（加急："+serviceSubject.getHurrySalaryPerHour()+"）元/时");
+        attendantCard = findViewById(R.id.attendant_card);
         addressText = findViewById(R.id.address);
         houseNumText = findViewById(R.id.house_num);
         defaultAddress = findViewById(R.id.default_address);
@@ -224,6 +215,10 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
 
         initDefaultAddress();
         telText.setText(customer.getTel());
+
+        if(serviceSubject.getServiceClassInfo().getOrderWorkType().equals("all")){
+            attendantCard.setVisibility(View.GONE);
+        }
     }
 
     private void initDefaultAddress()
@@ -296,6 +291,7 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
                 orderType = MapUtil.getOrderType(urgentList.get(i));
+                changePrice();
             }
 
             @Override
@@ -307,8 +303,12 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
     }
 
     private void changePrice(){
-
-        double priceBase = serviceSubject.getSalaryPerHour()*hour;
+        double priceBase = 0;
+        if(orderType.equals("book_order")){
+            priceBase = serviceSubject.getSalaryPerHour()*hour;
+        }else {
+            priceBase = serviceSubject.getHurrySalaryPerHour()*hour;
+        }
         price = priceBase + tip;
         BigDecimal b = new BigDecimal(price);
         price = b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();

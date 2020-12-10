@@ -114,8 +114,8 @@ public class OrderingPresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("OrderingPresenter",responseData);
+                progressDialog.dismiss();
                 if(Utility.checkResponse(responseData,context,address)){
-                    progressDialog.dismiss();
                     ((AppCompatActivity)context).runOnUiThread(new Runnable()
                     {
                         @Override

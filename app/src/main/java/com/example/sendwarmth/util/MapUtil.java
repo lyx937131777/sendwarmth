@@ -37,14 +37,14 @@ public class MapUtil
 
         productStateMap.put("un_paid",R.drawable.state_red);
         productStateMap.put("paid",R.drawable.state_green);
-        productStateMap.put("dilivered",R.drawable.state_yellow);
+        productStateMap.put("delivered",R.drawable.state_yellow);
         productStateMap.put("received",R.drawable.state_blue);
         productStateMap.put("cancel",R.drawable.state_red);
         productStateMap.put("evaluated",R.drawable.state_green);
 
         productOrderStateMap.put("un_paid","待付款");
         productOrderStateMap.put("paid","待发货");
-        productOrderStateMap.put("dilivered","待收货");
+        productOrderStateMap.put("delivered","待收货");
         productOrderStateMap.put("received","待评价");
         productOrderStateMap.put("cancel","已取消");
         productOrderStateMap.put("evaluated","已结束");
