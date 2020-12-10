@@ -58,7 +58,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     private TextView stateText;
     private Button button;
 
-    private CardView commentCard,customerCommentCard, attendantCommentCard;
+    private CardView commentCard,customerCommentCard, attendantCommentCard,appointedPersonCard;
     private EditText commentText;
 
     public LocationClient mLocationClient;
@@ -91,6 +91,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
 
         numberText = findViewById(R.id.number);
         appointedPersonText = findViewById(R.id.appointed_person);
+        appointedPersonCard = findViewById(R.id.appointed_person_card);
         startTimeTypeText = findViewById(R.id.start_time_type);
         endTimeTypeText = findViewById(R.id.end_time_type);
         startTimeText = findViewById(R.id.start_time);
@@ -122,6 +123,9 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
 
         numberText.setText(order.getOrderNo());
         appointedPersonText.setText(order.getAppointedPerson());
+        if(!order.getServiceClassInfo().getOrderWorkType().equals("worker")){
+            appointedPersonCard.setVisibility(View.GONE);
+        }
         if(state.equals("not_start") || state.equals("not_accepted") || state.equals("canceled")){
             startTimeTypeText.setText("预计上门");
             endTimeTypeText.setText("预计结束");
