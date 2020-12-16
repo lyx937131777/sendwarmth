@@ -1,6 +1,7 @@
 package com.example.sendwarmth.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.sendwarmth.ProductOrderDetailActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.db.ProductItem;
@@ -25,6 +27,7 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
 {
     private Context mContext;
     private List<ProductItem> mList;
+    private ProductOrder productOrder;
 
     static class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -51,6 +54,11 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
         mList = productItemList;
     }
 
+    public ProductItemAdapter(List<ProductItem> productItemList, ProductOrder productOrder){
+        mList = productItemList;
+        this.productOrder = productOrder;
+    }
+
     @Override
     public ProductItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
@@ -60,6 +68,18 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_product_item, parent,false);
         final ProductItemAdapter.ViewHolder holder = new ProductItemAdapter.ViewHolder(view);
+        holder.view.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(productOrder != null){
+                    Intent intent = new Intent(mContext, ProductOrderDetailActivity.class);
+                    intent.putExtra("productOrder", productOrder);
+                    mContext.startActivity(intent);
+                }
+            }
+        });
         return holder;
     }
 
@@ -88,5 +108,15 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
     public void setmList(List<ProductItem> mList)
     {
         this.mList = mList;
+    }
+
+    public ProductOrder getProductOrder()
+    {
+        return productOrder;
+    }
+
+    public void setProductOrder(ProductOrder productOrder)
+    {
+        this.productOrder = productOrder;
     }
 }

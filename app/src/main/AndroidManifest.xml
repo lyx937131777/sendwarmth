@@ -32,7 +32,10 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProductOrderActivity"></activity>
+        <activity android:name=".ProductOrderDetailActivity"></activity>
+        <activity android:name=".SetNewPasswordActivity" />
+        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".ProductOrderActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".LocationSelectActivity" />
         <activity android:name=".ProductOrderingActivity" />

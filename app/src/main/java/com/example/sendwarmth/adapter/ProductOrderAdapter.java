@@ -5,17 +5,16 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.sendwarmth.OrderDetailActivity;
+import com.example.sendwarmth.ProductOrderDetailActivity;
 import com.example.sendwarmth.R;
-import com.example.sendwarmth.db.Order;
 import com.example.sendwarmth.db.ProductItem;
 import com.example.sendwarmth.db.ProductOrder;
 import com.example.sendwarmth.util.MapUtil;
-import com.example.sendwarmth.util.TimeUtil;
 
 import java.util.List;
 
@@ -35,6 +34,8 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
         TextView stateText;
         TextView business;
         RecyclerView recyclerView;
+        TextView totalPrice;
+        Button button;
 
         public ViewHolder(View view)
         {
@@ -44,6 +45,8 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
             stateText = view.findViewById(R.id.state_text);
             business = view.findViewById(R.id.business);
             recyclerView = view.findViewById(R.id.recycler);
+            totalPrice = view.findViewById(R.id.total_price);
+            button = view.findViewById(R.id.button);
         }
     }
 
@@ -69,9 +72,9 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
             {
                 int position = holder.getAdapterPosition();
                 ProductOrder productOrder = mList.get(position);
-//                Intent intent = new Intent(mContext, OrderDetailActivity.class);
-//                intent.putExtra("order", order);
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, ProductOrderDetailActivity.class);
+                intent.putExtra("productOrder", productOrder);
+                mContext.startActivity(intent);
             }
         });
         return holder;
@@ -82,12 +85,27 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
     {
         ProductOrder productOrder = mList.get(position);
         holder.business.setText(productOrder.getBusinessInfo().getBusinessName());
-        Glide.with(mContext).load(MapUtil.getProductState(productOrder.getState())).into(holder.state);
-        holder.stateText.setText(MapUtil.getProductOrderState(productOrder.getState()));
+        String state = productOrder.getState();
+        Glide.with(mContext).load(MapUtil.getProductState(state)).into(holder.state);
+        holder.stateText.setText(MapUtil.getProductOrderState(state));
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         List<ProductItem> productItemList = productOrder.getProductItemInfos();
-        ProductItemAdapter productItemAdapter = new ProductItemAdapter(productItemList);
+        ProductItemAdapter productItemAdapter = new ProductItemAdapter(productItemList,productOrder);
         holder.recyclerView.setAdapter(productItemAdapter);
+        holder.totalPrice.setText("总价¥" + productOrder.getOrderPrice());
+
+        if(state.equals("un_paid")){
+            holder.button.setVisibility(View.VISIBLE);
+            holder.button.setText("付款");
+        }else if(state.equals("delivered")){
+            holder.button.setVisibility(View.VISIBLE);
+            holder.button.setText("确认收货");
+        }else if(state.equals("received")){
+            holder.button.setVisibility(View.VISIBLE);
+            holder.button.setText("评价");
+        }else {
+            holder.button.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductOrderingActivity">
+    tools:context=".ProductOrderDetailActivity">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:title="下单结算"
+            app:title="订单详情"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
     </com.google.android.material.appbar.AppBarLayout>
@@ -36,13 +36,83 @@
                 android:layout_height="match_parent">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/order_number_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="订单编号"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/order_number"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="22sp"
+                            android:textColor="@color/gray"
+                            android:gravity="right|center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="120dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/state_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/order_number_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="订单状态"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <TextView
+                        android:id="@+id/state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textColor="@color/gray"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center_vertical|right"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/name_card"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/state_card"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:cardCornerRadius="4dp">
@@ -54,12 +124,11 @@
                         android:textColor="@color/black"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp" />
-                    <EditText
+                    <TextView
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="22sp"
-                        android:background="@null"
                         android:textColor="@color/gray"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center_vertical|right"/>
@@ -84,12 +153,11 @@
                         android:textColor="@color/black"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp" />
-                    <EditText
+                    <TextView
                         android:id="@+id/tel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="22sp"
-                        android:background="@null"
                         android:textColor="@color/gray"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center_vertical|right"/>
@@ -117,22 +185,21 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
-                        <EditText
+                        <TextView
                             android:id="@+id/address"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:textSize="22sp"
                             android:textColor="@color/gray"
-                            android:background="@null"
                             android:gravity="right|center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="120dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="120dp" />
+                            app:layout_constraintBottom_toBottomOf="parent"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 <!--                    <Button-->
@@ -144,11 +211,69 @@
 <!--                        android:layout_marginRight="10dp"/>-->
                 </androidx.cardview.widget.CardView>
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/order_time_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/address_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="下单时间"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <TextView
+                        android:id="@+id/order_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textColor="@color/gray"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center_vertical|right"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/business_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/order_time_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="商家"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <TextView
+                        android:id="@+id/business"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textColor="@color/gray"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center_vertical|right"/>
+                </androidx.cardview.widget.CardView>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/address_card"
+                    app:layout_constraintTop_toBottomOf="@id/business_card"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -165,28 +290,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
-            <TextView
-                android:id="@+id/total_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="@id/order"
-                app:layout_constraintBottom_toBottomOf="@id/order"
-                app:layout_constraintRight_toLeftOf="@id/total_price"
-                android:layout_marginRight="2dp"/>
+
             <TextView
                 android:id="@+id/total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:textColor="@color/red"
-                app:layout_constraintRight_toLeftOf="@id/order"
-                app:layout_constraintTop_toTopOf="@id/order"
-                app:layout_constraintBottom_toBottomOf="@id/order"
-                android:layout_marginRight="10dp"/>
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/button"
+                app:layout_constraintBottom_toBottomOf="@id/button"
+                android:layout_marginLeft="10dp"/>
             <Button
-                android:id="@+id/order"
+                android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintRight_toRightOf="parent"
@@ -195,7 +310,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:text="提交订单"
+                android:text="付款"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:background="@color/colorPrimary"/>
