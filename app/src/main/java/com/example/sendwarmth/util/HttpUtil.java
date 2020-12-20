@@ -27,7 +27,7 @@ public class HttpUtil
         return LocalAddress + "/resources/" + url;
     }
 
-    //get 登录界面
+    //get 登录界面 获取列表
     public static void getHttp(String address,String credential, Callback callback)
     {
 //        OkHttpClient client = buildBasicAuthClient(userID,"123456");
@@ -37,6 +37,7 @@ public class HttpUtil
         client.newCall(request).enqueue(callback);
     }
 
+    //登录
     public static void loginRequest(String address, String tel, String password, Callback callback){
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -49,6 +50,7 @@ public class HttpUtil
         client.newCall(request).enqueue(callback);
     }
 
+    //注册
     public static void registerRequest(String address, String tel, String password, String userName, String name, String cusAddress,
                                        double longitude, double latitude, String houseNum, String personalDescription, Callback callback){
         OkHttpClient client = new OkHttpClient();
@@ -74,6 +76,39 @@ public class HttpUtil
         LogUtil.e("HttpUtil","registerRequest: "+jsonStr);
         RequestBody requestBody = RequestBody.create(jsonStr, JSON);
         Request request = new Request.Builder().url(address).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //修改密码
+    public static void changePasswordRequest(String address, String credential,String oldPassword, String newPassword, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("oldPassword", oldPassword)
+                .add("newPassword", newPassword)
+                .build();
+        Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //发送验证码
+    public static void sendVerificationCodeRequest(String address,String tel, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("phoneNum", tel)
+                .build();
+        Request request = new Request.Builder().url(address).put(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //通过验证码设置新密码
+    public static void setNewPasswordRequest(String address,String tel, String verificationCode, String newPassword, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("phoneNum", tel)
+                .add("telCode",verificationCode)
+                .add("newPassword",newPassword)
+                .build();
+        Request request = new Request.Builder().url(address).put(requestBody).build();
         client.newCall(request).enqueue(callback);
     }
 

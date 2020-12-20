@@ -104,4 +104,48 @@ public class CheckUtil
         }
         return true;
     }
+
+    public boolean checkChangePassword(String oldPassword, String newPassword, String confirmNewPassword){
+        if (oldPassword.length() < 1) {
+            Toast.makeText(context, "请填写原密码", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (newPassword.length() < 6) {
+            Toast.makeText(context, "请输入至少6位的新密码", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (!newPassword.equals(confirmNewPassword)) {
+            Toast.makeText(context, "确认新密码与新密码不一致", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkSendVerificationCode(String tel){
+        if (tel.length() != 11) {
+            Toast.makeText(context, "手机号码格式不正确", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkSetNewPassword(String tel, String newPassword, String confirmNewPassword, String verificationCode){
+        if (tel.length() != 11) {
+            Toast.makeText(context, "手机号码格式不正确", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (newPassword.length() < 6) {
+            Toast.makeText(context, "请输入至少6位的新密码", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (!newPassword.equals(confirmNewPassword)) {
+            Toast.makeText(context, "确认新密码与新密码不一致", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (verificationCode.length() < 1) {
+            Toast.makeText(context, "请填写验证码", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
 }

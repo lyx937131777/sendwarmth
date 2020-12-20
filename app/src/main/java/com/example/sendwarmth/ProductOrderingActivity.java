@@ -35,7 +35,7 @@ public class ProductOrderingActivity extends AppCompatActivity
     private ProductOrderingAdapter productOrderingAdapter;
 
     private EditText nameText, telText, addressText;
-    private Button location;
+//    private Button location;
 
     private TextView totalCountText, totalPriceText;
     private int totalCount;
@@ -72,17 +72,17 @@ public class ProductOrderingActivity extends AppCompatActivity
         addressText = findViewById(R.id.address);
         nameText.setText(customer.getName());
         telText.setText(customer.getTel());
-        addressText.setText(customer.getAddress());
+        addressText.setText(customer.getAddress() + " " + customer.getHouseNum());
 
-        location = findViewById(R.id.location);
-        location.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-
-            }
-        });
+//        location = findViewById(R.id.location);
+//        location.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view)
+//            {
+//
+//            }
+//        });
 
         initProducts();
         recyclerView = findViewById(R.id.recycler);

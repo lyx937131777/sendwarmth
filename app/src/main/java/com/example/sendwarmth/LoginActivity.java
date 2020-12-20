@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
     private Button passwordClearButton;
     private Button passwordEyeButton;
     private Button loginButton;
-    private Button goRegisterButton;
+    private Button goRegisterButton, setNewPasswordButton;
     private boolean isOpen = false;
     private String tel, passowrd;
 
@@ -155,6 +155,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
         loginButton.setOnClickListener(this);
         goRegisterButton = findViewById(R.id.go_register);
         goRegisterButton.setOnClickListener(this);
+        setNewPasswordButton = findViewById(R.id.set_new_password);
+        setNewPasswordButton.setOnClickListener(this);
     }
 
     @Override
@@ -162,12 +164,9 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
     {
         switch (v.getId())
         {
-            // 清除登录名
             case R.id.tel_clear:
                 telText.setText("");
                 break;
-
-            // 清除密码
             case R.id.password_clear:
                 passwordText.setText("");
                 break;
@@ -196,6 +195,11 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
                 reg.setClass(LoginActivity.this, RegisterActivity.class);
                 startActivity(reg);
                 break;
+            // 找回密码
+            case R.id.set_new_password:{
+                Intent intent = new Intent(this,SetNewPasswordActivity.class);
+                startActivity(intent);
+            }
             default:
                 break;
         }

@@ -1,5 +1,6 @@
 package com.example.sendwarmth.dagger2;
 
+import com.example.sendwarmth.presenter.ChangePasswordPresenter;
 import com.example.sendwarmth.presenter.FriendsCirclePresenter;
 import com.example.sendwarmth.presenter.HealthBroadcastCommentPresenter;
 import com.example.sendwarmth.presenter.HealthBroadcastPresenter;
@@ -18,6 +19,7 @@ import com.example.sendwarmth.presenter.ProductOrderPresenter;
 import com.example.sendwarmth.presenter.ProductOrderingPresenter;
 import com.example.sendwarmth.presenter.RegisterPresenter;
 import com.example.sendwarmth.presenter.ServiceWorkPresenter;
+import com.example.sendwarmth.presenter.SetNewPasswordPresenter;
 import com.example.sendwarmth.presenter.SettingPresenter;
 import com.example.sendwarmth.presenter.ShoppingMallPresenter;
 
@@ -65,4 +67,8 @@ public interface MyComponent
     HealthBroadcastSubCommentPresenter healthBroadcastSubCommentPresenter();
 
     ProductOrderPresenter productOrderPresenter();
+
+    ChangePasswordPresenter changePasswordPresenter();
+
+    SetNewPasswordPresenter setNewPasswordPresenter();
 }

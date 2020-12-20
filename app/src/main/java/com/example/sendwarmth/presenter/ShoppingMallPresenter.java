@@ -94,7 +94,7 @@ public class ShoppingMallPresenter
     }
 
     public void updateProduct(final ProductClassAdapter productClassAdapter){
-        String address = HttpUtil.LocalAddress + "/api/product/getClass";
+        final String address = HttpUtil.LocalAddress + "/api/product/getClass";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback()
         {
@@ -115,22 +115,24 @@ public class ShoppingMallPresenter
             {
                 final String responseData = response.body().string();
                 LogUtil.e("ProductClassPresenter",responseData);
-                List<Product> productList = Utility.handleProductList(responseData);
-                for(Product product : productList){
-                    Product localProduct = LitePal.where("internetId = ?",product.getInternetId()).findFirst(Product.class);
-                    if(localProduct == null){
-                        product.setSelectedCount(0);
-                    }else{
-                        product.setSelectedCount(localProduct.getSelectedCount());
+                if(Utility.checkResponse(responseData,context,address)){
+                    List<Product> productList = Utility.handleProductList(responseData);
+                    for(Product product : productList){
+                        Product localProduct = LitePal.where("internetId = ?",product.getInternetId()).findFirst(Product.class);
+                        if(localProduct == null){
+                            product.setSelectedCount(0);
+                        }else{
+                            product.setSelectedCount(localProduct.getSelectedCount());
+                        }
                     }
+                    productClassAdapter.setProductList(productList);
+                    ((AppCompatActivity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            productClassAdapter.notifyDataSetChanged();
+                        }
+                    });
                 }
-                productClassAdapter.setProductList(productList);
-                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        productClassAdapter.notifyDataSetChanged();
-                    }
-                });
             }
         });
     }

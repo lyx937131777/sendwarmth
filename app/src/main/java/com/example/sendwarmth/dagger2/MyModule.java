@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 
 import com.example.sendwarmth.db.FriendsCircle;
 import com.example.sendwarmth.db.HealthBroadcast;
+import com.example.sendwarmth.presenter.ChangePasswordPresenter;
 import com.example.sendwarmth.presenter.FriendsCirclePresenter;
 import com.example.sendwarmth.presenter.HealthBroadcastCommentPresenter;
 import com.example.sendwarmth.presenter.HealthBroadcastPresenter;
@@ -25,6 +26,7 @@ import com.example.sendwarmth.presenter.ProductOrderPresenter;
 import com.example.sendwarmth.presenter.ProductOrderingPresenter;
 import com.example.sendwarmth.presenter.RegisterPresenter;
 import com.example.sendwarmth.presenter.ServiceWorkPresenter;
+import com.example.sendwarmth.presenter.SetNewPasswordPresenter;
 import com.example.sendwarmth.presenter.SettingPresenter;
 import com.example.sendwarmth.presenter.ShoppingMallPresenter;
 import com.example.sendwarmth.util.CheckUtil;
@@ -156,5 +158,15 @@ public class MyModule
     @Provides
     public ProductOrderPresenter provideProductOrderPresenter(Context context, SharedPreferences pref){
         return new ProductOrderPresenter(context, pref);
+    }
+
+    @Provides
+    ChangePasswordPresenter provideChangePasswordPresenter(Context context, SharedPreferences pref, CheckUtil checkUtil){
+        return new ChangePasswordPresenter(context,pref,checkUtil);
+    }
+
+    @Provides
+    SetNewPasswordPresenter provideSetNewPasswordPresenter(Context context, SharedPreferences pref, CheckUtil checkUtil){
+        return new SetNewPasswordPresenter(context,pref,checkUtil);
     }
 }

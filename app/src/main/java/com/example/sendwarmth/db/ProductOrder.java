@@ -24,12 +24,24 @@ public class ProductOrder implements Serializable
     private String logisticsCom;
     private String logisticsNo;
     private String businessId;
+    private Business businessInfo;
     private String orderTime;
     private String dealTime;
     private String evaluateTime;
     private String customerComment;
     private double orderPrice;
     private List<ProductItem> productItemInfos;
+
+
+    public Business getBusinessInfo()
+    {
+        return businessInfo;
+    }
+
+    public void setBusinessInfo(Business businessInfo)
+    {
+        this.businessInfo = businessInfo;
+    }
 
     public String getInternetId()
     {
