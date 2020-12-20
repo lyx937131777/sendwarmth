@@ -129,6 +129,14 @@ public class NewInterestingActivityActivity extends AppCompatActivity
                             .show();
                     break;
                 }
+                if(contactTelText.getText().toString().length() != 11){
+                    new AlertDialog.Builder(this)
+                            .setTitle("提示")
+                            .setMessage("电话号码应为11位")
+                            .setPositiveButton("确定", null)
+                            .show();
+                    break;
+                }
                 if(descriptionText.getText().toString().length() < 1){
                     new AlertDialog.Builder(this)
                             .setTitle("提示")

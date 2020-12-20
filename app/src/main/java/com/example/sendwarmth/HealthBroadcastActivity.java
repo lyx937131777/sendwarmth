@@ -106,28 +106,33 @@ public class HealthBroadcastActivity extends AppCompatActivity
         release_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(comment_content.getText().toString().length() == 0){
+                    new AlertDialog.Builder(HealthBroadcastActivity.this)
+                            .setTitle("提示")
+                            .setMessage("评论不能为空")
+                            .setPositiveButton("确定", null)
+                            .show();
+                } else {
                     new AlertDialog.Builder(HealthBroadcastActivity.this)
                             .setTitle("提示")
                             .setMessage("确定发布该评论么？")
                             .setPositiveButton("确定", new
-                                    DialogInterface.OnClickListener()
-                                    {
+                                    DialogInterface.OnClickListener() {
                                         @Override
-                                        public void onClick(DialogInterface dialog, int which)
-                                        {
-                                            LogUtil.e("HealthBroadcastActivity",comment_content.getText().toString());
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            LogUtil.e("HealthBroadcastActivity", comment_content.getText().toString());
 
-                                            String commentId = pref.getString("commentId","");
-                                            if(commentId.equals("")){
-                                                healthBroadcastCommentPresenter.putHealthBroadcastComment(healthBroadcastCommentFragment.getHealthBroadcastCommentAdapter(),comment_content.getText().toString(),healthBroadcast.getInternetId());
-                                            } else{
-                                                healthBroadcastSubCommentPresenter.putHealthBroadcastSubComment(healthBroadcastCommentFragment.findAdapterByCommentId(commentId),comment_content.getText().toString(),commentId);
+                                            String commentId = pref.getString("commentId", "");
+                                            if (commentId.equals("")) {
+                                                healthBroadcastCommentPresenter.putHealthBroadcastComment(healthBroadcastCommentFragment.getHealthBroadcastCommentAdapter(), comment_content.getText().toString(), healthBroadcast.getInternetId());
+                                            } else {
+                                                healthBroadcastSubCommentPresenter.putHealthBroadcastSubComment(healthBroadcastCommentFragment.findAdapterByCommentId(commentId), comment_content.getText().toString(), commentId);
                                             }
 
                                         }
                                     })
-                            .setNegativeButton("取消",null).show();
+                            .setNegativeButton("取消", null).show();
+                }
             }
         });
     }
