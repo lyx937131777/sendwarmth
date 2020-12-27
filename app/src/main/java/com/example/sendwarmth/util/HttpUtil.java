@@ -255,7 +255,7 @@ public class HttpUtil
         client.newCall(request).enqueue(callback);
     }
 
-    //新建产品订单
+    //新建商品订单
     public static void postProductOrderRequest(String address, String credential, String contactPerson,
                                                String contactTel, String deliveryAddress, List<String> shoppingCartIds, Callback callback){
         OkHttpClient client = new OkHttpClient();
@@ -331,6 +331,39 @@ public class HttpUtil
                 .add("orderId", orderId)
                 .add("customerDes",comment)
                 .add("score",String.valueOf(score))
+                .build();
+        Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //支付商品订单
+    public static void payProductOrderRequest(String address, String credential, String orderId,Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("orderId", orderId)
+                .build();
+        Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //商品订单收货
+    public static void receiveProductOrderRequest(String address, String credential,Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        RequestBody requestBody = new FormBody.Builder()
+                .add("customerId", customer.getInternetId())
+                .build();
+        Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //商品订单评价
+    public static void commentProductOrderRequest(String address, String credential, String comment, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        RequestBody requestBody = new FormBody.Builder()
+                .add("customerId", customer.getInternetId())
+                .add("comment",comment)
                 .build();
         Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
         client.newCall(request).enqueue(callback);

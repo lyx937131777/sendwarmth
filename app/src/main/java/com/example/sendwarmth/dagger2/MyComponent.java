@@ -15,6 +15,8 @@ import com.example.sendwarmth.presenter.OrderDetailPresenter;
 import com.example.sendwarmth.presenter.OrderPresenter;
 import com.example.sendwarmth.presenter.OrderingPresenter;
 import com.example.sendwarmth.presenter.PensionInstitutionPresenter;
+import com.example.sendwarmth.presenter.ProductOrderCommentPresenter;
+import com.example.sendwarmth.presenter.ProductOrderDetailPresenter;
 import com.example.sendwarmth.presenter.ProductOrderPresenter;
 import com.example.sendwarmth.presenter.ProductOrderingPresenter;
 import com.example.sendwarmth.presenter.RegisterPresenter;
@@ -71,4 +73,8 @@ public interface MyComponent
     ChangePasswordPresenter changePasswordPresenter();
 
     SetNewPasswordPresenter setNewPasswordPresenter();
+
+    ProductOrderDetailPresenter productOrderDetailPresenter();
+
+    ProductOrderCommentPresenter productOrderCommentPresenter();
 }

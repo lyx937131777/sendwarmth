@@ -1,11 +1,16 @@
 package com.example.sendwarmth;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +18,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.sendwarmth.adapter.ProductItemAdapter;
+import com.example.sendwarmth.dagger2.DaggerMyComponent;
+import com.example.sendwarmth.dagger2.MyComponent;
+import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.ProductItem;
 import com.example.sendwarmth.db.ProductOrder;
+import com.example.sendwarmth.presenter.ProductOrderDetailPresenter;
 import com.example.sendwarmth.util.MapUtil;
 import com.example.sendwarmth.util.TimeUtil;
 
@@ -29,6 +38,9 @@ public class ProductOrderDetailActivity extends AppCompatActivity
     private TextView orderNumberText,stateText,nameText, telText, addressText,orderTimeText,businessText,totalPriceText;
     private Button button;
 
+    private Context context;
+    private ProductOrderDetailPresenter productOrderDetailPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -41,6 +53,10 @@ public class ProductOrderDetailActivity extends AppCompatActivity
         {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(this)).build();
+        productOrderDetailPresenter = myComponent.productOrderDetailPresenter();
+        context = this;
 
         productOrder = (ProductOrder) getIntent().getSerializableExtra("productOrder");
         state = productOrder.getState();
@@ -74,6 +90,47 @@ public class ProductOrderDetailActivity extends AppCompatActivity
         }else {
             button.setVisibility(View.INVISIBLE);
         }
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                final String orderId = productOrder.getInternetId();
+                if(state.equals("un_paid")){
+                    new AlertDialog.Builder(context)
+                            .setTitle("提示")
+                            .setMessage("确认支付么？")
+                            .setPositiveButton("确定", new
+                                    DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which)
+                                        {
+                                            productOrderDetailPresenter.payProductOrder(orderId);
+                                        }
+                                    })
+                            .setNegativeButton("取消",null).show();
+                }else if(state.equals("delivered")){
+                    new AlertDialog.Builder(context)
+                            .setTitle("提示")
+                            .setMessage("确认收货么？")
+                            .setPositiveButton("确定", new
+                                    DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which)
+                                        {
+                                            productOrderDetailPresenter.receiveProductOrder(orderId);
+                                        }
+                                    })
+                            .setNegativeButton("取消",null).show();
+                }else if(state.equals("received")){
+                    Intent intent = new Intent(context, ProductOrderCommentActivity.class);
+                    intent.putExtra("productOrder",productOrder);
+                    startActivityForResult(intent,1);
+                }
+            }
+        });
 
         recyclerView = findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -92,5 +149,18 @@ public class ProductOrderDetailActivity extends AppCompatActivity
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 1:
+                if(resultCode == RESULT_OK){
+                    finish();
+                }
+                break;
+        }
     }
 }

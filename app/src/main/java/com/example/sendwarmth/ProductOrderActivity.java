@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.example.sendwarmth.fragment.adapter.OrderPagerAdapter;
 import com.example.sendwarmth.fragment.adapter.ProductOrderPagerAdapter;
+import com.example.sendwarmth.util.LogUtil;
 import com.google.android.material.tabs.TabLayout;
 
 public class ProductOrderActivity extends AppCompatActivity
@@ -46,5 +47,9 @@ public class ProductOrderActivity extends AppCompatActivity
                 break;
         }
         return true;
+    }
+
+    public void refresh(){
+        LogUtil.e("ProductOrderActivity","refresh!");
     }
 }

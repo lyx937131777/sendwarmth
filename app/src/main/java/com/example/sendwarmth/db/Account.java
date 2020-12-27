@@ -2,13 +2,17 @@ package com.example.sendwarmth.db;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.litepal.crud.LitePalSupport;
+
 import java.io.Serializable;
 
-public class Account implements Serializable
+public class Account extends LitePalSupport implements Serializable
 {
     @SerializedName("id")
     private String internetId;
     private boolean activated;
+
+    private String profile;
 
     private String loginName;
     private String password;
@@ -34,6 +38,16 @@ public class Account implements Serializable
             return helperInfo.getName();
         }
         return "未知账户";
+    }
+
+    public String getProfile()
+    {
+        return profile;
+    }
+
+    public void setProfile(String profile)
+    {
+        this.profile = profile;
     }
 
     public String getInternetId() {

@@ -15,6 +15,7 @@ import com.example.sendwarmth.db.Order;
 import com.example.sendwarmth.db.ProductOrder;
 import com.example.sendwarmth.presenter.OrderPresenter;
 import com.example.sendwarmth.presenter.ProductOrderPresenter;
+import com.example.sendwarmth.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,27 +64,20 @@ public class ProductOrderFragment extends Fragment
         View root = inflater.inflate(R.layout.fragment_product_order, container, false);
         MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(getContext())).build();
         productOrderPresenter = myComponent.productOrderPresenter();
+        productOrderPresenter.setProductOrderFragment(this);
 
-        initOrders();
         recyclerView = root.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        productOrderAdapter = new ProductOrderAdapter(productOrderList);
+        productOrderAdapter = new ProductOrderAdapter(productOrderList,productOrderPresenter);
         recyclerView.setAdapter(productOrderAdapter);
         return root;
     }
 
-    private void initOrders()
-    {
-        String[] types = getTypes();
-        List<String> typeList = new ArrayList<>();
-        for(int i = 0; i < types.length; i++){
-            typeList.add(types[i]);
-        }
-//        for(int i = 0; i < orders.length; i++){
-//            if(typeList.contains(orders[i].getState())){
-//                orderList.add(orders[i]);
-//            }
-//        }
+
+
+    public void refresh(){
+        LogUtil.e("ProductOrderFragment", "refresh!!");
+        productOrderPresenter.updateOrderList(productOrderAdapter,getTypes());
     }
 
     @Override
@@ -93,22 +87,22 @@ public class ProductOrderFragment extends Fragment
         productOrderPresenter.updateOrderList(productOrderAdapter,getTypes());
     }
 
-    private String getType(){
-        switch (index){
-            case 0:
-                return "all";
-            case 1:
-                return "toBeAccept";
-            case 2:
-                return "Accepted";
-            case 3:
-                return "toBeEvaluated";
-            case 4:
-                return "closed";
-            default:
-                return "unknown";
-        }
-    }
+//    private String getType(){
+//        switch (index){
+//            case 0:
+//                return "all";
+//            case 1:
+//                return "toBeAccept";
+//            case 2:
+//                return "Accepted";
+//            case 3:
+//                return "toBeEvaluated";
+//            case 4:
+//                return "closed";
+//            default:
+//                return "unknown";
+//        }
+//    }
 
     private String[] getTypes(){
         switch (index){

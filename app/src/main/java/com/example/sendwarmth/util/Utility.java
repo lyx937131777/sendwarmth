@@ -300,7 +300,7 @@ public class Utility
         return null;
     }
 
-    //处理产品类别
+    //处理商品类别
     public static List<ProductClass> handleProductClassList(String response){
         if (!TextUtils.isEmpty(response)) {
             try {
@@ -317,7 +317,7 @@ public class Utility
         return null;
     }
 
-    //处理产品
+    //处理商品
     public static List<Product> handleProductList(String response){
         if (!TextUtils.isEmpty(response)) {
             try {

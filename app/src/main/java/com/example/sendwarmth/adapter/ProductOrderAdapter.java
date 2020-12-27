@@ -1,6 +1,8 @@
 package com.example.sendwarmth.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.sendwarmth.ProductOrderCommentActivity;
 import com.example.sendwarmth.ProductOrderDetailActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.db.ProductItem;
 import com.example.sendwarmth.db.ProductOrder;
+import com.example.sendwarmth.presenter.ProductOrderPresenter;
+import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.MapUtil;
 
 import java.util.List;
@@ -26,6 +31,7 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
 {
     private Context mContext;
     private List<ProductOrder> mList;
+    private ProductOrderPresenter productOrderPresenter;
 
     static class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -50,9 +56,10 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
         }
     }
 
-    public ProductOrderAdapter(List<ProductOrder> productOrderList)
+    public ProductOrderAdapter(List<ProductOrder> productOrderList, ProductOrderPresenter productOrderPresenter)
     {
         mList = productOrderList;
+        this.productOrderPresenter = productOrderPresenter;
     }
 
     @NonNull
@@ -75,6 +82,51 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
                 Intent intent = new Intent(mContext, ProductOrderDetailActivity.class);
                 intent.putExtra("productOrder", productOrder);
                 mContext.startActivity(intent);
+            }
+        });
+        holder.button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                int position = holder.getAdapterPosition();
+                ProductOrder productOrder = mList.get(position);
+                String state = productOrder.getState();
+                final String orderId = productOrder.getInternetId();
+                if(state.equals("un_paid")){
+                    new AlertDialog.Builder(mContext)
+                            .setTitle("提示")
+                            .setMessage("确认支付么？")
+                            .setPositiveButton("确定", new
+                            DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    productOrderPresenter.payProductOrder(orderId);
+                                }
+                            })
+                            .setNegativeButton("取消",null).show();
+                }else if(state.equals("delivered")){
+                    new AlertDialog.Builder(mContext)
+                            .setTitle("提示")
+                            .setMessage("确认收货么？")
+                            .setPositiveButton("确定", new
+                                    DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which)
+                                        {
+                                            productOrderPresenter.receiveProductOrder(orderId);
+                                        }
+                                    })
+                            .setNegativeButton("取消",null).show();
+                }else if(state.equals("received")){
+                    Intent intent = new Intent(mContext, ProductOrderCommentActivity.class);
+                    intent.putExtra("productOrder", productOrder);
+                    mContext.startActivity(intent);
+                }
+
             }
         });
         return holder;
