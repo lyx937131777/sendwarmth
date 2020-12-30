@@ -105,69 +105,9 @@ public class NewInterestingActivityActivity extends AppCompatActivity
                 finish();
                 break;
             case R.id.commit:
-                if(imagePath == null){
-                    new AlertDialog.Builder(this)
-                            .setTitle("提示")
-                            .setMessage("请选择图片后再发布！")
-                            .setPositiveButton("确定", null)
-                            .show();
-                    break;
-                }
-                if(titleText.getText().toString().length() < 1){
-                    new AlertDialog.Builder(this)
-                            .setTitle("提示")
-                            .setMessage("请输入主题！")
-                            .setPositiveButton("确定", null)
-                            .show();
-                    break;
-                }
-                if(titleText.getText().toString().length() > 30){
-                    new AlertDialog.Builder(this)
-                            .setTitle("提示")
-                            .setMessage("标题请限制在30字以内！")
-                            .setPositiveButton("确定", null)
-                            .show();
-                    break;
-                }
-                if(contactTelText.getText().toString().length() != 11){
-                    new AlertDialog.Builder(this)
-                            .setTitle("提示")
-                            .setMessage("电话号码应为11位")
-                            .setPositiveButton("确定", null)
-                            .show();
-                    break;
-                }
-                if(descriptionText.getText().toString().length() < 1){
-                    new AlertDialog.Builder(this)
-                            .setTitle("提示")
-                            .setMessage("请输入内容！")
-                            .setPositiveButton("确定", null)
-                            .show();
-                    break;
-                }
-                if(descriptionText.getText().toString().length() > 1500){
-                    new AlertDialog.Builder(this)
-                            .setTitle("提示")
-                            .setMessage("内容请限制在1500字以内！")
-                            .setPositiveButton("确定", null)
-                            .show();
-                    break;
-                }
-                new AlertDialog.Builder(this)
-                        .setTitle("提示")
-                        .setMessage("确定发布该活动么？")
-                        .setPositiveButton("确定", new
-                                DialogInterface.OnClickListener()
-                                {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which)
-                                    {
-                                        newInterestingActivityPresenter.postInterestingActivity(titleText.getText().toString(),imagePath,lowBudgetText.getText().toString(),
-                                                upBudgetText.getText().toString(),maxNumText.getText().toString(),locationText.getText().toString(),contactText.getText().toString(),
-                                                contactTelText.getText().toString(),descriptionText.getText().toString());
-                                    }
-                                })
-                        .setNegativeButton("取消",null).show();
+                newInterestingActivityPresenter.postInterestingActivity(titleText.getText().toString(),imagePath,lowBudgetText.getText().toString(),
+                        upBudgetText.getText().toString(),maxNumText.getText().toString(),locationText.getText().toString(),contactText.getText().toString(),
+                        contactTelText.getText().toString(),descriptionText.getText().toString());
                 break;
         }
         return true;

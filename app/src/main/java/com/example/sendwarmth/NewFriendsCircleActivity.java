@@ -90,41 +90,12 @@ public class NewFriendsCircleActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
             case R.id.commit:
-                if(imagePath == null){
-                    new AlertDialog.Builder(this)
-                            .setTitle("提示")
-                            .setMessage("请选择图片后再发表！")
-                            .setPositiveButton("确定", null)
-                            .show();
-                    break;
-                }
-                if(contentText.getText().toString().length() > 1500){
-                    new AlertDialog.Builder(this)
-                            .setTitle("提示")
-                            .setMessage("请限制在1500字以内！")
-                            .setPositiveButton("确定", null)
-                            .show();
-                    break;
-                }
-                new AlertDialog.Builder(this)
-                        .setTitle("提示")
-                        .setMessage("确定发表该交友圈么？")
-                        .setPositiveButton("确定", new
-                                DialogInterface.OnClickListener()
-                                {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which)
-                                    {
-                                        newFriendsCirclePresenter.postFriendsCircle(contentText.getText().toString(),imagePath);
-                                    }
-                                })
-                        .setNegativeButton("取消",null).show();
+                newFriendsCirclePresenter.postFriendsCircle(contentText.getText().toString(), imagePath);
                 break;
         }
         return true;

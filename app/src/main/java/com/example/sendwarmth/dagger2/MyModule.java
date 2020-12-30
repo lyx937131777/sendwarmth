@@ -81,8 +81,8 @@ public class MyModule
     }
 
     @Provides
-    public NewInterestingActivityPresenter provideNewInterestingActivityPresenter(Context context, SharedPreferences pref){
-        return new NewInterestingActivityPresenter(context, pref);
+    public NewInterestingActivityPresenter provideNewInterestingActivityPresenter(Context context, SharedPreferences pref,CheckUtil checkUtil){
+        return new NewInterestingActivityPresenter(context, pref, checkUtil);
     }
 
     @Provides
@@ -112,8 +112,8 @@ public class MyModule
     }
 
     @Provides
-    public NewFriendsCirclePresenter provideNewFriendsCirclePresenter(Context context, SharedPreferences pref){
-        return new NewFriendsCirclePresenter(context,pref);
+    public NewFriendsCirclePresenter provideNewFriendsCirclePresenter(Context context, SharedPreferences pref, CheckUtil checkUtil){
+        return new NewFriendsCirclePresenter(context,pref,checkUtil);
     }
 
     @Provides

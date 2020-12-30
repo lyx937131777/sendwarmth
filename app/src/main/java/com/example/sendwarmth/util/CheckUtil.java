@@ -1,6 +1,8 @@
 package com.example.sendwarmth.util;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Patterns;
 import android.widget.Toast;
 
@@ -144,6 +146,115 @@ public class CheckUtil
         }
         if (verificationCode.length() < 1) {
             Toast.makeText(context, "请填写验证码", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkInterestingActivity(String imagePath, String title, String lowBudget, String highBudget, String maxNum, String location, String contactName, String contactTel, String description){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        if(imagePath == null){
+            builder .setTitle("提示")
+                    .setMessage("请选择图片后再发布！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(title.length() < 1){
+            builder .setTitle("提示")
+                    .setMessage("请输入主题！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(title.length() > 30){
+            builder .setTitle("提示")
+                    .setMessage("标题请限制在30字以内！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(lowBudget.length() < 1 || highBudget.length() < 1){
+            builder .setTitle("提示")
+                    .setMessage("请给出预算限制！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(Integer.valueOf(lowBudget) > Integer.valueOf(highBudget)){
+            builder .setTitle("提示")
+                    .setMessage("最低预算不得超过最高预算！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(maxNum.length() < 1){
+            builder .setTitle("提示")
+                    .setMessage("请输入人数限制！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(location.length() < 1){
+            builder .setTitle("提示")
+                    .setMessage("请输入活动地址！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(contactName.length() < 1){
+            builder .setTitle("提示")
+                    .setMessage("请输入主办人姓名！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(contactTel.length() != 11){
+            builder .setTitle("提示")
+                    .setMessage("电话号码应为11位")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(description.length() < 1){
+            builder .setTitle("提示")
+                    .setMessage("请输入内容！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(description.length() > 1500){
+            builder.setTitle("提示")
+                    .setMessage("内容请限制在1500字以内！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkFriendCircle(String content, String imagePath){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        if(imagePath == null){
+            builder .setTitle("提示")
+                    .setMessage("请选择图片后再发表！")
+                    .setPositiveButton("确定", null)
+                    .show();
+            return false;
+        }
+        if(content.length() < 1){
+            builder .setTitle("提示")
+                    .setMessage("请输入朋友圈内容！")
+                    .setPositiveButton("确定",null)
+                    .show();
+            return false;
+        }
+        if(content.length() > 1500){
+            builder .setTitle("提示")
+                    .setMessage("请限制在1500字以内！")
+                    .setPositiveButton("确定", null)
+                    .show();
             return false;
         }
         return true;
