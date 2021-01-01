@@ -43,6 +43,7 @@ import org.litepal.LitePal;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class OrderingActivity extends AppCompatActivity implements DateAndTimePickerDialog.DateAndTimePickerDialogInterface
@@ -57,14 +58,17 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
     private List<Worker> workerList = new ArrayList<>();
     private ArrayAdapter<Worker> workerArraryAdapter;
     private String workerId, worker;
-    private Spinner urgentSpiner;
+    private Spinner urgentSpinner;
     private List<String> urgentList = new ArrayList<>();
-    private ArrayAdapter<String> urgentArraryAdapter;
+    private ArrayAdapter<String> urgentArrayAdapter;
     private String orderType = "book_order";
+    private Spinner timeUnitSpinner;
+    private List<String> timeUnitList = new ArrayList<>();
+    private ArrayAdapter<String> timeUnitArrayAdapter;
+    private int timeUnit = 1;
 
     private int tip;
     private double price;
-    private double hour = 0;
     private TextView priceText;
 
     private CardView attendantCard;
@@ -79,7 +83,7 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
     private Button orderButton;
 
     private DateAndTimePickerDialog dateAndTimePickerDialog;
-    private long startTime,endTime;
+    private long startTime = 0,endTime = 0;
     private int command = 0;
 
 //    public LocationClient mLocationClient;
@@ -121,7 +125,7 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
         Glide.with(this).load(HttpUtil.getResourceURL(serviceSubject.getImage())).into(picture);
         title.setText(serviceSubject.getSubjectName());
         description.setText(serviceSubject.getSubjectDes());
-        pricePerUnit.setText(serviceSubject.getSalaryPerHour() +"（加急："+serviceSubject.getHurrySalaryPerHour()+"）元/时");
+        pricePerUnit.setText(serviceSubject.getSalaryPerHour() +"（加急："+serviceSubject.getHurrySalaryPerHour()+"）元/45分");
         attendantCard = findViewById(R.id.attendant_card);
         addressText = findViewById(R.id.address);
         houseNumText = findViewById(R.id.house_num);
@@ -144,7 +148,7 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                         orderingPresenter.postOrder(worker, longitude, latitude, telText.getText().toString(), address, houseNumText.getText().toString(), orderType,
-                                                serviceSubject.getServiceClassId(),serviceSubject.getInternetId(),startTime,endTime,messageText.getText().toString(),tip);
+                                                serviceSubject.getServiceClassId(),serviceSubject.getInternetId(),startTime,endTime,timeUnit,messageText.getText().toString(),tip);
                                 }
                             })
                             .setNegativeButton("取消",null)
@@ -168,9 +172,14 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
         workerSpiner.setAdapter(workerArraryAdapter);
 
         initUrgent();
-        urgentArraryAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,urgentList);
-        urgentArraryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        urgentSpiner.setAdapter(urgentArraryAdapter);
+        urgentArrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,urgentList);
+        urgentArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        urgentSpinner.setAdapter(urgentArrayAdapter);
+
+        initTimeUnit();
+        timeUnitArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,timeUnitList);
+        timeUnitArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeUnitSpinner.setAdapter(timeUnitArrayAdapter);
 
         dateAndTimePickerDialog = new DateAndTimePickerDialog(this);
         startTime = 0;
@@ -184,15 +193,15 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
                 dateAndTimePickerDialog.showDateAndTimePickerDialog(2,startTime);
             }
         });
-        endTimeText.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                command = COMMAND_END;
-                dateAndTimePickerDialog.showDateAndTimePickerDialog(2,endTime);
-            }
-        });
+//        endTimeText.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                command = COMMAND_END;
+//                dateAndTimePickerDialog.showDateAndTimePickerDialog(2,endTime);
+//            }
+//        });
         defaultAddress.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         defaultAddress.setOnClickListener(new View.OnClickListener()
         {
@@ -232,6 +241,36 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
         longitude = customer.getLongitude();
         latitude = customer.getLatitude();
         orderingPresenter.updateWorker(longitude,latitude,workerArraryAdapter,workerList);
+    }
+
+    private void initTimeUnit()
+    {
+        timeUnitSpinner = findViewById(R.id.time_unit);
+        timeUnitList.add("   1   ");
+        timeUnitList.add("   2   ");
+        timeUnitList.add("   3   ");
+        timeUnitList.add("   4   ");
+        timeUnitList.add("   5   ");
+        timeUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                timeUnit = i+1;
+                changePrice();
+                if(startTime != 0){
+                    endTime = startTime + timeUnit * 45 * 60 * 1000;
+                    Date date = new Date(endTime);
+                    endTimeText.setText(TimeUtil.dateToString(date,"yyyy-MM-dd HH:mm"));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView)
+            {
+
+            }
+        });
     }
 
     private void initTipList()
@@ -282,10 +321,10 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
     }
 
     private void initUrgent(){
-        urgentSpiner = findViewById(R.id.urgent);
+        urgentSpinner = findViewById(R.id.urgent);
         urgentList.add("预约订单");
         urgentList.add("加急订单");
-        urgentSpiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        urgentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
@@ -305,14 +344,14 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
     private void changePrice(){
         double priceBase = 0;
         if(orderType.equals("book_order")){
-            priceBase = serviceSubject.getSalaryPerHour()*hour;
+            priceBase = serviceSubject.getSalaryPerHour()* timeUnit;
         }else {
-            priceBase = serviceSubject.getHurrySalaryPerHour()*hour;
+            priceBase = serviceSubject.getHurrySalaryPerHour()* timeUnit;
         }
         price = priceBase + tip;
         BigDecimal b = new BigDecimal(price);
         price = b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
-        priceText.setText("约：￥"+price);
+        priceText.setText("￥"+price);
     }
 
     @Override
@@ -358,25 +397,28 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
             case COMMAND_START:
                 startTimeText.setText(TimeUtil.dateToString(calendar.getTime(),"yyyy-MM-dd HH:mm"));
                 startTime = calendar.getTimeInMillis();
+                endTime = startTime + timeUnit * 45 * 60 * 1000;
+                Date date = new Date(endTime);
+                endTimeText.setText(TimeUtil.dateToString(date,"yyyy-MM-dd HH:mm"));
                 break;
             case COMMAND_END:
                 endTimeText.setText(TimeUtil.dateToString(calendar.getTime(),"yyyy-MM-dd HH:mm"));
                 endTime = calendar.getTimeInMillis();
                 break;
         }
-        if(endTime > startTime){
-            long duration = endTime - startTime;
-            long minute = duration / 60000;
-            hour = (double)minute / 60;
-            changePrice();
-            LogUtil.e("OrderingActivity","time start: " + startTime + " end: "+ endTime +  " duration: " + duration + " minute: " + minute + " hour: " + hour);
-        }else{
-            hour = 0;
-            changePrice();
-            if(startTime != 0 && endTime != 0){
-                Toast.makeText(this,"提示：结束时间需晚于上门时间！",Toast.LENGTH_LONG).show();
-            }
-        }
+//        if(endTime > startTime){
+//            long duration = endTime - startTime;
+//            long minute = duration / 60000;
+//            timeUnit = (double)minute / 45;
+//            changePrice();
+//            LogUtil.e("OrderingActivity","time start: " + startTime + " end: "+ endTime +  " duration: " + duration + " minute: " + minute + " hour: " + timeUnit);
+//        }else{
+//            timeUnit = 0;
+//            changePrice();
+//            if(startTime != 0 && endTime != 0){
+//                Toast.makeText(this,"提示：结束时间需晚于上门时间！",Toast.LENGTH_LONG).show();
+//            }
+//        }
     }
 
     @Override

@@ -78,7 +78,7 @@ class ServiceSubjectAdapter extends RecyclerView.Adapter<ServiceSubjectAdapter.V
         Glide.with(mContext).load(HttpUtil.getResourceURL(serviceSubject.getImage())).into(holder.picture);
         holder.title.setText(serviceSubject.getSubjectName());
         holder.description.setText(serviceSubject.getSubjectDes());
-        holder.price.setText(serviceSubject.getSalaryPerHour()+"元/时");
+        holder.price.setText(serviceSubject.getSalaryPerHour()+"元/45分");
     }
     @Override
     public int getItemCount()

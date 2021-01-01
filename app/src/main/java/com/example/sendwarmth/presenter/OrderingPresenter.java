@@ -88,12 +88,12 @@ public class OrderingPresenter
     }
 
     public void postOrder(String appointedPerson, double longitude, double latitude, String tel, String customerAddress, String houseNum, String orderType,
-                          String serviceClassId, String serviceSubjectId, long startTime, long endTime, String message, double tip){
+                          String serviceClassId, String serviceSubjectId, long startTime, long endTime, int timeUnit, String message, double tip){
         progressDialog = ProgressDialog.show(context,"","生成订单中...");
         final String address = HttpUtil.LocalAddress + "/api/order";
         String credential = pref.getString("credential","");
         HttpUtil.postOrderRequest(address, credential, appointedPerson, longitude, latitude, tel, customerAddress, houseNum, orderType,
-                serviceClassId, serviceSubjectId, startTime, endTime, message, tip, new Callback()
+                serviceClassId, serviceSubjectId, startTime, endTime, timeUnit, message, tip, new Callback()
         {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)

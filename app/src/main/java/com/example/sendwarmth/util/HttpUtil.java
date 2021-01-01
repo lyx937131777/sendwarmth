@@ -289,7 +289,7 @@ public class HttpUtil
 
     //新建服务订单
     public static void postOrderRequest(String address, String credential, String appointedPerson,double longitude, double latitude,String deliveryPhone, String deliveryDetail, String houseNum,
-                                        String orderType, String serviceClassId, String serviceSubjectId, long startTime, long endTime, String message, double tip, Callback callback){
+                                        String orderType, String serviceClassId, String serviceSubjectId, long startTime, long endTime,int timeUnit, String message, double tip, Callback callback){
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
@@ -303,6 +303,7 @@ public class HttpUtil
         map.put("houseNum",houseNum);
         map.put("expectStartTime", ""+startTime);
         map.put("expectEndTime", ""+endTime);
+        map.put("timeUnit",""+timeUnit);
         map.put("message",message);
         map.put("orderType",orderType);
         map.put("tip",""+tip);
