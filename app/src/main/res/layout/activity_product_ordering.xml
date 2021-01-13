@@ -90,6 +90,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="22sp"
                         android:background="@null"
+                        android:inputType="phone"
                         android:textColor="@color/gray"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center_vertical|right"/>

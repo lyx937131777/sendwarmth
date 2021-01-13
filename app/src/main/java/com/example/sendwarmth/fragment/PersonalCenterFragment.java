@@ -176,4 +176,15 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
             }
         }
     }
+
+    public void setCustomer(final Customer customer){
+        this.customer = customer;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                userName.setText(customer.getUserNameWithRole());
+                level.setText("Lv "+customer.getMemberLevel());
+            }
+        });
+    }
 }

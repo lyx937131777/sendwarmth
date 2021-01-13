@@ -68,10 +68,10 @@ public class CheckUtil
             Toast.makeText(context, "请填写门牌号", Toast.LENGTH_LONG).show();
             return false;
         }
-        if(personalDescription.length() < 1){
-            Toast.makeText(context, "请填写个人描述", Toast.LENGTH_LONG).show();
-            return false;
-        }
+//        if(personalDescription.length() < 1){
+//            Toast.makeText(context, "请填写个人描述", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
         return true;
     }
 
@@ -255,6 +255,24 @@ public class CheckUtil
                     .setMessage("请限制在1500字以内！")
                     .setPositiveButton("确定", null)
                     .show();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkPostShoppingCart(String contactPerson, String contactTel, String deliveryAddress){
+        if(contactPerson.length() < 1){
+            Toast.makeText(context, "请填写收件人", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(contactTel.length() != 11){
+            if (contactTel.length() != 11) {
+                Toast.makeText(context, "手机号码格式不正确", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
+        if(deliveryAddress.length() < 1){
+            Toast.makeText(context, "请填写收货地址", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

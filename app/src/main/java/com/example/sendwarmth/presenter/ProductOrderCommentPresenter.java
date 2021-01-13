@@ -54,10 +54,10 @@ public class ProductOrderCommentPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("ProductOrderCommentPresenter",responsData);
+                final String responseData = response.body().string();
+                LogUtil.e("ProductOrderCommentPresenter",responseData);
                 progressDialog.dismiss();
-                if(Utility.checkResponse(responsData,context, address)){
+                if(Utility.checkResponse(responseData,context, address)){
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

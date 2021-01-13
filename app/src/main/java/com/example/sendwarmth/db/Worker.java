@@ -8,6 +8,11 @@ public class Worker implements Serializable
 {
     @SerializedName("id")
     private String internetId;
+    private String accountId;
+    private String roleType;
+
+    private String userId;
+    private String credential;
 
     private String workerName;
     private String workerTel;
@@ -16,8 +21,6 @@ public class Worker implements Serializable
     private double score;
     private int scoreSum;
     private double scoreNum;
-
-    private String roleType;
     private int points;
     private int pointsSum;
     private int orderSum;
@@ -26,12 +29,44 @@ public class Worker implements Serializable
     private String workingStatus;
     private String remark;
 
+    private double longitude;
+    private double latitude;
+
+    private String storeId;
+    private Store storeInfo;
+
+    public String getStoreName(){
+        if(storeInfo != null){
+            return storeInfo.getStoreName();
+        }
+        return "暂无门店";
+    }
     @Override
     public String toString(){
         if(employeeId != null){
             return workerName+"("+employeeId+")";
         }
         return workerName;
+    }
+
+    public String getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
+    }
+
+    public String getCredential()
+    {
+        return credential;
+    }
+
+    public void setCredential(String credential)
+    {
+        this.credential = credential;
     }
 
     public String getInternetId()
@@ -192,5 +227,45 @@ public class Worker implements Serializable
     public void setRemark(String remark)
     {
         this.remark = remark;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+    public Store getStoreInfo() {
+        return storeInfo;
+    }
+
+    public void setStoreInfo(Store storeInfo) {
+        this.storeInfo = storeInfo;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 }

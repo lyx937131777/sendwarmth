@@ -71,7 +71,7 @@ public class Order implements Serializable
             return workerInfo.getWorkerName();
         }
         if(helperInfo != null){
-            return helperInfo.getName();
+            return helperInfo.getHelperName();
         }
         return "无";
     }
@@ -81,7 +81,7 @@ public class Order implements Serializable
             return workerInfo.getWorkerTel();
         }
         if(helperInfo != null){
-            return helperInfo.getTel();
+            return helperInfo.getHelperTel();
         }
         return "无";
     }

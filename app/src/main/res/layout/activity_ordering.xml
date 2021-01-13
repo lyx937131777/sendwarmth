@@ -18,386 +18,425 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.core.widget.NestedScrollView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <include layout="@layout/item_service_work"
-                android:id="@+id/service_work"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/attendant_card"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ordering_layout">
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/service_work"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:cardCornerRadius="4dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="护理员"
-                    android:textSize="26sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp" />
-                <Spinner
-                    android:id="@+id/worker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:gravity="right|center_vertical"
-                    android:textColor="@color/gray"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center_vertical|right"/>
-            </androidx.cardview.widget.CardView>
+                android:layout_height="match_parent">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/address_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/attendant_card"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:cardCornerRadius="4dp">
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <include layout="@layout/item_service_work"
+                    android:id="@+id/service_work"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/attendant_card"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/service_work"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
                     <TextView
-                        android:id="@+id/whole_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="收货地址"
+                        android:text="护理员"
                         android:textSize="26sp"
                         android:textColor="@color/black"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"/>
-                    <TextView
-                        android:id="@+id/default_address"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <Spinner
+                        android:id="@+id/worker"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="使用默认地址"
-                        android:textSize="16sp"
-                        android:textColor="@color/black"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/whole_address"
-                        app:layout_constraintBottom_toBottomOf="@id/whole_address"
-                        android:layout_marginRight="15dp"/>
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/area_card"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/whole_address"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:layout_marginLeft="10dp"
+                        android:textSize="22sp"
+                        android:gravity="right|center_vertical"
+                        android:textColor="@color/gray"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="5dp"
-                        app:cardCornerRadius="4dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="区域"
-                            android:textColor="@color/black"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="18sp"/>
-                        <Button
-                            android:id="@+id/location"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:background="@drawable/location_black"
-                            android:layout_gravity="center_vertical|right"
-                            android:layout_marginRight="10dp"/>
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-                            <TextView
-                                android:id="@+id/address"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:textSize="18sp"
-                                android:textColor="@color/gray"
-                                android:gravity="right|center_vertical"
-                                android:layout_marginLeft="100dp"
-                                android:layout_marginRight="50dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"/>
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.cardview.widget.CardView>
+                        android:layout_gravity="center_vertical|right"/>
+                </androidx.cardview.widget.CardView>
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/house_num_card"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/area_card"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_margin="10dp"
-                        app:cardCornerRadius="4dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="门牌号"
-                            android:textSize="18sp"
-                            android:textColor="@color/black"
-                            android:layout_marginLeft="5dp"/>
-                        <EditText
-                            android:id="@+id/house_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:hint="例：3幢504"
-                            android:background="@null"
-                            android:layout_gravity="center_vertical|right"
-                            android:gravity="right"
-                            android:layout_marginRight="10dp"/>
-                    </androidx.cardview.widget.CardView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/tel_card"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/address_card"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:cardCornerRadius="4dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="联系电话"
-                    android:textSize="26sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp" />
-                <EditText
-                    android:id="@+id/tel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:hint="请输入手机号"
-                    android:background="@null"
-                    android:gravity="right|center_vertical"
-                    android:inputType="number"
-                    android:textColor="@color/gray"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center_vertical|right"/>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/start_time_card"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/tel_card"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:cardCornerRadius="4dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="上门时间"
-                    android:textSize="26sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp" />
-                <TextView
-                    android:id="@+id/start_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:text="选择时间"
-                    android:textColor="@color/gray"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center_vertical|right"/>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/time_unit_card"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/start_time_card"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:cardCornerRadius="4dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="时间单位"
-                    android:textSize="26sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp" />
-                <Spinner
-                    android:id="@+id/time_unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:textColor="@color/gray"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center_vertical|right"/>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/end_time_card"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/time_unit_card"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:cardCornerRadius="4dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="结束时间"
-                    android:textSize="26sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp" />
-                <TextView
-                    android:id="@+id/end_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:textColor="@color/gray"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center_vertical|right"/>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/message_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/end_time_card"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:cardCornerRadius="4dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="留言"
-                    android:textSize="26sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp" />
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/address_card"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/attendant_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/whole_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="收货地址"
+                            android:textSize="26sp"
+                            android:textColor="@color/black"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"/>
+                        <TextView
+                            android:id="@+id/default_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="使用默认地址"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/whole_address"
+                            app:layout_constraintBottom_toBottomOf="@id/whole_address"
+                            android:layout_marginRight="15dp"/>
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/area_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/whole_address"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="5dp"
+                            app:cardCornerRadius="4dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="区域"
+                                android:textColor="@color/black"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="18sp"/>
+                            <Button
+                                android:id="@+id/location"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:background="@drawable/location_black"
+                                android:layout_gravity="center_vertical|right"
+                                android:layout_marginRight="10dp"/>
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <TextView
+                                    android:id="@+id/address"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/gray"
+                                    android:gravity="right|center_vertical"
+                                    android:layout_marginLeft="100dp"
+                                    android:layout_marginRight="50dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="10dp"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/house_num_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/area_card"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_margin="10dp"
+                            app:cardCornerRadius="4dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="门牌号"
+                                android:textSize="18sp"
+                                android:textColor="@color/black"
+                                android:layout_marginLeft="5dp"/>
+                            <EditText
+                                android:id="@+id/house_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:hint="例：3幢504"
+                                android:background="@null"
+                                android:layout_gravity="center_vertical|right"
+                                android:gravity="right"
+                                android:layout_marginRight="10dp"/>
+                        </androidx.cardview.widget.CardView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/tel_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/address_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="联系电话"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
                     <EditText
-                        android:id="@+id/message"
-                        android:layout_width="0dp"
+                        android:id="@+id/tel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:hint="请输入手机号"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:inputType="number"
+                        android:textColor="@color/gray"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center_vertical|right"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/start_time_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/tel_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="上门时间"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <TextView
+                        android:id="@+id/start_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:text="选择时间"
+                        android:textColor="@color/gray"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center_vertical|right"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/time_unit_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/start_time_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="时间单位"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <Spinner
+                        android:id="@+id/time_unit"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="22sp"
                         android:textColor="@color/gray"
-                        android:background="@null"
-                        android:hint="..."
-                        android:gravity="right|center_vertical"
-                        android:layout_marginLeft="100dp"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_gravity="center_vertical|right"/>
+                </androidx.cardview.widget.CardView>
 
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/urgent_card"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/message_card"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:cardCornerRadius="4dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="预约加急订单"
-                    android:textSize="26sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp" />
-                <Spinner
-                    android:id="@+id/urgent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:textColor="@color/gray"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/end_time_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_gravity="center_vertical|right"/>
-            </androidx.cardview.widget.CardView>
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/time_unit_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="结束时间"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <TextView
+                        android:id="@+id/end_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textColor="@color/gray"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center_vertical|right"/>
+                </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/tip_card"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/urgent_card"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:cardCornerRadius="4dp">
-                <TextView
-                    android:layout_width="wrap_content"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/message_card"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="额外小费"
-                    android:textSize="26sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp" />
-                <Spinner
-                    android:id="@+id/tip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:textColor="@color/gray"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_gravity="center_vertical|right"/>
-            </androidx.cardview.widget.CardView>
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/end_time_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="留言"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <EditText
+                            android:id="@+id/message"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="22sp"
+                            android:textColor="@color/gray"
+                            android:background="@null"
+                            android:hint="..."
+                            android:gravity="right|center_vertical"
+                            android:layout_marginLeft="100dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/urgent_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/message_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="预约加急订单"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <Spinner
+                        android:id="@+id/urgent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textColor="@color/gray"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center_vertical|right"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/tip_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/urgent_card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:cardCornerRadius="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="额外小费"
+                        android:textSize="26sp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp" />
+                    <Spinner
+                        android:id="@+id/tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textColor="@color/gray"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center_vertical|right"/>
+                </androidx.cardview.widget.CardView>
+
+                <ImageView
+                    android:id="@+id/service_class_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tip_card"
+                    android:layout_margin="10dp"/>
+
+                <ImageView
+                    android:id="@+id/service_subject_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/service_class_image"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_margin="10dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ordering_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/nested_scroll_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
             <androidx.cardview.widget.CardView
                 android:id="@+id/order_card"
                 android:layout_width="match_parent"
@@ -406,7 +445,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                app:layout_constraintTop_toBottomOf="@id/tip_card"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -432,6 +471,7 @@
                     android:layout_gravity="center_vertical|right"/>
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

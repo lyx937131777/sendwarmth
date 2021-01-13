@@ -11,6 +11,7 @@ import com.example.sendwarmth.FriendsCircleActivity;
 import com.example.sendwarmth.NewFriendsCircleActivity;
 import com.example.sendwarmth.ProductOrderingActivity;
 import com.example.sendwarmth.db.Product;
+import com.example.sendwarmth.util.CheckUtil;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.Utility;
@@ -31,6 +32,7 @@ public class ProductOrderingPresenter
 {
     private Context context;
     private SharedPreferences pref;
+    private CheckUtil checkUtil;
     private List<Product> productList;
     private List<String> shoppingCartIds = new ArrayList<>();
     private ProgressDialog progressDialog;
@@ -38,12 +40,15 @@ public class ProductOrderingPresenter
     private String contactTel;
     private String deliveryAddress;
 
-    public ProductOrderingPresenter(Context context, SharedPreferences pref){
+    public ProductOrderingPresenter(Context context, SharedPreferences pref, CheckUtil checkUtil){
         this.context = context;
         this.pref = pref;
+        this.checkUtil = checkUtil;
     }
 
     public void postShoppingCart(String contactPerson, String contactTel, String deliveryAddress){
+        if (!checkUtil.checkPostShoppingCart(contactPerson, contactTel, deliveryAddress))
+            return;
         progressDialog = ProgressDialog.show(context,"","生成订单中...");
         this.contactPerson = contactPerson;
         this.contactTel = contactTel;

@@ -51,10 +51,10 @@ public class OrderDetailPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                String responsData = response.body().string();
-                LogUtil.e("OrderDetailPresenter",responsData);
+                String responseData = response.body().string();
+                LogUtil.e("OrderDetailPresenter",responseData);
                 progressDialog.dismiss();
-                if(Utility.checkResponse(responsData,context,address)){
+                if(Utility.checkResponse(responseData,context,address)){
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -88,10 +88,10 @@ public class OrderDetailPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                String responsData = response.body().string();
-                LogUtil.e("OrderDetailPresenter",responsData);
+                String responseData = response.body().string();
+                LogUtil.e("OrderDetailPresenter",responseData);
                 progressDialog.dismiss();
-                if(Utility.checkResponse(responsData,context,address)){
+                if(Utility.checkResponse(responseData,context,address)){
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

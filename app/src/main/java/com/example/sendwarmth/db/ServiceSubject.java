@@ -17,6 +17,7 @@ public class ServiceSubject implements Serializable
     private double salaryPerHour;
     private double hurrySalaryPerHour;
     private String image;
+    private String remarkImg;
 
     public ServiceClass getServiceClassInfo()
     {
@@ -106,5 +107,13 @@ public class ServiceSubject implements Serializable
     public void setHurrySalaryPerHour(double hurrySalaryPerHour)
     {
         this.hurrySalaryPerHour = hurrySalaryPerHour;
+    }
+
+    public String getRemarkImg() {
+        return remarkImg;
+    }
+
+    public void setRemarkImg(String remarkImg) {
+        this.remarkImg = remarkImg;
     }
 }

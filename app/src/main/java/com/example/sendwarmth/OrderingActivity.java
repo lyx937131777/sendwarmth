@@ -22,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
@@ -34,7 +33,6 @@ import com.example.sendwarmth.db.Worker;
 import com.example.sendwarmth.presenter.OrderingPresenter;
 import com.example.sendwarmth.util.DateAndTimePickerDialog;
 import com.example.sendwarmth.util.HttpUtil;
-import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.MapUtil;
 import com.example.sendwarmth.util.TimeUtil;
 
@@ -87,6 +85,8 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
     private int command = 0;
 
 //    public LocationClient mLocationClient;
+
+    private ImageView serviceClassImage, serviceSubjectImage;
 
     private SharedPreferences pref;
     private String credential;
@@ -223,7 +223,12 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
         });
 
         initDefaultAddress();
-        telText.setText(customer.getTel());
+        telText.setText(customer.getCustomerTel());
+
+        serviceClassImage = findViewById(R.id.service_class_image);
+        serviceSubjectImage = findViewById(R.id.service_subject_image);
+        Glide.with(this).load(HttpUtil.getResourceURL(serviceSubject.getServiceClassInfo().getRemarkImg())).into(serviceClassImage);
+        Glide.with(this).load(HttpUtil.getResourceURL(serviceSubject.getRemarkImg())).into(serviceSubjectImage);
 
         if(serviceSubject.getServiceClassInfo().getOrderWorkType().equals("all")){
             attendantCard.setVisibility(View.GONE);
@@ -235,7 +240,7 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         credential = pref.getString("credential","");
         customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
-        address = customer.getAddress();
+        address = customer.getCustomerAddress();
         addressText.setText(address);
         houseNumText.setText(customer.getHouseNum());
         longitude = customer.getLongitude();

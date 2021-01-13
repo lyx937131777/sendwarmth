@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.fragment.ShoppingMallFragment;
 import com.example.sendwarmth.fragment.CommunityFragment;
 import com.example.sendwarmth.fragment.HomeFragment;
@@ -208,5 +209,9 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return true;
+    }
+
+    public void setCustomer(Customer customer){
+        personalCenterFragment.setCustomer(customer);
     }
 }

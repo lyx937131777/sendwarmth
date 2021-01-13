@@ -123,31 +123,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/recommendation_service"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/shape_square"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="16sp"
-                    android:text="资讯"
-                    android:gravity="center"/>
-            </LinearLayout>
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="150dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/temp"
-                android:layout_margin="10dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

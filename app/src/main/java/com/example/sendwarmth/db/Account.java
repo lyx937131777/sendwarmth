@@ -29,13 +29,13 @@ public class Account extends LitePalSupport implements Serializable
 
     public String getName(){
         if(customerInfo != null){
-            return customerInfo.getName();
+            return customerInfo.getCustomerName();
         }
         if(workerInfo != null){
             return workerInfo.getWorkerName();
         }
         if(helperInfo != null){
-            return helperInfo.getName();
+            return helperInfo.getHelperName();
         }
         return "未知账户";
     }

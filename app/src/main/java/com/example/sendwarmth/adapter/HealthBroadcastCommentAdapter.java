@@ -83,7 +83,7 @@ public class HealthBroadcastCommentAdapter extends RecyclerView.Adapter<HealthBr
                     commentContent.requestFocus();
                     InputMethodManager inputMethodManager = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
-                    commentContent.setHint("回复@" + healthBroadcastComment.getCustomerInfo().getName() + ":");
+                    commentContent.setHint("回复@" + healthBroadcastComment.getCustomerInfo().getCustomerName() + ":");
                     SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString("commentId", healthBroadcastComment.getInternetId());

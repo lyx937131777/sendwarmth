@@ -15,6 +15,7 @@ public class ServiceClass extends LitePalSupport implements Serializable
     private String orderWorkType;
     private String des;
     private String image;
+    private String remarkImg;
 
     private int clickCount;
 
@@ -76,5 +77,13 @@ public class ServiceClass extends LitePalSupport implements Serializable
     public void setClickCount(int clickCount)
     {
         this.clickCount = clickCount;
+    }
+
+    public String getRemarkImg() {
+        return remarkImg;
+    }
+
+    public void setRemarkImg(String remarkImg) {
+        this.remarkImg = remarkImg;
     }
 }

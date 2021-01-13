@@ -22,6 +22,7 @@ import com.example.sendwarmth.presenter.OrderDetailPresenter;
 import com.example.sendwarmth.presenter.OrderPresenter;
 import com.example.sendwarmth.presenter.OrderingPresenter;
 import com.example.sendwarmth.presenter.PensionInstitutionPresenter;
+import com.example.sendwarmth.presenter.PersonalCenterPresenter;
 import com.example.sendwarmth.presenter.ProductOrderCommentPresenter;
 import com.example.sendwarmth.presenter.ProductOrderDetailPresenter;
 import com.example.sendwarmth.presenter.ProductOrderPresenter;
@@ -122,8 +123,8 @@ public class MyModule
     }
 
     @Provides
-    public ProductOrderingPresenter provideProductOrderingPresenter(Context context, SharedPreferences pref){
-        return new ProductOrderingPresenter(context,pref);
+    public ProductOrderingPresenter provideProductOrderingPresenter(Context context, SharedPreferences pref, CheckUtil checkUtil){
+        return new ProductOrderingPresenter(context, pref, checkUtil);
     }
 
     @Provides
@@ -180,5 +181,10 @@ public class MyModule
     @Provides
     ProductOrderCommentPresenter provideProductOrderCommentPresenter(Context context, SharedPreferences pref){
         return new ProductOrderCommentPresenter(context, pref);
+    }
+
+    @Provides
+    PersonalCenterPresenter providePersonalCenterPresenter(Context context, SharedPreferences pref){
+        return new PersonalCenterPresenter(context, pref);
     }
 }

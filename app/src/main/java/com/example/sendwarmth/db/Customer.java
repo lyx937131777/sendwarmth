@@ -15,12 +15,9 @@ public class Customer extends LitePalSupport implements Serializable
     private String userId;
     private String credential;
 
-    @SerializedName("customerName")
-    private String name;
-    @SerializedName("customerAddress")
-    private String address;
-    @SerializedName("customerTel")
-    private String tel;
+    private String customerName;
+    private String customerAddress;
+    private String customerTel;
     private String userName;
     private String personalDescription;
 
@@ -38,12 +35,12 @@ public class Customer extends LitePalSupport implements Serializable
 
     public String getNameWithRole(){
         if(roleType.equals("customer")){
-            return name;
+            return customerName;
         }
         if(roleType.equals("expert")){
-            return name + "（专家）";
+            return customerName + "（专家）";
         }
-        return name + "（未知角色）";
+        return customerName + "（未知角色）";
     }
 
     public String getUserNameWithRole(){
@@ -104,34 +101,34 @@ public class Customer extends LitePalSupport implements Serializable
         this.internetId = internetId;
     }
 
-    public String getName()
+    public String getCustomerName()
     {
-        return name;
+        return customerName;
     }
 
-    public void setName(String name)
+    public void setCustomerName(String customerName)
     {
-        this.name = name;
+        this.customerName = customerName;
     }
 
-    public String getAddress()
+    public String getCustomerAddress()
     {
-        return address;
+        return customerAddress;
     }
 
-    public void setAddress(String address)
+    public void setCustomerAddress(String customerAddress)
     {
-        this.address = address;
+        this.customerAddress = customerAddress;
     }
 
-    public String getTel()
+    public String getCustomerTel()
     {
-        return tel;
+        return customerTel;
     }
 
-    public void setTel(String tel)
+    public void setCustomerTel(String customerTel)
     {
-        this.tel = tel;
+        this.customerTel = customerTel;
     }
 
     public String getUserName()

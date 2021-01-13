@@ -71,10 +71,10 @@ public class ProductOrderPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("ProductOrderPresenter",responsData);
-                if(Utility.checkResponse(responsData,context, address)){
-                    List<ProductOrder> productOrderList = Utility.handleProductOrderList(responsData);
+                final String responseData = response.body().string();
+                LogUtil.e("ProductOrderPresenter",responseData);
+                if(Utility.checkResponse(responseData,context, address)){
+                    List<ProductOrder> productOrderList = Utility.handleProductOrderList(responseData);
                     List<ProductOrder> typeOrderList = new ArrayList<>();
                     List<String> typeList = new ArrayList<>();
                     for(int i = 0; i < types.length; i++){
@@ -118,10 +118,10 @@ public class ProductOrderPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("ProductOrderPresenter",responsData);
+                final String responseData = response.body().string();
+                LogUtil.e("ProductOrderPresenter",responseData);
                 progressDialog.dismiss();
-                if(Utility.checkResponse(responsData,context, address)){
+                if(Utility.checkResponse(responseData,context, address)){
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -161,10 +161,10 @@ public class ProductOrderPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("ProductOrderPresenter",responsData);
+                final String responseData = response.body().string();
+                LogUtil.e("ProductOrderPresenter",responseData);
                 progressDialog.dismiss();
-                if(Utility.checkResponse(responsData,context, address)){
+                if(Utility.checkResponse(responseData,context, address)){
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

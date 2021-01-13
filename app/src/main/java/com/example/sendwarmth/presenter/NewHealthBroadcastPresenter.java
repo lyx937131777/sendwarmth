@@ -59,9 +59,9 @@ public class NewHealthBroadcastPresenter
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
-                final String responsData = response.body().string();
-                LogUtil.e("NewInterestingActivityPresenter",responsData);
-                String image = Utility.checkString(responsData,"msg");
+                final String responseData = response.body().string();
+                LogUtil.e("NewInterestingActivityPresenter",responseData);
+                String image = Utility.checkString(responseData,"msg");
                 final String address = HttpUtil.LocalAddress + "/api/topic";
                 HttpUtil.postHealthBroadcastRequest(address, userId, credential, title, image, expireTime, description, new Callback()
                 {
@@ -82,9 +82,9 @@ public class NewHealthBroadcastPresenter
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
                     {
-                        final String responsData = response.body().string();
-                        LogUtil.e("NewHealthBroadcastPresenter",responsData);
-                        if(Utility.checkResponse(responsData,context,address)){
+                        final String responseData = response.body().string();
+                        LogUtil.e("NewHealthBroadcastPresenter",responseData);
+                        if(Utility.checkResponse(responseData,context,address)){
                             ((AppCompatActivity)context).runOnUiThread(new Runnable()
                             {
                                 @Override

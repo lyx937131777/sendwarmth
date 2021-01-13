@@ -70,9 +70,9 @@ public class ProductOrderingActivity extends AppCompatActivity
         nameText = findViewById(R.id.name);
         telText = findViewById(R.id.tel);
         addressText = findViewById(R.id.address);
-        nameText.setText(customer.getName());
-        telText.setText(customer.getTel());
-        addressText.setText(customer.getAddress() + " " + customer.getHouseNum());
+        nameText.setText(customer.getCustomerName());
+        telText.setText(customer.getCustomerTel());
+        addressText.setText(customer.getCustomerAddress() + " " + customer.getHouseNum());
 
 //        location = findViewById(R.id.location);
 //        location.setOnClickListener(new View.OnClickListener()

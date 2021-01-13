@@ -20,11 +20,7 @@ import com.example.sendwarmth.db.Customer;
 public class MyInformationActivity extends AppCompatActivity
 {
     private CircleImageView profile;
-    private TextView userName;
-    private TextView name;
-    private TextView cusAddress;
-    private TextView tel;
-    private TextView personalDescription;
+    private TextView userNameText, nameText, cusAddressText, houseNumText, telText, personalDescriptionText;
 
 
     private Customer customer;
@@ -94,18 +90,20 @@ public class MyInformationActivity extends AppCompatActivity
         customer = (Customer) getIntent().getSerializableExtra("customer");
 
         profile = findViewById(R.id.profile);
-        userName = findViewById(R.id.user_name);
-        name = findViewById(R.id.name);
-        cusAddress = findViewById(R.id.address);
-        tel = findViewById(R.id.tel);
-        personalDescription = findViewById(R.id.personal_description);
+        userNameText = findViewById(R.id.user_name);
+        nameText = findViewById(R.id.name);
+        cusAddressText = findViewById(R.id.address);
+        houseNumText = findViewById(R.id.house_num);
+        telText = findViewById(R.id.tel);
+        personalDescriptionText = findViewById(R.id.personal_description);
 
         Glide.with(this).load(R.drawable.profile_uri).into(profile);
-        userName.setText(customer.getUserName());
-        name.setText(customer.getName());
-        cusAddress.setText(customer.getAddress());
-        tel.setText(customer.getTel());
-        personalDescription.setText(customer.getPersonalDescription());
+        userNameText.setText(customer.getUserName());
+        nameText.setText(customer.getCustomerName());
+        cusAddressText.setText(customer.getCustomerAddress());
+        houseNumText.setText(customer.getHouseNum());
+        telText.setText(customer.getCustomerTel());
+        personalDescriptionText.setText(customer.getPersonalDescription());
 
     }
 }
