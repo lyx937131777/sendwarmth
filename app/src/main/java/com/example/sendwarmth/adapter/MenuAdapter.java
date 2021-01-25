@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.sendwarmth.MyActivityActivity;
 import com.example.sendwarmth.MyInformationActivity;
 import com.example.sendwarmth.OrderActivity;
 import com.example.sendwarmth.ProductOrderActivity;
@@ -125,7 +126,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                                 mContext.startActivity(intent);
                                 break;
                             }
-
+                            case "myActivity":{
+                                Intent intent = new Intent(mContext, MyActivityActivity.class);
+                                mContext.startActivity(intent);
+                            }
                         }
                        break;
                     }

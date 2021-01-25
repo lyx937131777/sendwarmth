@@ -177,7 +177,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="收货地址"
+                        android:text="地址"
                         android:textSize="26sp"
                         android:textColor="@color/black"
                         android:layout_gravity="center_vertical"
@@ -193,7 +193,7 @@
                             android:textColor="@color/gray"
                             android:gravity="right|center_vertical"
                             android:layout_marginRight="10dp"
-                            android:layout_marginLeft="120dp"
+                            android:layout_marginLeft="100dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             app:layout_constraintLeft_toLeftOf="parent"

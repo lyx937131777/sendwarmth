@@ -22,8 +22,12 @@ import com.example.sendwarmth.ProductOrderActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.SettingActivity;
 import com.example.sendwarmth.adapter.MenuAdapter;
+import com.example.sendwarmth.dagger2.DaggerMyComponent;
+import com.example.sendwarmth.dagger2.MyComponent;
+import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.Menu;
+import com.example.sendwarmth.presenter.PersonalCenterPresenter;
 
 import org.litepal.LitePal;
 
@@ -33,10 +37,10 @@ import java.util.List;
 public class PersonalCenterFragment extends Fragment implements View.OnClickListener
 {
     private RecyclerView serviceOrderMenuRecycler;
-    private Menu[] serviceOrderMenus = {new Menu("toBeAccept",R.drawable.to_be_paid,"待接单"),
-            new Menu("accepted",R.drawable.to_be_received,"已接单"),
+    private Menu[] serviceOrderMenus = {new Menu("toBeAccept",R.drawable.to_be_accept,"待接单"),
+            new Menu("accepted",R.drawable.accepted,"已接单"),
             new Menu("toBeEvaluated",R.drawable.to_be_evaluated,"待评价"),
-            new Menu("closed",R.drawable.completed,"已结束")};
+            new Menu("closed",R.drawable.closed,"已结束")};
     private List<Menu> serviceOrderMenuList = new ArrayList<>();
     private MenuAdapter serviceOrderMenuAdapter;
 
@@ -44,7 +48,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     private Menu[] productOrderMenus = {new Menu("toBePaid",R.drawable.to_be_paid,"待付款"),
             new Menu("toBeReceived",R.drawable.to_be_received,"待收货"),
             new Menu("toBeEvaluated",R.drawable.to_be_evaluated,"待评价"),
-            new Menu("closed",R.drawable.completed,"已结束")};
+            new Menu("closed",R.drawable.closed,"已结束")};
     private List<Menu> productOrderMenuList = new ArrayList<>();
     private MenuAdapter productOrderMenuAdapter;
 
@@ -55,7 +59,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
             new Menu("myHealth",R.drawable.my_health,"我的健康"),
             new Menu("myAddress",R.drawable.my_address,"收货地址"),
             new Menu("feedback",R.drawable.feedback,"意见反馈"),
-            new Menu("customService",R.drawable.custom_service2,"定制服务"),
+            new Menu("customService",R.drawable.custom_service,"定制服务"),
             new Menu("hotline",R.drawable.hotline,"热线电话")};
     private List<Menu> mMenuList = new ArrayList<>();
     private MenuAdapter mMenuAdapter;
@@ -72,9 +76,13 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     private SharedPreferences pref;
     private String credential;
 
+    private PersonalCenterPresenter personalCenterPresenter;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_personal_center, container, false);
+        MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(getContext())).build();
+        personalCenterPresenter = myComponent.personalCenterPresenter();
 
         initMenus();
         serviceOrderMenuRecycler = root.findViewById(R.id.recycler_menu_service_order);
@@ -156,6 +164,12 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
             mMenuList.add(mMenus[i]);
         }
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        personalCenterPresenter.getMe();
     }
 
     @Override
