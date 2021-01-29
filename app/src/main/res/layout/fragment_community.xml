@@ -42,9 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textColor="@color/white"
-                android:textStyle="bold"
                 android:text="社区"/>
         </androidx.appcompat.widget.Toolbar>
 
