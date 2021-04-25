@@ -19,6 +19,8 @@ public class ServiceSubject implements Serializable
     private String image;
     private String remarkImg;
 
+    private boolean fixed;
+
     public ServiceClass getServiceClassInfo()
     {
         return serviceClassInfo;
@@ -27,6 +29,14 @@ public class ServiceSubject implements Serializable
     public void setServiceClassInfo(ServiceClass serviceClassInfo)
     {
         this.serviceClassInfo = serviceClassInfo;
+    }
+
+    public boolean isFixed() {
+        return fixed;
+    }
+
+    public void setFixed(boolean fixed) {
+        this.fixed = fixed;
     }
 
     public String getSubjectName()

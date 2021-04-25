@@ -3,10 +3,13 @@ package com.example.sendwarmth;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +27,9 @@ public class ProductActivity extends AppCompatActivity
     private Product product;
 
     private ImageView picture;
-    private TextView nameText,productClassText,priceText,businessText,brandText,descriptionText;
+    private TextView descriptionText;
+    private ImageView remarkImg;
+    private CardView descriptionCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,20 +52,18 @@ public class ProductActivity extends AppCompatActivity
     {
         product = (Product) getIntent().getSerializableExtra("product");
         picture = findViewById(R.id.picture);
-        nameText = findViewById(R.id.name);
-        productClassText = findViewById(R.id.product_class);
-        priceText = findViewById(R.id.price);
-        businessText = findViewById(R.id.business);
-        brandText = findViewById(R.id.brand);
+        descriptionCard = findViewById(R.id.description_card);
         descriptionText = findViewById(R.id.description);
+        remarkImg = findViewById(R.id.remark_img);
 
         Glide.with(this).load(HttpUtil.getResourceURL(product.getProductPic())).into(picture);
-        nameText.setText(product.getProductName());
-        productClassText.setText(product.getProductClassName());
-        priceText.setText(product.getProductPrice() + "元");
-        businessText.setText(product.getBusinessName());
-        brandText.setText(product.getProductBrand());
         descriptionText.setText(product.getProductDes());
+
+        if(product.getRemarkImg() != null){
+            Glide.with(this).load(HttpUtil.getResourceURL(product.getRemarkImg())).into(remarkImg);
+            descriptionCard.setVisibility(View.GONE);
+        }
+
     }
 
 

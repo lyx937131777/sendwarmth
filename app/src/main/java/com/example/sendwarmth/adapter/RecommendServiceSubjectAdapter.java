@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.example.sendwarmth.OrderingActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.ServiceSubjectActivity;
 import com.example.sendwarmth.db.ServiceSubject;
@@ -17,9 +18,7 @@ import com.example.sendwarmth.util.HttpUtil;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-public class ServiceSubjectAdapter extends RecyclerView.Adapter<ServiceSubjectAdapter.ViewHolder>
+public class RecommendServiceSubjectAdapter extends RecyclerView.Adapter<RecommendServiceSubjectAdapter.ViewHolder>
 {
     private Context mContext;
     private List<ServiceSubject> mList;
@@ -28,34 +27,30 @@ public class ServiceSubjectAdapter extends RecyclerView.Adapter<ServiceSubjectAd
     {
         View view;
         ImageView picture;
-        TextView title;
-        TextView description;
-        TextView price;
+        TextView name;
 
         public  ViewHolder(View view)
         {
             super(view);
             this.view = view;
-            picture = view.findViewById(R.id.picture);
-            title = view.findViewById(R.id.title);
-            description = view.findViewById(R.id.description);
-            price = view.findViewById(R.id.price);
+            picture = view.findViewById(R.id.serviece_image);
+            name = view.findViewById(R.id.servicce_name);
         }
     }
 
-    public ServiceSubjectAdapter(List<ServiceSubject> serviceSubjectList){
+    public RecommendServiceSubjectAdapter(List<ServiceSubject> serviceSubjectList){
         mList = serviceSubjectList;
     }
 
     @Override
-    public ServiceSubjectAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public RecommendServiceSubjectAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         if(mContext == null)
         {
             mContext = parent.getContext();
         }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_service_work, parent,false);
-        final ServiceSubjectAdapter.ViewHolder holder = new ServiceSubjectAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_recommend_service_subject, parent,false);
+        final RecommendServiceSubjectAdapter.ViewHolder holder = new RecommendServiceSubjectAdapter.ViewHolder(view);
         holder.view.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -72,13 +67,11 @@ public class ServiceSubjectAdapter extends RecyclerView.Adapter<ServiceSubjectAd
     }
 
     @Override
-    public void onBindViewHolder(ServiceSubjectAdapter.ViewHolder holder, int position)
+    public void onBindViewHolder(RecommendServiceSubjectAdapter.ViewHolder holder, int position)
     {
         ServiceSubject serviceSubject = mList.get(position);
         Glide.with(mContext).load(HttpUtil.getResourceURL(serviceSubject.getImage())).into(holder.picture);
-        holder.title.setText(serviceSubject.getSubjectName());
-        holder.description.setText(serviceSubject.getSubjectDes());
-        holder.price.setText(serviceSubject.getSalaryPerHour()+"元/单价");
+        holder.name.setText(serviceSubject.getSubjectName());
     }
     @Override
     public int getItemCount()

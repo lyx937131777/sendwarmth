@@ -55,7 +55,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/title"
                     android:text="暂无标题"
-                    android:textSize="30sp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
@@ -69,8 +70,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/title_card">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/author_profile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -81,8 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:textSize="26sp"
+                    android:textSize="14sp"
                     app:layout_constraintLeft_toRightOf="@id/author_profile"
                     app:layout_constraintTop_toTopOf="@id/author_profile" />
 

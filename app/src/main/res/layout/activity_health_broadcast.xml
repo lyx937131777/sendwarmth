@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -61,7 +62,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/title"
                     android:text="暂无标题"
-                    android:textSize="30sp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
@@ -76,8 +78,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/author_profile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -89,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="未知专家"
-                    android:textSize="26sp"
+                    android:textSize="14sp"
                     app:layout_constraintLeft_toRightOf="@id/author_profile"
                     app:layout_constraintTop_toTopOf="@id/author_profile" />
 
@@ -97,7 +99,7 @@
                     android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:textSize="14sp"
                     android:layout_marginRight="10dp"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/author_profile" />
@@ -126,6 +128,15 @@
                     app:layout_constraintTop_toBottomOf="@id/author_profile" />
             </androidx.cardview.widget.CardView>
 
+            <ImageView
+                android:id="@+id/remark_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/description_card"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_margin="10dp"/>
+
             <TextView
                 android:id="@+id/message_board_title"
                 android:layout_width="match_parent"
@@ -137,7 +148,7 @@
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description_card" />
+                app:layout_constraintTop_toBottomOf="@id/remark_img" />
 
             <FrameLayout
                 android:id="@+id/fragment_health_broadcast_comment"

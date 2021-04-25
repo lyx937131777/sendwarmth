@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class HealthBroadcast implements Serializable
 {
@@ -13,19 +14,20 @@ public class HealthBroadcast implements Serializable
     private String timestamp;
     private String topicName;
     private String des;
+    private String remarkImg;
     private String topicPic;
     private String topicClassType;
     private String topicStatus;
     private String creatorId;
     private Account creatorInfo;
     private int validTime;
-    private String commentInfos;
+    private List<Comment> commentInfos;
 
-    public String getCommentInfos() {
+    public List<Comment> getCommentInfos() {
         return commentInfos;
     }
 
-    public void setCommentInfos(String commentInfos) {
+    public void setCommentInfos(List<Comment> commentInfos) {
         this.commentInfos = commentInfos;
     }
 
@@ -127,5 +129,13 @@ public class HealthBroadcast implements Serializable
     public void setValidTime(int validTime)
     {
         this.validTime = validTime;
+    }
+
+    public String getRemarkImg() {
+        return remarkImg;
+    }
+
+    public void setRemarkImg(String remarkImg) {
+        this.remarkImg = remarkImg;
     }
 }

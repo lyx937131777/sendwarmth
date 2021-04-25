@@ -34,7 +34,7 @@ public class NewHealthBroadcastPresenter
         this.pref = pref;
     }
 
-    public void postHealthBroadcast(final String title, String imagePath, final String expireTime, final String description){
+    public void postHealthBroadcast(final String title, String imagePath, final String expireTime, final String type, final String description){
         progressDialog = ProgressDialog.show(context,"","上传中...");
         String address = HttpUtil.LocalAddress + "/api/file";
         final String credential = pref.getString("credential","");
@@ -63,7 +63,7 @@ public class NewHealthBroadcastPresenter
                 LogUtil.e("NewInterestingActivityPresenter",responseData);
                 String image = Utility.checkString(responseData,"msg");
                 final String address = HttpUtil.LocalAddress + "/api/topic";
-                HttpUtil.postHealthBroadcastRequest(address, userId, credential, title, image, expireTime, description, new Callback()
+                HttpUtil.postHealthBroadcastRequest(address, userId, credential, title, image, expireTime, type, description, new Callback()
                 {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e)

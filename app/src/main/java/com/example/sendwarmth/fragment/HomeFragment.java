@@ -5,21 +5,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.sendwarmth.MainActivity;
 import com.example.sendwarmth.R;
+import com.example.sendwarmth.adapter.RecommendServiceSubjectAdapter;
 import com.example.sendwarmth.adapter.ServiceClassAdapter;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
 import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.ServiceClass;
+import com.example.sendwarmth.db.ServiceSubject;
 import com.example.sendwarmth.presenter.HomePresenter;
+import com.sun.banner.BannerAdapter;
+import com.sun.banner.BannerScroller;
+import com.sun.banner.BannerView;
+import com.sun.banner.BannerViewPager;
 
 import org.litepal.LitePal;
 
@@ -32,7 +43,9 @@ public class HomeFragment extends Fragment
 
     private EditText searchText;
 
-    private RecyclerView serviceClassRecyler;
+    private BannerView bannerView;
+
+    private RecyclerView serviceClassRecycler;
 //    private Menu[]menus = {new Menu("lifeCare",R.drawable.life_care,"生活护理"),
 //            new Menu("medicalService",R.drawable.medical_service,"医疗服务"),
 //            new Menu("propertyMaintenance",R.drawable.property_maintenance,"物业维修"),
@@ -44,10 +57,14 @@ public class HomeFragment extends Fragment
     private List<ServiceClass> serviceClassList = new ArrayList<>();
     private ServiceClassAdapter serviceClassAdapter;
 
+    private RecyclerView recommendServiceSubjectRecycler;
+    private List<ServiceSubject> serviceSubjectList = new ArrayList<>();
+    private RecommendServiceSubjectAdapter recommendServiceSubjectAdapter;
+
     private HomePresenter homePresenter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState)
+                             final ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         toolbar = root.findViewById(R.id.toolbar);
@@ -57,12 +74,22 @@ public class HomeFragment extends Fragment
         MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(getContext())).build();
         homePresenter = myComponent.homePresenter();
 
+        bannerView = root.findViewById(R.id.banner);
+        homePresenter.updateCarousel(bannerView);
+
         initServiceClass();
-        serviceClassRecyler = root.findViewById(R.id.recycler_service_class);
+        serviceClassRecycler = root.findViewById(R.id.recycler_service_class);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
-        serviceClassRecyler.setLayoutManager(layoutManager);
+        serviceClassRecycler.setLayoutManager(layoutManager);
         serviceClassAdapter = new ServiceClassAdapter(serviceClassList);
-        serviceClassRecyler.setAdapter(serviceClassAdapter);
+        serviceClassRecycler.setAdapter(serviceClassAdapter);
+
+        recommendServiceSubjectRecycler = root.findViewById(R.id.recycler_recommend_service_subject);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recommendServiceSubjectRecycler.setLayoutManager(linearLayoutManager);
+        recommendServiceSubjectAdapter = new RecommendServiceSubjectAdapter(serviceSubjectList);
+        recommendServiceSubjectRecycler.setAdapter(recommendServiceSubjectAdapter);
 
         return root;
     }
@@ -81,6 +108,7 @@ public class HomeFragment extends Fragment
     {
         super.onStart();
         homePresenter.updateServiceClass(serviceClassAdapter);
+        homePresenter.updateRecommendServiceSubject(recommendServiceSubjectAdapter);
     }
 
     public Toolbar getToolbar(){

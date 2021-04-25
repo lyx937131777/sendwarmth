@@ -179,7 +179,7 @@ public class HttpUtil
         client.newCall(request).enqueue(callback);
     }
     //发布新健康播报
-    public static void postHealthBroadcastRequest(String address, String userId, String credential, String title, String image, String expireTime, String description, Callback callback){
+    public static void postHealthBroadcastRequest(String address, String userId, String credential, String title, String image, String expireTime, String type, String description, Callback callback){
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         HashMap<String, String> map = new HashMap<>();
@@ -187,6 +187,7 @@ public class HttpUtil
         map.put("creatorId",customer.getAccountId());
         map.put("des",description);
         map.put("expireTime",expireTime);
+        map.put("topicClassType",type);
         map.put("topicName",title);
         map.put("topicPic",image);
         String jsonStr = new Gson().toJson(map);

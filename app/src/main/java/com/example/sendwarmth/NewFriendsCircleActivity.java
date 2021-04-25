@@ -21,8 +21,10 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,6 +50,7 @@ public class NewFriendsCircleActivity extends AppCompatActivity
 {
     public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
+    private static final int REQUEST_CODE = 1024;
 
     private ImageView imageView;
     private EditText contentText;
@@ -95,7 +98,18 @@ public class NewFriendsCircleActivity extends AppCompatActivity
                 finish();
                 break;
             case R.id.commit:
-                newFriendsCirclePresenter.postFriendsCircle(contentText.getText().toString(), imagePath);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    if (Environment.isExternalStorageManager()) {
+                        newFriendsCirclePresenter.postFriendsCircle(contentText.getText().toString(), imagePath);
+                    } else {
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                        intent.setData(Uri.parse("package:" + getPackageName()));
+                        startActivityForResult(intent, REQUEST_CODE);
+                    }
+                }else {
+                    newFriendsCirclePresenter.postFriendsCircle(contentText.getText().toString(), imagePath);
+                }
+
                 break;
         }
         return true;
@@ -257,6 +271,12 @@ public class NewFriendsCircleActivity extends AppCompatActivity
                     }
                 }
                 break;
+            case REQUEST_CODE:
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()){
+                    newFriendsCirclePresenter.postFriendsCircle(contentText.getText().toString(), imagePath);
+                }else {
+                    Toast.makeText(this,"存储权限未获取，无法使用此功能",Toast.LENGTH_LONG).show();
+                }
             default:
                 break;
         }

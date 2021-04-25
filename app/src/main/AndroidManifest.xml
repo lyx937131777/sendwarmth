@@ -10,13 +10,13 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 安装安装包 -->
     <uses-permission android:name="android.permission.REPLACE_EXISTING_PACKAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 前台服务 安卓9.0 -->
@@ -32,7 +32,8 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MyActivityActivity"></activity>
+        <activity android:name=".ServiceSubjectActivity"></activity>
+        <activity android:name=".MyActivityActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ProductOrderCommentActivity" />
         <activity android:name=".ProductOrderDetailActivity" />

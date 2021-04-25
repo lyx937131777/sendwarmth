@@ -3,9 +3,11 @@ package com.example.sendwarmth;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,12 +20,18 @@ public class PensionInstitutionActivity extends AppCompatActivity
 {
     private PensionInstitution pensionInstitution;
 
+    private ImageView picture;
+    private ImageView remarkImg;
+    private CardView descriptionCard;
+    private TextView descriptionText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pension_institution);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -35,19 +43,28 @@ public class PensionInstitutionActivity extends AppCompatActivity
     private void initPensionInstitution()
     {
         pensionInstitution = (PensionInstitution) getIntent().getSerializableExtra("pensionInstitution");
-        ImageView pictrue = findViewById(R.id.picture);
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
-        TextView address = findViewById(R.id.address);
-        TextView tel = findViewById(R.id.tel);
+        picture = findViewById(R.id.picture);
+//        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+//        TextView address = findViewById(R.id.address);
+//        TextView tel = findViewById(R.id.tel);
 //        TextView contact = findViewById(R.id.contact);
-        TextView description = findViewById(R.id.description);
+        descriptionCard = findViewById(R.id.description_card);
+        descriptionText = findViewById(R.id.description);
+        remarkImg = findViewById(R.id.remark_img);
 
-        Glide.with(this).load(HttpUtil.getResourceURL(pensionInstitution.getInstitutionPic())).into(pictrue);
-        collapsingToolbarLayout.setTitle(pensionInstitution.getInstitutionName());
-        address.setText(pensionInstitution.getInstitutionLoc());
-        tel.setText(pensionInstitution.getInstitutionTel());
+        Glide.with(this).load(HttpUtil.getResourceURL(pensionInstitution.getInstitutionPic())).into(picture);
+//        collapsingToolbarLayout.setTitle(pensionInstitution.getInstitutionName());
+//        address.setText(pensionInstitution.getInstitutionLoc());
+//        tel.setText(pensionInstitution.getInstitutionTel());
 //        contact.setText(pensionInstitution.getContact());
-        description.setText(pensionInstitution.getInstitutionDes());
+        descriptionText.setText(pensionInstitution.getInstitutionDes());
+
+        if(pensionInstitution.getRemarkImg() != null){
+            Glide.with(this).load(HttpUtil.getResourceURL(pensionInstitution.getRemarkImg())).into(remarkImg);
+            descriptionCard.setVisibility(View.GONE);
+        }
+
+
     }
 
     @Override

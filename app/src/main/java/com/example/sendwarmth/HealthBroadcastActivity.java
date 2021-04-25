@@ -3,6 +3,7 @@ package com.example.sendwarmth;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -41,6 +42,9 @@ public class HealthBroadcastActivity extends AppCompatActivity
     private HealthBroadcastCommentFragment healthBroadcastCommentFragment;
     private SharedPreferences pref;
 
+    private ImageView remarkImg;
+    private CardView descriptionCard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -67,7 +71,9 @@ public class HealthBroadcastActivity extends AppCompatActivity
         CircleImageView authorProfile = findViewById(R.id.author_profile);
         TextView author = findViewById(R.id.profile);
         TextView time = findViewById(R.id.time);
+        descriptionCard = findViewById(R.id.description_card);
         TextView description = findViewById(R.id.description);
+        remarkImg = findViewById(R.id.remark_img);
         final EditText comment_content = findViewById(R.id.comment_content);
         TextView release_button = findViewById(R.id.release_button);
         Glide.with(this).load(HttpUtil.getResourceURL(healthBroadcast.getTopicPic())).into(picture);
@@ -90,6 +96,12 @@ public class HealthBroadcastActivity extends AppCompatActivity
         }
 
         description.setText(healthBroadcast.getDes());
+        if(healthBroadcast.getRemarkImg() != null){
+            Glide.with(this).load(HttpUtil.getResourceURL(healthBroadcast.getRemarkImg())).into(remarkImg);
+            descriptionCard.setVisibility(View.GONE);
+        }
+
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         //topicId在HealthBroadcastActivity中从Intent中获取后，才能传值给HealthBroadcastCommentFragment生成所需Fragment

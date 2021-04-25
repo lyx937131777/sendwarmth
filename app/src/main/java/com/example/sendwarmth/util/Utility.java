@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.widget.Toast;
 
+import com.example.sendwarmth.db.Carousel;
 import com.example.sendwarmth.db.Comment;
 import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.FriendsCircle;
@@ -153,7 +154,37 @@ public class Utility
                 JSONObject dataObject = dataArray.getJSONObject(0);
                 JSONObject customerObject = dataObject.getJSONObject("customerInfo");
                 String jsonString = customerObject.toString();
-                return  new Gson().fromJson(jsonString, Customer.class);
+                return new Gson().fromJson(jsonString, Customer.class);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static InterestingActivity handleInterestingActivity(String response){
+        if (!TextUtils.isEmpty(response)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                String jsonString = dataObject.toString();
+                return new Gson().fromJson(jsonString, InterestingActivity.class);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static HealthBroadcast handleHealthBroadcast(String response){
+        if (!TextUtils.isEmpty(response)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                String jsonString = dataObject.toString();
+                return new Gson().fromJson(jsonString, HealthBroadcast.class);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -389,4 +420,23 @@ public class Utility
         return new ArrayList<>();
     }
 
+    //轮播图
+    public static List<Carousel> handleCarouselList(String response){
+        if (!TextUtils.isEmpty(response))
+        {
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                JSONArray jsonArray = dataObject.getJSONArray("content");
+                String carouselJson = jsonArray.toString();
+                return new Gson().fromJson(carouselJson, new TypeToken<List<Carousel>>() {}.getType());
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return new ArrayList<>();
+    }
 }

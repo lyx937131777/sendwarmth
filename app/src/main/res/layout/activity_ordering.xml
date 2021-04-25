@@ -385,9 +385,11 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     app:layout_constraintTop_toBottomOf="@id/urgent_card"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:cardCornerRadius="4dp">
                     <TextView
                         android:layout_width="wrap_content"
@@ -407,24 +409,6 @@
                         android:layout_gravity="center_vertical|right"/>
                 </androidx.cardview.widget.CardView>
 
-                <ImageView
-                    android:id="@+id/service_class_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tip_card"
-                    android:layout_margin="10dp"/>
-
-                <ImageView
-                    android:id="@+id/service_subject_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/service_class_image"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_margin="10dp"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
@@ -455,7 +439,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="约￥50"
-                    android:textSize="26sp"
+                    android:textSize="20sp"
                     android:textColor="@color/black"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp" />
@@ -463,8 +447,8 @@
                     android:id="@+id/order"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:text="下单"
+                    android:textSize="20sp"
+                    android:text="确认"
                     android:background="@color/colorPrimary"
                     android:textColor="@color/white"
                     android:layout_marginRight="10dp"

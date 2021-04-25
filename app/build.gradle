@@ -5,10 +5,10 @@ android {
 
     defaultConfig {
         applicationId "com.example.sendwarmth"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
-        versionName "0.8.3"
+        versionName "0.9.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,6 +36,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.2'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation files('libs/BaiduLBS_Android.jar')
+    implementation 'com.sun.banner:sunzqBanner:1.0.2'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

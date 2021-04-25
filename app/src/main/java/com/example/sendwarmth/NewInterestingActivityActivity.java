@@ -21,8 +21,10 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,6 +50,7 @@ public class NewInterestingActivityActivity extends AppCompatActivity
 {
     public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
+    private static final int REQUEST_CODE = 1024;
 
     private ImageView imageView;
     private EditText titleText, lowBudgetText,upBudgetText, maxNumText, locationText,contactText, contactTelText,descriptionText;
@@ -105,9 +108,21 @@ public class NewInterestingActivityActivity extends AppCompatActivity
                 finish();
                 break;
             case R.id.commit:
-                newInterestingActivityPresenter.postInterestingActivity(titleText.getText().toString(),imagePath,lowBudgetText.getText().toString(),
-                        upBudgetText.getText().toString(),maxNumText.getText().toString(),locationText.getText().toString(),contactText.getText().toString(),
-                        contactTelText.getText().toString(),descriptionText.getText().toString());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    if (Environment.isExternalStorageManager()) {
+                        newInterestingActivityPresenter.postInterestingActivity(titleText.getText().toString(),imagePath,lowBudgetText.getText().toString(),
+                                upBudgetText.getText().toString(),maxNumText.getText().toString(),locationText.getText().toString(),contactText.getText().toString(),
+                                contactTelText.getText().toString(),descriptionText.getText().toString());
+                    } else {
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                        intent.setData(Uri.parse("package:" + getPackageName()));
+                        startActivityForResult(intent, REQUEST_CODE);
+                    }
+                }else {
+                    newInterestingActivityPresenter.postInterestingActivity(titleText.getText().toString(),imagePath,lowBudgetText.getText().toString(),
+                            upBudgetText.getText().toString(),maxNumText.getText().toString(),locationText.getText().toString(),contactText.getText().toString(),
+                            contactTelText.getText().toString(),descriptionText.getText().toString());
+                }
                 break;
         }
         return true;
@@ -269,6 +284,14 @@ public class NewInterestingActivityActivity extends AppCompatActivity
                     }
                 }
                 break;
+            case REQUEST_CODE:
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()){
+                    newInterestingActivityPresenter.postInterestingActivity(titleText.getText().toString(),imagePath,lowBudgetText.getText().toString(),
+                            upBudgetText.getText().toString(),maxNumText.getText().toString(),locationText.getText().toString(),contactText.getText().toString(),
+                            contactTelText.getText().toString(),descriptionText.getText().toString());
+                }else {
+                    Toast.makeText(this,"存储权限未获取，无法使用此功能",Toast.LENGTH_LONG).show();
+                }
             default:
                 break;
         }

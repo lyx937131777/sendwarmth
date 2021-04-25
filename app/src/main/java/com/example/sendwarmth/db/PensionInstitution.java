@@ -13,6 +13,7 @@ public class PensionInstitution implements Serializable
     private String institutionPic;
     private String institutionLoc;
     private String institutionDes;
+    private String remarkImg;
 
     public String getInternetId()
     {
@@ -72,5 +73,13 @@ public class PensionInstitution implements Serializable
     public void setInstitutionDes(String institutionDes)
     {
         this.institutionDes = institutionDes;
+    }
+
+    public String getRemarkImg() {
+        return remarkImg;
+    }
+
+    public void setRemarkImg(String remarkImg) {
+        this.remarkImg = remarkImg;
     }
 }

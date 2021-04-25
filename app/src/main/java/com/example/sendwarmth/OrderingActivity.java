@@ -69,7 +69,7 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
     private double price;
     private TextView priceText;
 
-    private CardView attendantCard;
+    private CardView attendantCard, timeUnitCard,endTimeCard;
     private Button locationButton;
     private TextView addressText;
     private TextView defaultAddress;
@@ -85,8 +85,6 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
     private int command = 0;
 
 //    public LocationClient mLocationClient;
-
-    private ImageView serviceClassImage, serviceSubjectImage;
 
     private SharedPreferences pref;
     private String credential;
@@ -125,8 +123,10 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
         Glide.with(this).load(HttpUtil.getResourceURL(serviceSubject.getImage())).into(picture);
         title.setText(serviceSubject.getSubjectName());
         description.setText(serviceSubject.getSubjectDes());
-        pricePerUnit.setText(serviceSubject.getSalaryPerHour() +"（加急："+serviceSubject.getHurrySalaryPerHour()+"）元/45分");
+        pricePerUnit.setText(serviceSubject.getSalaryPerHour() +"（加急："+serviceSubject.getHurrySalaryPerHour()+"）元/单价");
         attendantCard = findViewById(R.id.attendant_card);
+        timeUnitCard = findViewById(R.id.time_unit_card);
+        endTimeCard = findViewById(R.id.end_time_card);
         addressText = findViewById(R.id.address);
         houseNumText = findViewById(R.id.house_num);
         defaultAddress = findViewById(R.id.default_address);
@@ -225,13 +225,12 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
         initDefaultAddress();
         telText.setText(customer.getCustomerTel());
 
-        serviceClassImage = findViewById(R.id.service_class_image);
-        serviceSubjectImage = findViewById(R.id.service_subject_image);
-        Glide.with(this).load(HttpUtil.getResourceURL(serviceSubject.getServiceClassInfo().getRemarkImg())).into(serviceClassImage);
-        Glide.with(this).load(HttpUtil.getResourceURL(serviceSubject.getRemarkImg())).into(serviceSubjectImage);
-
         if(serviceSubject.getServiceClassInfo().getOrderWorkType().equals("all")){
             attendantCard.setVisibility(View.GONE);
+        }
+        if(serviceSubject.isFixed()){
+            timeUnitCard.setVisibility(View.GONE);
+            endTimeCard.setVisibility(View.GONE);
         }
     }
 

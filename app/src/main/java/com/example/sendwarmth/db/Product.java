@@ -14,6 +14,7 @@ public class Product extends LitePalSupport implements Serializable
     private String productName;
     private String productDes;
     private String productPic;
+    private String remarkImg;
     private double productPrice;
     private String productClassId;
     private ProductClass productClassInfo;
@@ -40,6 +41,14 @@ public class Product extends LitePalSupport implements Serializable
             return businessInfo.getBusinessName();
         }
         return "未知商家";
+    }
+
+    public String getRemarkImg() {
+        return remarkImg;
+    }
+
+    public void setRemarkImg(String remarkImg) {
+        this.remarkImg = remarkImg;
     }
 
     public String getInternetId()

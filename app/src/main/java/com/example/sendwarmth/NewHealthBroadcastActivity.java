@@ -15,17 +15,22 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,19 +49,27 @@ import com.example.sendwarmth.presenter.NewHealthBroadcastPresenter;
 import com.example.sendwarmth.presenter.NewInterestingActivityPresenter;
 import com.example.sendwarmth.util.DateAndTimePickerDialog;
 import com.example.sendwarmth.util.LogUtil;
+import com.example.sendwarmth.util.MapUtil;
 import com.example.sendwarmth.util.TimeUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class NewHealthBroadcastActivity extends AppCompatActivity implements DateAndTimePickerDialog.DateAndTimePickerDialogInterface {
     public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
+    private static final int REQUEST_CODE = 1024;
 
     private ImageView imageView;
     private EditText titleText, descriptionText;
     private TextView expireTimeText;
+    private Spinner typeSpinner;
+    private List<String> typeList = new ArrayList<>();
+    private ArrayAdapter<String> typeArrayAdapter;
+    private String type;
 
     //photo
     private Dialog dialog;
@@ -98,10 +111,36 @@ public class NewHealthBroadcastActivity extends AppCompatActivity implements Dat
             }
         });
 
+        initTypeList();
+        typeArrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,typeList);
+        typeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(typeArrayAdapter);
+
         context = this;
         initDialog();
 
         initDateAndTimePickerDalog();
+    }
+
+    private void initTypeList(){
+        typeSpinner = findViewById(R.id.type);
+        typeList.add("新闻");
+        typeList.add("养生");
+        typeList.add("定期话题");
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                type = MapUtil.getTopicType(typeList.get(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView)
+            {
+
+            }
+        });
     }
 
     private void initDateAndTimePickerDalog() {
@@ -189,8 +228,19 @@ public class NewHealthBroadcastActivity extends AppCompatActivity implements Dat
                                     @Override
                                     public void onClick(DialogInterface dialog, int which)
                                     {
-                                        newHealthBroadcastPresenter.postHealthBroadcast(titleText.getText().toString(),
-                                                imagePath,String.valueOf(expireTime), descriptionText.getText().toString());
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                            if (Environment.isExternalStorageManager()) {
+                                                newHealthBroadcastPresenter.postHealthBroadcast(titleText.getText().toString(),
+                                                        imagePath,String.valueOf(expireTime), type, descriptionText.getText().toString());
+                                            } else {
+                                                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                                                intent.setData(Uri.parse("package:" + getPackageName()));
+                                                startActivityForResult(intent, REQUEST_CODE);
+                                            }
+                                        }else {
+                                            newHealthBroadcastPresenter.postHealthBroadcast(titleText.getText().toString(),
+                                                    imagePath,String.valueOf(expireTime), type, descriptionText.getText().toString());
+                                        }
                                     }
                                 })
                         .setNegativeButton("取消",null).show();
@@ -355,6 +405,13 @@ public class NewHealthBroadcastActivity extends AppCompatActivity implements Dat
                     }
                 }
                 break;
+            case REQUEST_CODE:
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()){
+                    newHealthBroadcastPresenter.postHealthBroadcast(titleText.getText().toString(),
+                            imagePath,String.valueOf(expireTime), type, descriptionText.getText().toString());
+                }else {
+                    Toast.makeText(this,"存储权限未获取，无法使用此功能",Toast.LENGTH_LONG).show();
+                }
             default:
                 break;
         }
