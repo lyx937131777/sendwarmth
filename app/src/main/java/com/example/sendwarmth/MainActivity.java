@@ -2,17 +2,24 @@ package com.example.sendwarmth;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.sendwarmth.dagger2.DaggerMyComponent;
+import com.example.sendwarmth.dagger2.MyComponent;
+import com.example.sendwarmth.dagger2.MyModule;
+import com.example.sendwarmth.db.Account;
 import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.fragment.ShoppingMallFragment;
 import com.example.sendwarmth.fragment.CommunityFragment;
 import com.example.sendwarmth.fragment.HomeFragment;
 import com.example.sendwarmth.fragment.PersonalCenterFragment;
 import com.example.sendwarmth.fragment.adapter.MyFragAdapter;
+import com.example.sendwarmth.presenter.SettingPresenter;
 import com.example.sendwarmth.util.LogUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -42,12 +49,17 @@ public class MainActivity extends AppCompatActivity
 
     private int viewPagerSelected = 0;
 
+    private SettingPresenter settingPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         instance = this;
+
+        MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(this)).build();
+        settingPresenter = myComponent.settingPresenter();
 
         navView = findViewById(R.id.nav_view);
         viewPager = findViewById(R.id.view_pager);
@@ -132,6 +144,16 @@ public class MainActivity extends AppCompatActivity
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 //        NavigationUI.setupWithNavController(navView, navController);
 
+        PackageManager manager = getPackageManager();
+        String version = "未知";
+        try {
+            PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
+            version = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        settingPresenter.getLatestVersionMain(version);
+
         long time = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
         LogUtil.e("TimeTest","time(long): " + time);
@@ -213,5 +235,9 @@ public class MainActivity extends AppCompatActivity
 
     public void setCustomer(Customer customer){
         personalCenterFragment.setCustomer(customer);
+    }
+
+    public void setAccount(Account account){
+        personalCenterFragment.setAccount(account);
     }
 }

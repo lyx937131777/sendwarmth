@@ -42,6 +42,8 @@ public class MapUtil
         productStateMap.put("received",R.drawable.state_blue);
         productStateMap.put("cancel",R.drawable.state_red);
         productStateMap.put("evaluated",R.drawable.state_green);
+        productStateMap.put("refund_request",R.drawable.state_blue);
+        productStateMap.put("refunded",R.drawable.state_yellow);
 
         productOrderStateMap.put("un_paid","待付款");
         productOrderStateMap.put("paid","待发货");
@@ -49,6 +51,8 @@ public class MapUtil
         productOrderStateMap.put("received","待评价");
         productOrderStateMap.put("cancel","已取消");
         productOrderStateMap.put("evaluated","已结束");
+        productOrderStateMap.put("refund_request","退款中");
+        productOrderStateMap.put("refunded","已退款");
 
 
         roleMap.put("角色","notSelected");

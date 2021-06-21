@@ -117,7 +117,7 @@ public class LocationSelectActivity extends AppCompatActivity
             @Override
             public void onMapStatusChange(MapStatus mapStatus)
             {
-                marker.setPosition(mapStatus.target);
+//                marker.setPosition(mapStatus.target); //TODO
             }
 
             @Override
@@ -179,25 +179,28 @@ public class LocationSelectActivity extends AppCompatActivity
             baiduMap.animateMapStatus(update);
             MarkerOptions options = new MarkerOptions().position(ll)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_black));
-            marker = (Marker) baiduMap.addOverlay(options);
-            marker.setScale(0.5f);
+//            marker = (Marker) baiduMap.addOverlay(options); //TODO
+//            marker.setScale(0.5f);
 //            Point centerPoint = mapView.getScaleControlPosition();
 //            LogUtil.e("LocationSelectActivity","x: " + centerPoint.x + " y: " + centerPoint.y);
 //            marker.setFixedScreenPosition(centerPoint);
             isFirstLocate = false;
         }
+        LogUtil.e("LocationSelectActivity","midReceiveLocation");
         MyLocationData.Builder locationBuilder = new MyLocationData.Builder();
         locationBuilder.latitude(location.getLatitude());
         locationBuilder.longitude(location.getLongitude());
         MyLocationData locationData = locationBuilder.build();
         baiduMap.setMyLocationData(locationData);
 //        locationText.setText(location.getAddress().address);
+        LogUtil.e("LocationSelectActivity","endReceiveLocation");
     }
 
     private class MyLocationListener extends BDAbstractLocationListener
     {
         @Override
         public void onReceiveLocation(BDLocation location) {
+            LogUtil.e("LocationSelectActivity","onReceiveLocation");
             if (location.getLocType() == BDLocation.TypeGpsLocation
                     || location.getLocType() == BDLocation.TypeNetWorkLocation) {
                 navigateTo(location);
@@ -217,6 +220,7 @@ public class LocationSelectActivity extends AppCompatActivity
 //        option.setScanSpan(5000);
         option.setIsNeedAddress(true);
         mLocationClient.setLocOption(option);
+        LogUtil.e("LocationSelectActivity","endInitLocation");
     }
 
     @Override

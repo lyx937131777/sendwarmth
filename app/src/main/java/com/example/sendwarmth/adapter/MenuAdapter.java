@@ -1,6 +1,8 @@
 package com.example.sendwarmth.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -16,6 +18,7 @@ import com.example.sendwarmth.MyInformationActivity;
 import com.example.sendwarmth.OrderActivity;
 import com.example.sendwarmth.ProductOrderActivity;
 import com.example.sendwarmth.R;
+import com.example.sendwarmth.SettingActivity;
 import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.Menu;
 import com.example.sendwarmth.util.LogUtil;
@@ -129,6 +132,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                             case "myActivity":{
                                 Intent intent = new Intent(mContext, MyActivityActivity.class);
                                 mContext.startActivity(intent);
+                                break;
+                            }
+                            default:{
+                                new AlertDialog.Builder(mContext)
+                                        .setTitle("提示")
+                                        .setMessage("该模块暂未开放，请期待后续版本!")
+                                        .setPositiveButton("确定", null)
+                                        .show();
                             }
                         }
                        break;

@@ -20,27 +20,27 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:gravity="center_vertical"
+        android:gravity="bottom"
         app:layout_constraintLeft_toRightOf="@id/image"
         app:layout_constraintTop_toTopOf="@id/image"
         app:layout_constraintBottom_toBottomOf="@id/image"
         android:layout_marginLeft="15dp"
         android:text="购物车"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="24dp"
         android:textStyle="bold"/>
-
+    <!--TODO sp dp-->
     <TextView
         android:id="@+id/total_count"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:gravity="center_vertical"
+        android:gravity="bottom"
         app:layout_constraintLeft_toRightOf="@id/text"
         app:layout_constraintTop_toTopOf="@id/image"
         app:layout_constraintBottom_toBottomOf="@id/image"
         android:layout_marginLeft="15dp"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="16dp"
         android:textStyle="bold"/>
 
     <TextView
@@ -51,9 +51,9 @@
         app:layout_constraintTop_toTopOf="@id/image"
         app:layout_constraintBottom_toBottomOf="@id/image"
         android:layout_marginRight="10dp"
-        android:gravity="center_vertical"
+        android:gravity="bottom"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="16dp"
         android:textStyle="bold" />
 
     <Button

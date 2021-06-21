@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sendwarmth.MainActivity;
+import com.example.sendwarmth.db.Account;
 import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
@@ -58,10 +59,12 @@ public class PersonalCenterPresenter {
                 if(Utility.checkResponse(responseData,context,address)){
                     String role = Utility.getRole(responseData);
                     LogUtil.e("MainPresenter",role);
+                    Account account = Utility.handleAccount(responseData);
                     Customer customer = Utility.handleCustomer(responseData);
                     customer.setUserId(tel);
                     customer.setCredential(credential);
                     ((MainActivity)context).setCustomer(customer);
+                    ((MainActivity)context).setAccount(account);
                 }
             }
         });

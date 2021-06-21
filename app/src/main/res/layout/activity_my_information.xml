@@ -20,7 +20,8 @@
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -136,12 +137,12 @@
                         android:id="@+id/address"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:textSize="18sp"
                         android:textColor="@color/gray"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="120dp"
+                        android:layout_marginLeft="160dp"
                         android:gravity="right|center_vertical"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
@@ -151,7 +152,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/house_num_card"
+                android:id="@+id/logistics_company_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -196,7 +197,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/house_num_card"
+                app:layout_constraintTop_toBottomOf="@id/logistics_company_card"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:cardCornerRadius="4dp">

@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
@@ -399,6 +400,12 @@ public class OrderingActivity extends AppCompatActivity implements DateAndTimePi
         Calendar calendar = dateAndTimePickerDialog.getCalendar();
         switch (command){
             case COMMAND_START:
+                long selectedTime = calendar.getTimeInMillis();
+                long time = Calendar.getInstance().getTimeInMillis();
+                if(selectedTime < time - 60 * 1000){
+                    Toast.makeText(this,"不可选择已过去的时间点",Toast.LENGTH_LONG).show();
+                    break;
+                }
                 startTimeText.setText(TimeUtil.dateToString(calendar.getTime(),"yyyy-MM-dd HH:mm"));
                 startTime = calendar.getTimeInMillis();
                 endTime = startTime + timeUnit * 45 * 60 * 1000;

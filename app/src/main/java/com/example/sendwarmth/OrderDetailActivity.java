@@ -20,6 +20,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +36,15 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.bumptech.glide.Glide;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
 import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.Order;
+import com.example.sendwarmth.db.ServiceSubject;
 import com.example.sendwarmth.presenter.OrderDetailPresenter;
+import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.MapUtil;
 import com.example.sendwarmth.util.TimeUtil;
 
@@ -49,14 +55,18 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
 {
     private Order order;
     private String state;
+    private ServiceSubject serviceSubject;
 
-    private TextView numberText,startTimeTypeText, endTimeTypeText,startTimeText,endTimeText,serviceClassText,serviceContentText,priceText,addressText,houseNumText,messageText;
+    private TextView numberText,startTimeTypeText, endTimeTypeText,startTimeText,endTimeText,priceText,addressText,houseNumText,messageText;
     private TextView tipText,orderTypeText,appointedPersonText,customerCommentText, attendantCommentText;
     private NestedScrollView nestedScrollView;
     private CardView attendantNameCard,attendantTelCard;
     private TextView attendantName,attendantTel;
     private TextView stateText;
     private Button button;
+
+    private RatingBar ratingBar;
+    private int score;
 
     private CardView commentCard,customerCommentCard, attendantCommentCard,appointedPersonCard;
     private EditText commentText;
@@ -89,6 +99,8 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         order = (Order) getIntent().getSerializableExtra("order");
         state = order.getState();
 
+        initServiceWork();
+
         numberText = findViewById(R.id.number);
         appointedPersonText = findViewById(R.id.appointed_person);
         appointedPersonCard = findViewById(R.id.appointed_person_card);
@@ -96,9 +108,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         endTimeTypeText = findViewById(R.id.end_time_type);
         startTimeText = findViewById(R.id.start_time);
         endTimeText = findViewById(R.id.end_time);
-        serviceClassText = findViewById(R.id.service_type);
-        serviceContentText = findViewById(R.id.service_content);
-        priceText = findViewById(R.id.price);
+        priceText = findViewById(R.id.service_price);
         addressText = findViewById(R.id.address);
         houseNumText = findViewById(R.id.house_num);
         messageText = findViewById(R.id.message);
@@ -111,6 +121,16 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         attendantCommentText = findViewById(R.id.attendant_comment);
         commentCard = findViewById(R.id.comment_card);
         commentText = findViewById(R.id.comment);
+        ratingBar = findViewById(R.id.rating_bar);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(fromUser){
+                    score = (int) rating;
+                    LogUtil.e("OrderDetailActivity","score: " + score + "      rating: " + rating);
+                }
+            }
+        });
 
         nestedScrollView = findViewById(R.id.nested_scroll_view);
         attendantNameCard = findViewById(R.id.attendant_name_card);
@@ -142,8 +162,6 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
             startTimeText.setText(TimeUtil.timeStampToString(order.getStartTime(),"yyyy-MM-dd HH:mm"));
             endTimeText.setText(TimeUtil.timeStampToString(order.getEndTime(),"yyyy-MM-dd HH:mm"));
         }
-        serviceClassText.setText(order.getServiceClassInfo().getName());
-        serviceContentText.setText(order.getServiceSubjectInfo().getSubjectName());
         addressText.setText(order.getDeliveryDetail());
         houseNumText.setText(order.getHouseNum());
         messageText.setText(order.getMessage());
@@ -175,7 +193,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
             button.setVisibility(View.GONE);
         }
 
-        if(state.equals("not_accepted") || state.equals("not_start") || state.equals("on_going") || state.equals("canceled")){
+        if(state.equals("unpaid") || state.equals("not_accepted") || state.equals("not_start") || state.equals("on_going") || state.equals("canceled")){
             priceText.setText(order.getSalaryHourly() + "元/时");
         }else{
             priceText.setText(order.getSalarySum() + "元");
@@ -225,6 +243,22 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         if(!order.getState().equals("not_start")){
             mapView.setVisibility(View.GONE);
         }
+    }
+
+    private void initServiceWork()
+    {
+        serviceSubject = order.getServiceSubjectInfo();
+        View serviceWorkView = findViewById(R.id.service_work);
+        ImageView picture = serviceWorkView.findViewById(R.id.picture);
+        TextView title = serviceWorkView.findViewById(R.id.title);
+        TextView description = serviceWorkView.findViewById(R.id.description);
+        TextView pricePerUnit = serviceWorkView.findViewById(R.id.price);
+
+        Glide.with(this).load(HttpUtil.getResourceURL(serviceSubject.getImage())).into(picture);
+        title.setText(serviceSubject.getSubjectName());
+        description.setText(serviceSubject.getSubjectDes());
+        pricePerUnit.setText(serviceSubject.getSalaryPerHour() +"（加急："+serviceSubject.getHurrySalaryPerHour()+"）元/单价");
+
     }
 
     private void navigateTo(BDLocation location) {
@@ -354,7 +388,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                 if(state.equals("not_accepted")){
                     orderDetailPresenter.cancelOrder(order.getInternetId());
                 }else if(state.equals("un_evaluated")){
-                    orderDetailPresenter.commentOrder(order.getInternetId(),commentText.getText().toString(),5);
+                    orderDetailPresenter.commentOrder(order.getInternetId(),commentText.getText().toString(),score);
                 }
             }
         }

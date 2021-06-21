@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.widget.Toast;
 
+import com.example.sendwarmth.db.Account;
 import com.example.sendwarmth.db.Carousel;
 import com.example.sendwarmth.db.Comment;
 import com.example.sendwarmth.db.Customer;
@@ -155,6 +156,21 @@ public class Utility
                 JSONObject customerObject = dataObject.getJSONObject("customerInfo");
                 String jsonString = customerObject.toString();
                 return new Gson().fromJson(jsonString, Customer.class);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static Account handleAccount(String response){
+        if (!TextUtils.isEmpty(response)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray dataArray = jsonObject.getJSONArray("datas");
+                JSONObject dataObject = dataArray.getJSONObject(0);
+                String jsonString = dataObject.toString();
+                return new Gson().fromJson(jsonString, Account.class);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

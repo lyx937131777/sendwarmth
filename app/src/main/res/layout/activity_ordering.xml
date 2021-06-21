@@ -208,12 +208,12 @@
                         android:id="@+id/tel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:textSize="18sp"
+                        android:textColor="@color/gray"
                         android:hint="请输入手机号"
                         android:background="@null"
                         android:gravity="right|center_vertical"
                         android:inputType="number"
-                        android:textColor="@color/gray"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center_vertical|right"/>
                 </androidx.cardview.widget.CardView>
@@ -241,9 +241,9 @@
                         android:id="@+id/start_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
-                        android:text="选择时间"
+                        android:textSize="18sp"
                         android:textColor="@color/gray"
+                        android:text="选择时间"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center_vertical|right"/>
                 </androidx.cardview.widget.CardView>
@@ -271,7 +271,7 @@
                         android:id="@+id/time_unit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:textSize="18sp"
                         android:textColor="@color/gray"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center_vertical|right"/>
@@ -300,7 +300,7 @@
                         android:id="@+id/end_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:textSize="18sp"
                         android:textColor="@color/gray"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center_vertical|right"/>
@@ -332,7 +332,7 @@
                             android:id="@+id/message"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textSize="22sp"
+                            android:textSize="18sp"
                             android:textColor="@color/gray"
                             android:background="@null"
                             android:hint="..."
@@ -356,9 +356,11 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     app:layout_constraintTop_toBottomOf="@id/message_card"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:cardCornerRadius="4dp">
                     <TextView
                         android:layout_width="wrap_content"
@@ -372,7 +374,7 @@
                         android:id="@+id/urgent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:textSize="18sp"
                         android:textColor="@color/gray"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center_vertical|right"/>
@@ -386,6 +388,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/urgent_card"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -403,7 +406,7 @@
                         android:id="@+id/tip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:textSize="18sp"
                         android:textColor="@color/gray"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center_vertical|right"/>

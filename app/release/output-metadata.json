@@ -5,13 +5,13 @@
     "kind": "Directory"
   },
   "applicationId": "com.example.sendwarmth",
-  "variantName": "processReleaseResources",
+  "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "versionCode": 1,
-      "versionName": "0.9.5",
+      "versionName": "0.10.4",
       "outputFile": "app-release.apk"
     }
   ]

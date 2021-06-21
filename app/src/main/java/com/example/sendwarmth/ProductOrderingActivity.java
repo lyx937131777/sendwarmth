@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +47,7 @@ public class ProductOrderingActivity extends AppCompatActivity
     private SharedPreferences pref;
     private String credential;
     private Customer customer;
+    private String tempAddress;
 
     private ProductOrderingPresenter productOrderingPresenter;
 
@@ -72,7 +75,30 @@ public class ProductOrderingActivity extends AppCompatActivity
         addressText = findViewById(R.id.address);
         nameText.setText(customer.getCustomerName());
         telText.setText(customer.getCustomerTel());
-        addressText.setText(customer.getCustomerAddress() + " " + customer.getHouseNum());
+
+        tempAddress = customer.getTempAddress();
+        if(tempAddress != null && !tempAddress.equals("")){
+            addressText.setText(tempAddress);
+        }else {
+            addressText.setText(customer.getCustomerAddress() + " " + customer.getHouseNum());
+        }
+        addressText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                customer.setTempAddress(addressText.getText().toString());
+                customer.save();
+            }
+        });
 
 //        location = findViewById(R.id.location);
 //        location.setOnClickListener(new View.OnClickListener()

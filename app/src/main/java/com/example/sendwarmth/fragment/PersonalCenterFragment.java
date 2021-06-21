@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.sendwarmth.MyInformationActivity;
 import com.example.sendwarmth.OrderActivity;
 import com.example.sendwarmth.ProductOrderActivity;
@@ -25,9 +26,11 @@ import com.example.sendwarmth.adapter.MenuAdapter;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
 import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
+import com.example.sendwarmth.db.Account;
 import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.Menu;
 import com.example.sendwarmth.presenter.PersonalCenterPresenter;
+import com.example.sendwarmth.util.HttpUtil;
 
 import org.litepal.LitePal;
 
@@ -177,7 +180,7 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     {
         switch (view.getId()){
             case R.id.profile:
-            case R.id.nickname:
+            case R.id.user_name:
             case R.id.level: {
                 Intent intent = new Intent(getContext(), MyInformationActivity.class);
                 intent.putExtra("customer",customer);
@@ -198,6 +201,20 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
             public void run() {
                 userName.setText(customer.getUserNameWithRole());
                 level.setText("Lv "+customer.getMemberLevel());
+            }
+        });
+    }
+
+    public void setAccount(Account account){
+        String proFile = account.getProFile();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(proFile != null){
+                    Glide.with(getContext()).load(HttpUtil.getResourceURL(proFile)).into(profile);
+                }else {
+                    Glide.with(getContext()).load(R.drawable.profile_uri).into(profile);
+                }
             }
         });
     }

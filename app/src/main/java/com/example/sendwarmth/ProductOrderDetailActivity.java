@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +37,10 @@ public class ProductOrderDetailActivity extends AppCompatActivity
     private RecyclerView recyclerView;
 
     private TextView orderNumberText,stateText,nameText, telText, addressText,orderTimeText,businessText,totalPriceText;
-    private Button button;
+    private Button cancelButton,button;
+
+    private CardView logisticsCard;
+    private TextView logisticsNumText, logisticsCompanyText;
 
     private Context context;
     private ProductOrderDetailPresenter productOrderDetailPresenter;
@@ -63,6 +67,9 @@ public class ProductOrderDetailActivity extends AppCompatActivity
 
         orderNumberText = findViewById(R.id.order_number);
         stateText = findViewById(R.id.state);
+        logisticsCard = findViewById(R.id.logistics_card);
+        logisticsNumText = findViewById(R.id.logistics_num);
+        logisticsCompanyText = findViewById(R.id.logistics_compnay);
         nameText = findViewById(R.id.name);
         telText = findViewById(R.id.tel);
         addressText = findViewById(R.id.address);
@@ -80,16 +87,51 @@ public class ProductOrderDetailActivity extends AppCompatActivity
         totalPriceText = findViewById(R.id.total_price);
         totalPriceText.setText("总价¥" + productOrder.getOrderPrice());
 
+        if(state.equals("delivered") || state.equals("received") || state.equals("evaluated")){
+            logisticsNumText.setText(productOrder.getLogisticsNo());
+            logisticsCompanyText.setText(productOrder.getLogisticsCom());
+        }else {
+            logisticsCard.setVisibility(View.GONE);
+        }
+
+        cancelButton = findViewById(R.id.cancel);
+        if(!state.equals("un_paid")){
+            cancelButton.setVisibility(View.GONE);
+        }
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String orderId = productOrder.getInternetId();
+                new AlertDialog.Builder(context)
+                        .setTitle("提示")
+                        .setMessage("确认取消订单么？")
+                        .setPositiveButton("是", new
+                                DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which)
+                                    {
+                                        productOrderDetailPresenter.cancelProductOrder(orderId);
+                                    }
+                                })
+                        .setNegativeButton("否",null).show();
+            }
+        });
+
         button = findViewById(R.id.button);
         if(state.equals("un_paid")){
             button.setText("付款");
-        }else if(state.equals("delivered")){
+        }else if(state.equals("paid")){
+            button.setText("申请退款");
+        } else if(state.equals("delivered")){
             button.setText("确认收货");
         }else if(state.equals("received")){
             button.setText("评价");
         }else {
             button.setVisibility(View.INVISIBLE);
         }
+
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -107,6 +149,20 @@ public class ProductOrderDetailActivity extends AppCompatActivity
                                         public void onClick(DialogInterface dialog, int which)
                                         {
                                             productOrderDetailPresenter.payProductOrder(orderId);
+                                        }
+                                    })
+                            .setNegativeButton("取消",null).show();
+                }else if(state.equals("paid")){
+                    new AlertDialog.Builder(context)
+                            .setTitle("提示")
+                            .setMessage("确认申请退款么？")
+                            .setPositiveButton("确定", new
+                                    DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which)
+                                        {
+                                            productOrderDetailPresenter.refundProductOrder(orderId);
                                         }
                                     })
                             .setNegativeButton("取消",null).show();

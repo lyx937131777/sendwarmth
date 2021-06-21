@@ -33,6 +33,16 @@ public class Customer extends LitePalSupport implements Serializable
 
     private String roleType;
 
+    private String tempAddress;
+
+    public String getTempAddress() {
+        return tempAddress;
+    }
+
+    public void setTempAddress(String tempAddress) {
+        this.tempAddress = tempAddress;
+    }
+
     public String getNameWithRole(){
         if(roleType.equals("customer")){
             return customerName;

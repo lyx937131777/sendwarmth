@@ -148,7 +148,7 @@ public class ShoppingMallPresenter
             totalCount += product.getSelectedCount();
             totalPrice += product.getProductPrice() * product.getSelectedCount();
         }
-        totalCountText.setText("" + totalCount);
+        totalCountText.setText("共" + totalCount + "件");
         totalPriceText.setText("￥" + totalPrice);
         if(totalCount == 0){
             dialog.cancel();

@@ -113,8 +113,7 @@ public class HttpUtil
     }
 
     //上传照片
-    public static void fileRequest(String address, File file, okhttp3.Callback callback)
-    {
+    public static void fileRequest(String address, File file, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
         MediaType fileType = MediaType.parse("image/jpeg");//数据类型为File格式，
         RequestBody fileBody = RequestBody.create(file, fileType);
@@ -123,6 +122,19 @@ public class HttpUtil
                 .addFormDataPart("file", file.getName(), fileBody)
                 .build();
         Request request = new Request.Builder().url(address).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //更换头像
+    public static void resetProfileRequest(String address, String accountId, File file, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
+        MediaType fileType = MediaType.parse("image/jpeg");//数据类型为File格式，
+        RequestBody fileBody = RequestBody.create(file, fileType);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", file.getName(), fileBody)
+                .build();
+        Request request = new Request.Builder().url(address + "?accountId=" + accountId).put(requestBody).build();
         client.newCall(request).enqueue(callback);
     }
 
@@ -343,6 +355,30 @@ public class HttpUtil
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new FormBody.Builder()
                 .add("orderId", orderId)
+                .build();
+        Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //商品取消订单
+    public static void cancelProductOrderRequest(String address, String credential,String orderId, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        RequestBody requestBody = new FormBody.Builder()
+                .add("customerId", customer.getInternetId())
+                .add("orderId",orderId)
+                .build();
+        Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    //商品申请退款
+    public static void refundProductOrderRequest(String address, String credential,String orderId, Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Customer customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+        RequestBody requestBody = new FormBody.Builder()
+                .add("customerId", customer.getInternetId())
+                .add("orderId",orderId)
                 .build();
         Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
         client.newCall(request).enqueue(callback);

@@ -115,7 +115,7 @@ public class ProductOrderFragment extends Fragment
             case 3:
                 return new String[]{"received"};
             case 4:
-                return new String[]{"cancel","evaluated"};
+                return new String[]{"cancel","evaluated","refunded","refund_request"};
             default:
                 return new String[]{};
         }

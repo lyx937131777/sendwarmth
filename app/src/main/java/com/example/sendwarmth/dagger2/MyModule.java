@@ -15,6 +15,7 @@ import com.example.sendwarmth.presenter.HealthBroadcastSubCommentPresenter;
 import com.example.sendwarmth.presenter.HomePresenter;
 import com.example.sendwarmth.presenter.InterestingActivityPresenter;
 import com.example.sendwarmth.presenter.LoginPresenter;
+import com.example.sendwarmth.presenter.MyInformationPresenter;
 import com.example.sendwarmth.presenter.NewFriendsCirclePresenter;
 import com.example.sendwarmth.presenter.NewHealthBroadcastPresenter;
 import com.example.sendwarmth.presenter.NewInterestingActivityPresenter;
@@ -186,5 +187,10 @@ public class MyModule
     @Provides
     PersonalCenterPresenter providePersonalCenterPresenter(Context context, SharedPreferences pref){
         return new PersonalCenterPresenter(context, pref);
+    }
+
+    @Provides
+    MyInformationPresenter provideMyInformationPresenter(Context context, SharedPreferences pref){
+        return new MyInformationPresenter(context, pref);
     }
 }
