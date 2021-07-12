@@ -104,7 +104,6 @@ public class DateAndTimePickerDialog
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        // TODO Auto-generated method stub
                         dialog.dismiss();
 
                         if (mTag == TAG_TIME_PICKER)
@@ -129,7 +128,6 @@ public class DateAndTimePickerDialog
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        // TODO Auto-generated method stub
                         dateAndTimePickerDialogInterface.negativeListener();
                         dialog.dismiss();
                     }

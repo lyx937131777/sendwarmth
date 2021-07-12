@@ -138,6 +138,16 @@ public class HttpUtil
         client.newCall(request).enqueue(callback);
     }
 
+    //修改个人信息
+    public static void modifyCustomerRequest(String address,String credential, Customer customer, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        String jsonStr = new Gson().toJson(customer);
+        RequestBody requestBody = RequestBody.create(jsonStr, JSON);
+        Request request = new Request.Builder().url(address).put(requestBody).addHeader("Authorization",credential).build();
+        client.newCall(request).enqueue(callback);
+    }
+
     //发布新活动
     public static void postInterestingActivityRequest(String address, String userId, String credential, String title, String image, String lowBudget, String upBudget,
                                                      String maxNum, String location, String contactName, String contactTel, String description, Callback callback){

@@ -15,6 +15,7 @@ public class MapUtil
     private static Map<String,String> roleMap = new HashMap<>();
     private static Map<String,String> orderTypeMap = new HashMap<>();
     private static Map<String,String> topicTypeMap = new HashMap<>();
+    private static Map<String,String> attributeMap = new HashMap<>();
 
     static{
         tipMap.put("无",0);
@@ -67,6 +68,12 @@ public class MapUtil
         topicTypeMap.put("新闻","news");
         topicTypeMap.put("养生","health_care");
         topicTypeMap.put("定期话题","regular_topic");
+
+        attributeMap.put("userName","用户名");
+        attributeMap.put("customerName","姓名");
+        attributeMap.put("customerAddress","地址");
+        attributeMap.put("houseNum","门牌号");
+        attributeMap.put("personalDescription","个人描述");
     }
 
     public static int getTip(String s){
@@ -97,5 +104,9 @@ public class MapUtil
 
     public static String getTopicType(String s){
         return topicTypeMap.get(s);
+    }
+
+    public static String getAttribute(String s){
+        return attributeMap.get(s);
     }
 }

@@ -2,6 +2,7 @@ package com.example.sendwarmth.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,10 +11,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sendwarmth.ProductOrderingActivity;
 import com.example.sendwarmth.R;
+import com.example.sendwarmth.SearchActivity;
 import com.example.sendwarmth.adapter.ProductClassAdapter;
 import com.example.sendwarmth.adapter.ShoppingCartAdapter;
 import com.example.sendwarmth.adapter.TabAdapter;
@@ -49,6 +52,7 @@ public class ShoppingMallFragment extends Fragment
     private TextView totalCount;
     private TextView totalPrice;
     private Button goToOrder;
+    private ImageView searchButton;
 
     private RecyclerView shoppingCartRecycler;
     private ShoppingCartAdapter shoppingCartAdapter;
@@ -77,6 +81,14 @@ public class ShoppingMallFragment extends Fragment
         productClassAdapter = new ProductClassAdapter(productClassList,shoppingMallPresenter);
         productClassRecycler.setAdapter(productClassAdapter);
 
+        searchButton = root.findViewById(R.id.search);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
 
         productClassRecycler.addOnScrollListener(new RecyclerView.OnScrollListener()
         {

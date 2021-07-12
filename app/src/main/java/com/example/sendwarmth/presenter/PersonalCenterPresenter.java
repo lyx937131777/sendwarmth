@@ -15,6 +15,7 @@ import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.Utility;
 
 import org.jetbrains.annotations.NotNull;
+import org.litepal.LitePal;
 
 import java.io.IOException;
 
@@ -55,14 +56,14 @@ public class PersonalCenterPresenter {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
             {
                 final String responseData = response.body().string();
-                LogUtil.e("MainPresenter",responseData);
+                LogUtil.e("PersonalCenterPresenter",responseData);
                 if(Utility.checkResponse(responseData,context,address)){
-                    String role = Utility.getRole(responseData);
-                    LogUtil.e("MainPresenter",role);
                     Account account = Utility.handleAccount(responseData);
+                    LitePal.deleteAll(Customer.class,"userId = ?",tel);
                     Customer customer = Utility.handleCustomer(responseData);
                     customer.setUserId(tel);
                     customer.setCredential(credential);
+                    customer.save();
                     ((MainActivity)context).setCustomer(customer);
                     ((MainActivity)context).setAccount(account);
                 }

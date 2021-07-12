@@ -21,7 +21,7 @@ public class Customer extends LitePalSupport implements Serializable
     private String userName;
     private String personalDescription;
 
-    private double balance;
+    private double accountBalance;
     private int activity;
 
     private double longitude;
@@ -161,14 +161,14 @@ public class Customer extends LitePalSupport implements Serializable
         this.personalDescription = personalDescription;
     }
 
-    public double getBalance()
+    public double getAccountBalance()
     {
-        return balance;
+        return accountBalance;
     }
 
-    public void setBalance(double balance)
+    public void setAccountBalance(double accountBalance)
     {
-        this.balance = balance;
+        this.accountBalance = accountBalance;
     }
 
     public int getActivity()
@@ -230,4 +230,6 @@ public class Customer extends LitePalSupport implements Serializable
     {
         this.houseNum = houseNum;
     }
+
+
 }

@@ -210,11 +210,18 @@ public class MainActivity extends AppCompatActivity
     {
         switch (item.getItemId())
         {
-            case android.R.id.home:
+            case android.R.id.home:{
                 finish();
                 break;
-            case R.id.menu_search2:
+            }
+            case R.id.menu_search:{
+                homeFragment.search();
                 break;
+            }
+//            case R.id.menu_search2:{
+//
+//                break;
+//            }
             case R.id.menu_new_interesting_activity:{
                 Intent intent = new Intent(this,NewInterestingActivityActivity.class);
                 startActivity(intent);

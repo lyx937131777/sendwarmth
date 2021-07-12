@@ -8,13 +8,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sendwarmth.MainActivity;
+import com.example.sendwarmth.ProductSearchActivity;
 import com.example.sendwarmth.R;
+import com.example.sendwarmth.adapter.ProductAdapter;
 import com.example.sendwarmth.adapter.ProductClassAdapter;
+import com.example.sendwarmth.adapter.ServiceSubjectAdapter;
 import com.example.sendwarmth.adapter.ShoppingCartAdapter;
 import com.example.sendwarmth.adapter.TabAdapter;
 import com.example.sendwarmth.db.InterestingActivity;
 import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.db.ProductClass;
+import com.example.sendwarmth.db.ServiceSubject;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.Utility;
@@ -138,6 +142,9 @@ public class ShoppingMallPresenter
     }
 
     public void refresh(){
+        if(context instanceof ProductSearchActivity){
+            return;
+        }
         shoppingCartList = LitePal.where("selectedCount > ?","0").find(Product.class);
         shoppingCartAdapter.setmList(shoppingCartList);
         shoppingCartAdapter.notifyDataSetChanged();
@@ -160,10 +167,58 @@ public class ShoppingMallPresenter
         }
     }
 
+    public void search(String keyword, final ProductAdapter productAdapter){
+        final String address = HttpUtil.LocalAddress + "/api/product/list?searchCondition=" + keyword;
+        String credential = pref.getString("credential",null);
+        HttpUtil.getHttp(address, credential, new Callback()
+        {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e)
+            {
+                e.printStackTrace();
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
+            {
+                final String responseData = response.body().string();
+                LogUtil.e("ShoppingMallPresenter",responseData);
+                if(Utility.checkResponse(responseData,context,address)){
+                    List<Product> productList = Utility.handleProductList(responseData);
+                    for(Product product : productList){
+                        Product localProduct = LitePal.where("internetId = ?",product.getInternetId()).findFirst(Product.class);
+                        if(localProduct == null){
+                            product.setSelectedCount(0);
+                        }else{
+                            product.setSelectedCount(localProduct.getSelectedCount());
+                        }
+                    }
+                    productAdapter.setmList(productList);
+//                    productClassAdapter.setProductList(productList);
+                    ((AppCompatActivity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+//                            productClassAdapter.notifyDataSetChanged();
+                            productAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     public ShoppingCartAdapter getShoppingCartAdapter()
     {
         return shoppingCartAdapter;
     }
+
+
 
     public void setShoppingCartAdapter(ShoppingCartAdapter shoppingCartAdapter)
     {

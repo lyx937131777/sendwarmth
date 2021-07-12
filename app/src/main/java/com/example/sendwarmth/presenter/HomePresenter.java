@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.example.sendwarmth.HealthBroadcastActivity;
 import com.example.sendwarmth.InterestringActivityActivity;
 import com.example.sendwarmth.MainActivity;
+import com.example.sendwarmth.ServiceWorkSearchActivity;
 import com.example.sendwarmth.adapter.CarouselBannerAdapter;
 import com.example.sendwarmth.adapter.InterestingActivityAdapter;
 import com.example.sendwarmth.adapter.RecommendServiceSubjectAdapter;
@@ -271,6 +272,36 @@ public class HomePresenter
                     Intent intent = new Intent(context, HealthBroadcastActivity.class);
                     intent.putExtra("healthBroadcast",healthBroadcast);
                     context.startActivity(intent);
+                }
+            }
+        });
+    }
+
+    public void search(String keyword){
+        final String address = HttpUtil.LocalAddress + "/api/servicesubject/list?searchCondition=" + keyword;
+        String credential = pref.getString("credential",null);
+        HttpUtil.getHttp(address, credential, new Callback()
+        {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e)
+            {
+                e.printStackTrace();
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
+            {
+                final String responseData = response.body().string();
+                LogUtil.e("HomePresenter",responseData);
+                if(Utility.checkResponse(responseData,context,address)){
+                    List<ServiceSubject> serviceSubjectList = Utility.handleServiceSubjectList(responseData);
+
                 }
             }
         });

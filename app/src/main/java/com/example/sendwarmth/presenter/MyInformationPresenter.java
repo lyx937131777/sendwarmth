@@ -47,11 +47,9 @@ public class MyInformationPresenter {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
-                ((AppCompatActivity)context).runOnUiThread(new Runnable()
-                {
+                ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
 
                     }

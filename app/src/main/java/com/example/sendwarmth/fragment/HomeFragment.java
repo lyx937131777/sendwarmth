@@ -1,5 +1,7 @@
 package com.example.sendwarmth.fragment;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.MainActivity;
 import com.example.sendwarmth.R;
+import com.example.sendwarmth.ServiceWorkSearchActivity;
 import com.example.sendwarmth.adapter.RecommendServiceSubjectAdapter;
 import com.example.sendwarmth.adapter.ServiceClassAdapter;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
@@ -27,6 +30,7 @@ import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.db.ServiceClass;
 import com.example.sendwarmth.db.ServiceSubject;
 import com.example.sendwarmth.presenter.HomePresenter;
+import com.example.sendwarmth.util.LogUtil;
 import com.sun.banner.BannerAdapter;
 import com.sun.banner.BannerScroller;
 import com.sun.banner.BannerView;
@@ -113,5 +117,20 @@ public class HomeFragment extends Fragment
 
     public Toolbar getToolbar(){
         return toolbar;
+    }
+
+    public void search(){
+        String keyword = searchText.getText().toString();
+        if(keyword.equals("")){
+            new AlertDialog.Builder(getContext())
+                    .setTitle("提示")
+                    .setMessage("请输入关键词")
+                    .setPositiveButton("确定", null)
+                    .show();
+        }else {
+            Intent intent = new Intent(getContext(), ServiceWorkSearchActivity.class);
+            intent.putExtra("keyword",keyword);
+            startActivity(intent);
+        }
     }
 }

@@ -77,8 +77,8 @@ public class LocationSelectActivity extends AppCompatActivity
         {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        searchText = findViewById(R.id.search_text);
-        searchButton = findViewById(R.id.search_button);
+//        searchText = findViewById(R.id.search_text);
+//        searchButton = findViewById(R.id.search_button);
         locationText = findViewById(R.id.location_text);
         mapView = findViewById(R.id.bmapView);
         baiduMap = mapView.getMap();
@@ -117,7 +117,9 @@ public class LocationSelectActivity extends AppCompatActivity
             @Override
             public void onMapStatusChange(MapStatus mapStatus)
             {
-//                marker.setPosition(mapStatus.target); //TODO
+                if(marker != null){
+                    marker.setPosition(mapStatus.target); //TODO 注释
+                }
             }
 
             @Override
@@ -179,11 +181,9 @@ public class LocationSelectActivity extends AppCompatActivity
             baiduMap.animateMapStatus(update);
             MarkerOptions options = new MarkerOptions().position(ll)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_black));
-//            marker = (Marker) baiduMap.addOverlay(options); //TODO
-//            marker.setScale(0.5f);
-//            Point centerPoint = mapView.getScaleControlPosition();
-//            LogUtil.e("LocationSelectActivity","x: " + centerPoint.x + " y: " + centerPoint.y);
-//            marker.setFixedScreenPosition(centerPoint);
+            marker = (Marker) baiduMap.addOverlay(options); //TODO 注释182-183（包括此行共2行）
+            marker.setScale(0.5f);
+
             isFirstLocate = false;
         }
         LogUtil.e("LocationSelectActivity","midReceiveLocation");

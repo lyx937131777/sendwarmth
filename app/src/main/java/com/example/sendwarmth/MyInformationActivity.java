@@ -53,12 +53,13 @@ import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.presenter.MyInformationPresenter;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class MyInformationActivity extends AppCompatActivity
+public class MyInformationActivity extends AppCompatActivity implements View.OnClickListener
 {
     public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
@@ -190,8 +191,40 @@ public class MyInformationActivity extends AppCompatActivity
         return true;
     }
 
-    private void initUser()
-    {
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(context, ModifyInformationActivity.class);
+        String attribute,value;
+        switch (v.getId()){
+            case R.id.user_name:
+                attribute = "userName";
+                value = customer.getUserName();
+                break;
+            case R.id.name:
+                attribute = "customerName";
+                value = customer.getCustomerName();
+                break;
+            case R.id.address:
+                attribute = "customerAddress";
+                value = customer.getCustomerAddress();
+                break;
+            case R.id.house_num:
+                attribute = "houseNum";
+                value = customer.getHouseNum();
+                break;
+            case R.id.personal_description:
+                attribute = "personalDescription";
+                value = customer.getPersonalDescription();
+                break;
+            default:
+                return;
+        }
+        intent.putExtra("attribute",attribute);
+        intent.putExtra("value",value);
+        startActivity(intent);
+    }
+
+    private void initUser() {
         customer = (Customer) getIntent().getSerializableExtra("customer");
 
         profile = findViewById(R.id.profile);
@@ -203,12 +236,13 @@ public class MyInformationActivity extends AppCompatActivity
         telText = findViewById(R.id.tel);
         personalDescriptionText = findViewById(R.id.personal_description);
 
-        userNameText.setText(customer.getUserName());
-        nameText.setText(customer.getCustomerName());
-        cusAddressText.setText(customer.getCustomerAddress());
-        houseNumText.setText(customer.getHouseNum());
-        telText.setText(customer.getCustomerTel());
-        personalDescriptionText.setText(customer.getPersonalDescription());
+       refresh();
+
+        userNameText.setOnClickListener(this);
+        nameText.setOnClickListener(this);
+        cusAddressText.setOnClickListener(this);
+        houseNumText.setOnClickListener(this);
+        personalDescriptionText.setOnClickListener(this);
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,10 +259,18 @@ public class MyInformationActivity extends AppCompatActivity
         });
     }
 
-
+    public void refresh(){
+        userNameText.setText(customer.getUserName());
+        nameText.setText(customer.getCustomerName());
+        cusAddressText.setText(customer.getCustomerAddress());
+        houseNumText.setText(customer.getHouseNum());
+        telText.setText(customer.getCustomerTel());
+        personalDescriptionText.setText(customer.getPersonalDescription());
+    }
 
     public void setAccount(Account account){
         this.account = account;
+        customer = account.getCustomerInfo();
         String proFile = account.getProFile();
         runOnUiThread(new Runnable() {
             @Override
@@ -240,6 +282,7 @@ public class MyInformationActivity extends AppCompatActivity
                     Glide.with(context).load(R.drawable.profile_uri).into(profile);
                     Glide.with(context).load(R.drawable.profile_uri).into(image);
                 }
+                refresh();
             }
         });
     }
