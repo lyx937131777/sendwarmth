@@ -43,10 +43,10 @@ public class LoginPresenter
         this.checkUtil = checkUtil;
     }
 
-    public void login(final String tel, final String password)
+    public void login(final String tel, final String password, boolean agreed)
     {
 
-        if (!checkUtil.checkLogin(tel, password))
+        if (!checkUtil.checkLogin(tel, password,agreed))
             return;
         progressDialog = ProgressDialog.show(context,"","登录中...");
         String address = HttpUtil.LocalAddress + "/api/users/login";

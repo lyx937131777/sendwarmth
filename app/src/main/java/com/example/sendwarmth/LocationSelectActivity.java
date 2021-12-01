@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -118,7 +119,7 @@ public class LocationSelectActivity extends AppCompatActivity
             public void onMapStatusChange(MapStatus mapStatus)
             {
                 if(marker != null){
-                    marker.setPosition(mapStatus.target); //TODO 注释
+                    marker.setPosition(mapStatus.target); //若出现闪退 注释
                 }
             }
 
@@ -161,12 +162,7 @@ public class LocationSelectActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent();
-                intent.putExtra("address",address);
-                intent.putExtra("longitude",longitude);
-                intent.putExtra("latitude",latitude);
-                setResult(RESULT_OK,intent);
-                finish();
+                commitAddress();
             }
         });
     }
@@ -181,7 +177,7 @@ public class LocationSelectActivity extends AppCompatActivity
             baiduMap.animateMapStatus(update);
             MarkerOptions options = new MarkerOptions().position(ll)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_black));
-            marker = (Marker) baiduMap.addOverlay(options); //TODO 注释182-183（包括此行共2行）
+            marker = (Marker) baiduMap.addOverlay(options); //若出现闪退 注释184-185（包括此行共2行）
             marker.setScale(0.5f);
 
             isFirstLocate = false;
@@ -274,8 +270,25 @@ public class LocationSelectActivity extends AppCompatActivity
             case android.R.id.home:
                 finish();
                 break;
+            case R.id.commit:
+                commitAddress();
         }
         return true;
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.commit_menu, menu);
+        return true;
+    }
+
+    public void commitAddress(){
+        Intent intent = new Intent();
+        intent.putExtra("address",address);
+        intent.putExtra("longitude",longitude);
+        intent.putExtra("latitude",latitude);
+        setResult(RESULT_OK,intent);
+        finish();
     }
 
 }

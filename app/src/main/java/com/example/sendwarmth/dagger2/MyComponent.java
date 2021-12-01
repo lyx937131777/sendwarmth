@@ -8,6 +8,7 @@ import com.example.sendwarmth.presenter.HealthBroadcastSubCommentPresenter;
 import com.example.sendwarmth.presenter.HomePresenter;
 import com.example.sendwarmth.presenter.InterestingActivityPresenter;
 import com.example.sendwarmth.presenter.LoginPresenter;
+import com.example.sendwarmth.presenter.MainPresenter;
 import com.example.sendwarmth.presenter.ModifyInformationPresenter;
 import com.example.sendwarmth.presenter.MyInformationPresenter;
 import com.example.sendwarmth.presenter.NewFriendsCirclePresenter;
@@ -86,4 +87,6 @@ public interface MyComponent
     MyInformationPresenter myInformationPresenter();
 
     ModifyInformationPresenter modifyInformationPresenter();
+
+    MainPresenter mainPresenter();
 }

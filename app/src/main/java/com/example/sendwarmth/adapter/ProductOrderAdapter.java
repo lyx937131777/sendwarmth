@@ -1,20 +1,34 @@
 package com.example.sendwarmth.adapter;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
 import com.example.sendwarmth.ProductOrderCommentActivity;
 import com.example.sendwarmth.ProductOrderDetailActivity;
 import com.example.sendwarmth.R;
+import com.example.sendwarmth.alipay.PayDemoActivity;
+import com.example.sendwarmth.alipay.util.OrderInfoUtil2_0;
+import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.db.ProductItem;
 import com.example.sendwarmth.db.ProductOrder;
 import com.example.sendwarmth.presenter.ProductOrderPresenter;
@@ -22,10 +36,13 @@ import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.MapUtil;
 
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.litepal.LitePal;
 
 public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapter.ViewHolder>
 {
@@ -72,6 +89,7 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
         {
             mContext = parent.getContext();
         }
+        initDialog();
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_product_order,parent,false);
         final ProductOrderAdapter.ViewHolder holder = new ProductOrderAdapter.ViewHolder(view);
         holder.view.setOnClickListener(new View.OnClickListener()
@@ -94,7 +112,7 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
                 final String orderId = productOrder.getInternetId();
                 new AlertDialog.Builder(mContext)
                         .setTitle("提示")
-                        .setMessage("确认支付么？")
+                        .setMessage("确认取消订单么？")
                         .setPositiveButton("确定", new
                                 DialogInterface.OnClickListener() {
                                     @Override
@@ -112,19 +130,20 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
                 int position = holder.getAdapterPosition();
                 ProductOrder productOrder = mList.get(position);
                 String state = productOrder.getState();
-                final String orderId = productOrder.getInternetId();
+                orderId = productOrder.getInternetId();
                 if (state.equals("un_paid")) {
-                    new AlertDialog.Builder(mContext)
-                            .setTitle("提示")
-                            .setMessage("确认支付么？")
-                            .setPositiveButton("确定", new
-                                    DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            productOrderPresenter.payProductOrder(orderId);
-                                        }
-                                    })
-                            .setNegativeButton("取消", null).show();
+                    selectPaymentMethodDialog.show();
+//                    new AlertDialog.Builder(mContext)
+//                            .setTitle("提示")
+//                            .setMessage("确认支付么？")
+//                            .setPositiveButton("确定", new
+//                                    DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            productOrderPresenter.payProductOrder(orderId);
+//                                        }
+//                                    })
+//                            .setNegativeButton("取消", null).show();
                 }else if(state.equals("paid")){
                     new AlertDialog.Builder(mContext)
                             .setTitle("提示")
@@ -213,5 +232,59 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
     public void setmList(List<ProductOrder> mList)
     {
         this.mList = mList;
+    }
+
+
+    //TODO 支付选择窗口
+    private Dialog selectPaymentMethodDialog;
+    private Button pay;
+    private RadioGroup radioGroup;
+    private RadioButton alipay,wechat;
+    private int paymentMethod;
+    private String orderId;
+
+    private void initDialog()
+    {
+        selectPaymentMethodDialog = new Dialog(mContext);
+        View view = View.inflate(mContext, R.layout.dialog_select_payment_method, null);
+        selectPaymentMethodDialog.setContentView(view);
+        selectPaymentMethodDialog.setCanceledOnTouchOutside(true);
+        //view.setMinimumHeight((int) (ScreenSizeUtils.getInstance(this).getScreenHeight() *
+        // 0.23f));
+        Window dialogWindow = selectPaymentMethodDialog.getWindow();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        //lp.width = (int) (ScreenSizeUtils.getInstance(this).getScreenWidth() * 0.9f);
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.BOTTOM;
+        dialogWindow.setAttributes(lp);
+        pay = view.findViewById(R.id.pay);
+        radioGroup = view.findViewById(R.id.select_payment_method);
+        alipay = view.findViewById(R.id.alipay);
+        wechat = view.findViewById(R.id.weChat);
+        paymentMethod = alipay.getId();
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                paymentMethod = checkedId;
+            }
+        });
+        pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(paymentMethod == alipay.getId()){
+                    productOrderPresenter.payProductOrder(orderId);
+                }else {
+                    productOrderPresenter.payProductOrderWX(orderId);
+//                    Toast.makeText(mContext, "暂时不支持微信支付，请等待后续版本。",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    public void dismissDialog(){
+        if(selectPaymentMethodDialog != null){
+            selectPaymentMethodDialog.dismiss();
+        }
     }
 }

@@ -21,6 +21,16 @@
     <uses-permission android:name="android.permission.REPLACE_EXISTING_PACKAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 前台服务 安卓9.0 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!--
+ 如果您的 App 的 targetSdkVersion 大于或等于 30，则需要在 AndroidManifest.xml 中提供下面的应用可见性声明，
+         让支付宝 SDK 感知设备上是否已经安装了支付宝 App。同时，您可能还需要升级 Gradle Plugin 到最新版本。
+         关于 Android 11 的 "应用可见性" 机制，参见 https://developer.android.com/about/versions/11/privacy/package-visibility?hl=zh-cn
+    -->
+    <queries>
+        <package android:name="com.eg.android.AlipayGphone" /> <!-- 支付宝 -->
+        <package android:name="hk.alipay.wallet" /> <!-- AlipayHK -->
+        <package android:name="com.tencent.mm" /> <!-- 安卓11指定微信包名 -->
+    </queries>
 
     <application
         android:name=".util.MyApplication"
@@ -32,7 +42,8 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProductSearchActivity"></activity>
+        <activity android:name=".WebActivity"></activity>
+        <activity android:name=".ProductSearchActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".ModifyInformationActivity" />
         <activity android:name=".ServiceWorkSearchActivity" />
@@ -84,6 +95,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTask"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

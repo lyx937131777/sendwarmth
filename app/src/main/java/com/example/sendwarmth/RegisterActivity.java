@@ -31,12 +31,11 @@ import androidx.appcompat.widget.Toolbar;
 
 public class RegisterActivity extends AppCompatActivity implements OnClickListener
 {
-    private EditText telText, passwordText, confirmPasswordText, userNameText,nameText,houseNumText,personalDescriptionText;
-    private TextView addressText;
-    private Button telClearButton,passwordClearButton,confirmPasswordClearButton,userNameClearButton,nameClearButton,houseNumClearButton,personalDescriptionClearButton;
-    private Button registerButton,locationButton;
-    private String tel, password, confirmPassword, userName, name, address,houseNum, personalDescription;
-    private double longitude,latitude;
+    private EditText telText, passwordText, confirmPasswordText;
+    private Button telClearButton,passwordClearButton,confirmPasswordClearButton;
+    private Button registerButton;
+    private String tel, password, confirmPassword;
+//    private double longitude,latitude;
 
 //    private Spinner roleSpinner;
 //    private List<String> roleList = new ArrayList<>();
@@ -155,111 +154,6 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             {
             }
         });
-        userNameText = findViewById(R.id.user_name);
-        userNameText.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                userName = userNameText.getText().toString();
-                if (userName.equals("")) {
-                    userNameClearButton.setVisibility(View.INVISIBLE);
-                } else {
-                    userNameClearButton.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s)
-            {
-            }
-        });
-
-        nameText = findViewById(R.id.name);
-        nameText.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-                name = nameText.getText().toString();
-                if(name.equals("")){
-                    nameClearButton.setVisibility(View.INVISIBLE);
-                }else {
-                    nameClearButton.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable)
-            {
-
-            }
-        });
-
-        houseNumText = findViewById(R.id.house_num);
-        houseNumText.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-                houseNum = houseNumText.getText().toString();
-                if(houseNum.equals("")){
-                    houseNumClearButton.setVisibility(View.INVISIBLE);
-                }else {
-                    houseNumClearButton.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable)
-            {
-
-            }
-        });
-
-        personalDescriptionText = findViewById(R.id.personal_description);
-        personalDescriptionText.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-                personalDescription = personalDescriptionText.getText().toString();
-                if(personalDescription.equals("")){
-                    personalDescriptionClearButton.setVisibility(View.INVISIBLE);
-                }else {
-                    personalDescriptionClearButton.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable)
-            {
-
-            }
-        });
 
 //        initroleList();
 //        roleArrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,roleList);
@@ -272,19 +166,8 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         passwordClearButton.setOnClickListener(this);
         confirmPasswordClearButton = findViewById(R.id.confirm_password_clear);
         confirmPasswordClearButton.setOnClickListener(this);
-        userNameClearButton = findViewById(R.id.user_name_clear);
-        userNameClearButton.setOnClickListener(this);
-        nameClearButton = findViewById(R.id.name_clear);
-        nameClearButton.setOnClickListener(this);
-        houseNumClearButton = findViewById(R.id.house_num_clear);
-        houseNumClearButton.setOnClickListener(this);
-        personalDescriptionClearButton = findViewById(R.id.personal_description_clear);
-        personalDescriptionClearButton.setOnClickListener(this);
         registerButton = findViewById(R.id.register);
         registerButton.setOnClickListener(this);
-        locationButton = findViewById(R.id.location);
-        locationButton.setOnClickListener(this);
-        addressText = findViewById(R.id.address);
     }
 
 //    private void initroleList()
@@ -326,34 +209,12 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             case R.id.confirm_password_clear:
                 confirmPasswordText.setText("");
                 break;
-            case R.id.user_name_clear:
-                userNameText.setText("");
-                break;
-            case R.id.name_clear:
-                nameText.setText("");
-                break;
-            case R.id.house_num_clear:
-                addressText.setText("");
-                break;
-            case R.id.personal_description_clear:
-                personalDescriptionText.setText("");
-                break;
-            case R.id.location:{
-                Intent intent = new Intent(this, LocationSelectActivity.class);
-                startActivityForResult(intent,1);
-                break;
-            }
 
             case R.id.register:
                 tel = telText.getText().toString();
                 password = passwordText.getText().toString();
                 confirmPassword = confirmPasswordText.getText().toString();
-                userName = userNameText.getText().toString();
-                name = nameText.getText().toString();
-                address = addressText.getText().toString();
-                houseNum = houseNumText.getText().toString();
-                personalDescription = personalDescriptionText.getText().toString();
-                registerPresenter.register(tel,password,confirmPassword,userName,name,address,longitude,latitude,houseNum,personalDescription);
+                registerPresenter.register(tel,password,confirmPassword);
                 break;
 
             default:
@@ -363,26 +224,26 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode)
-        {
-            case 1:
-            {
-                if (resultCode == RESULT_OK)
-                {
-                    address = data.getStringExtra("address");
-                    addressText.setText(address);
-                    longitude = data.getDoubleExtra("longitude",0);
-                    latitude = data.getDoubleExtra("latitude",0);
-                }
-                break;
-            }
-            default:
-                break;
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+//    {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        switch (requestCode)
+//        {
+//            case 1:
+//            {
+//                if (resultCode == RESULT_OK)
+//                {
+//                    address = data.getStringExtra("address");
+//                    addressText.setText(address);
+//                    longitude = data.getDoubleExtra("longitude",0);
+//                    latitude = data.getDoubleExtra("latitude",0);
+//                }
+//                break;
+//            }
+//            default:
+//                break;
+//        }
+//    }
 }
 

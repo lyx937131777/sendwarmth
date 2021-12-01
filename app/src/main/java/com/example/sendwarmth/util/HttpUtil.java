@@ -51,19 +51,18 @@ public class HttpUtil
     }
 
     //注册
-    public static void registerRequest(String address, String tel, String password, String userName, String name, String cusAddress,
-                                       double longitude, double latitude, String houseNum, String personalDescription, Callback callback){
+    public static void registerRequest(String address, String tel, String password, Callback callback){
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         HashMap<String, String> cusMap = new HashMap<>();
-        cusMap.put("customerAddress",cusAddress);
-        cusMap.put("customerName",name);
+//        cusMap.put("customerAddress",cusAddress);
+//        cusMap.put("customerName",name);
         cusMap.put("customerTel",tel);
-        cusMap.put("userName",userName);
-        cusMap.put("longitude",String.valueOf(longitude));
-        cusMap.put("latitude",String.valueOf(latitude));
-        cusMap.put("houseNum",houseNum);
-        cusMap.put("personalDescription",personalDescription);
+//        cusMap.put("userName",userName);
+//        cusMap.put("longitude",String.valueOf(longitude));
+//        cusMap.put("latitude",String.valueOf(latitude));
+//        cusMap.put("houseNum",houseNum);
+//        cusMap.put("personalDescription",personalDescription);
         String customerInfo = new Gson().toJson(cusMap);
         HashMap<String, String> map = new HashMap<>();
         map.put("loginName",tel);
@@ -351,6 +350,7 @@ public class HttpUtil
     //评价订单
     public static void commentOrderRequest(String address, String credential, String orderId, String comment, int score,Callback callback){
         OkHttpClient client = new OkHttpClient();
+        LogUtil.e("HttpUtil","orderId:"+orderId + "customerDes:" + comment + "score:" + score);
         RequestBody requestBody = new FormBody.Builder()
                 .add("orderId", orderId)
                 .add("customerDes",comment)

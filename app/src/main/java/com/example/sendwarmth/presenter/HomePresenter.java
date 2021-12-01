@@ -3,8 +3,11 @@ package com.example.sendwarmth.presenter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.sendwarmth.HealthBroadcastActivity;
 import com.example.sendwarmth.InterestringActivityActivity;
 import com.example.sendwarmth.MainActivity;
@@ -23,6 +26,9 @@ import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.Utility;
 import com.sun.banner.BannerAdapter;
 import com.sun.banner.BannerView;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
+import com.youth.banner.loader.ImageLoader;
 
 import org.jetbrains.annotations.NotNull;
 import org.litepal.LitePal;
@@ -152,7 +158,7 @@ public class HomePresenter
         });
     }
 
-    public void updateCarousel(final BannerView bannerView){
+    public void updateCarousel(final Banner banner){
         final String address = HttpUtil.LocalAddress + "/api/carousel/list";
         String credential = pref.getString("credential",null);
         HttpUtil.getHttp(address, credential, new Callback() {
@@ -173,13 +179,13 @@ public class HomePresenter
                 LogUtil.e("HomePresenter",responseData);
                 if(Utility.checkResponse(responseData,context,address)){
                     final List<Carousel> carouselList = Utility.handleCarouselList(responseData);
-                    updateJoinedInterestingActivity(bannerView,carouselList);
+                    updateJoinedInterestingActivity(banner,carouselList);
                 }
             }
         });
     }
 
-    public void updateJoinedInterestingActivity(final BannerView bannerView, final List<Carousel> carouselList){
+    public void updateJoinedInterestingActivity(final Banner banner, final List<Carousel> carouselList){
         final String address = HttpUtil.LocalAddress + "/api/activity/my";
         String credential = pref.getString("credential",null);
         String type = "join";
@@ -208,9 +214,44 @@ public class HomePresenter
                     ((AppCompatActivity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            List<String> imageList = new ArrayList<>();
+                            for(Carousel carousel : carouselList){
+                                imageList.add(carousel.getCarouselPic());
+                            }
                             final CarouselBannerAdapter carouselBannerAdapter = new CarouselBannerAdapter(carouselList,context, HomePresenter.this);
-                            bannerView.setAdapter(carouselBannerAdapter);
-                            bannerView.startRoll();
+                            banner.setImageLoader(new ImageLoader() {
+                                @Override
+                                public void displayImage(Context context, Object path, ImageView imageView) {
+                                    Glide.with(context).load(HttpUtil.getResourceURL(path.toString())).into(imageView);
+                                }
+                            });
+                            banner.setImages(imageList);
+                            banner.setOnBannerListener(new OnBannerListener() {
+                                @Override
+                                public void OnBannerClick(int position) {
+                                    Carousel carousel = carouselList.get(position);
+                                    switch (carousel.getCarouselType()){
+                                        case "business":{
+                                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                                            intent.setData(Uri.parse(carousel.getLink()));
+                                            context.startActivity(intent);
+                                            break;
+                                        }
+                                        case "activity":{
+                                            startInterestingActivityActivity(carousel.getLink());
+                                            break;
+                                        }
+                                        case "topic":{
+                                            startHealthBroadcastActivity(carousel.getLink());
+                                            break;
+                                        }
+                                    }
+                                }
+                            });
+                            banner.start();
+//                            banner.setOnBannerListener()
+//                            banner.setAdapter(carouselBannerAdapter);
+//                            banner.startRoll();
                         }
                     });
                 }

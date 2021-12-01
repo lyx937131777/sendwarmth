@@ -59,11 +59,7 @@ public class PersonalCenterPresenter {
                 LogUtil.e("PersonalCenterPresenter",responseData);
                 if(Utility.checkResponse(responseData,context,address)){
                     Account account = Utility.handleAccount(responseData);
-                    LitePal.deleteAll(Customer.class,"userId = ?",tel);
                     Customer customer = Utility.handleCustomer(responseData);
-                    customer.setUserId(tel);
-                    customer.setCredential(credential);
-                    customer.save();
                     ((MainActivity)context).setCustomer(customer);
                     ((MainActivity)context).setAccount(account);
                 }

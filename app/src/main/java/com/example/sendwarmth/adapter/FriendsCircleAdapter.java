@@ -80,7 +80,7 @@ public class FriendsCircleAdapter extends RecyclerView.Adapter<FriendsCircleAdap
         FriendsCircle friendsCircle = mList.get(position);
         Glide.with(mContext).load(HttpUtil.getResourceURL(friendsCircle.getPicture())).into(holder.picture);
         Glide.with(mContext).load(R.drawable.profile_uri).into(holder.authorProfile);
-        holder.authorName.setText(friendsCircle.getCustomerInfo().getUserName());
+        holder.authorName.setText(friendsCircle.getCustomerInfo().getCustomerName());
         holder.content.setText(friendsCircle.getContent());
         holder.time.setText(TimeUtil.timeStampToString(friendsCircle.getTimestamp(),"yyyy-MM-dd HH:mm"));
     }

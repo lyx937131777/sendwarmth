@@ -15,8 +15,12 @@ public class CheckUtil
         this.context = context;
     }
 
-    public boolean checkLogin(String tel, String password)
+    public boolean checkLogin(String tel, String password, boolean agreed)
     {
+        if(!agreed){
+            Toast.makeText(context, "请先同意《用户协议》及《隐私政策》", Toast.LENGTH_LONG).show();
+            return false;
+        }
         if (tel.length() != 11) {
             Toast.makeText(context, "手机号码格式不正确", Toast.LENGTH_LONG).show();
             return false;
@@ -28,8 +32,7 @@ public class CheckUtil
         return true;
     }
 
-    public boolean checkRegister(String tel, String password, String confirmPassword, String userName, String name, String address,
-                                 double longitude, double latitude, String houseNum, String personalDescription)
+    public boolean checkRegister(String tel, String password, String confirmPassword)
     {
         //确认密码不正确、邮箱格式不正确、昵称已被占用
         if (tel.length() != 11) {
@@ -44,30 +47,27 @@ public class CheckUtil
             Toast.makeText(context, "两次密码输入不一致", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (userName.length() < 1) {
-            Toast.makeText(context, "请填写用户名", Toast.LENGTH_LONG).show();
-            return false;
-        }
 //        if(role.equals("notSelected")){
 //            Toast.makeText(context, "请选择角色", Toast.LENGTH_LONG).show();
 //            return false;
 //        }
-        if(name.length() < 1){
-            Toast.makeText(context, "请填写姓名", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if(address.length() < 1){
-            Toast.makeText(context, "请选择地址", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if(longitude == 0 || latitude == 0){
-            Toast.makeText(context, "经纬度信息获取失败", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if(houseNum.length() < 1){
-            Toast.makeText(context, "请填写门牌号", Toast.LENGTH_LONG).show();
-            return false;
-        }
+
+//        if(name.length() < 1){
+//            Toast.makeText(context, "请填写姓名", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+//        if(address.length() < 1){
+//            Toast.makeText(context, "请选择地址", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+//        if(longitude == 0 || latitude == 0){
+//            Toast.makeText(context, "经纬度信息获取失败", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+//        if(houseNum.length() < 1){
+//            Toast.makeText(context, "请填写门牌号", Toast.LENGTH_LONG).show();
+//            return false;
+//        }
 //        if(personalDescription.length() < 1){
 //            Toast.makeText(context, "请填写个人描述", Toast.LENGTH_LONG).show();
 //            return false;
@@ -276,5 +276,35 @@ public class CheckUtil
             return false;
         }
         return true;
+    }
+
+    public boolean checkAttribute(String attribute, String value){
+        if(attribute.equals("contactPhone") && value.length() != 11){
+            Toast.makeText(context, "手机号码格式不正确", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(attribute.equals("idNumber") && !legalId(value)){
+            Toast.makeText(context, "身份证格式不正确", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean legalId(String id){
+        if(id.length() != 18)
+            return  false;
+        for(int i = 0; i < 17; i++){
+            if(!isDigit(id.charAt(i))){
+                return false;
+            }
+        }
+        char x = id.charAt(17);
+        if(x != 'x' && x != 'X' && !isDigit(x))
+            return false;
+        return true;
+    }
+
+    private boolean isDigit(char x){
+        return x >= '0' && x <= '9';
     }
 }

@@ -8,13 +8,17 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.sendwarmth.fragment.ProductOrderFragment;
 import com.example.sendwarmth.fragment.adapter.OrderPagerAdapter;
 import com.example.sendwarmth.fragment.adapter.ProductOrderPagerAdapter;
 import com.example.sendwarmth.util.LogUtil;
+import com.example.sendwarmth.wxapi.WXPayEntryActivity;
 import com.google.android.material.tabs.TabLayout;
 
 public class ProductOrderActivity extends AppCompatActivity
 {
+    private ViewPager viewPager;
+    private ProductOrderPagerAdapter productOrderPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,8 +33,8 @@ public class ProductOrderActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        ProductOrderPagerAdapter productOrderPagerAdapter = new ProductOrderPagerAdapter(this,getSupportFragmentManager());
+        viewPager = findViewById(R.id.view_pager);
+        productOrderPagerAdapter = new ProductOrderPagerAdapter(this,getSupportFragmentManager());
         viewPager.setAdapter(productOrderPagerAdapter);
         viewPager.setCurrentItem(getIntent().getIntExtra("index",0));
         TabLayout tabLayout = findViewById(R.id.tabs);
@@ -51,5 +55,17 @@ public class ProductOrderActivity extends AppCompatActivity
 
     public void refresh(){
         LogUtil.e("ProductOrderActivity","refresh!");
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        LogUtil.e("ProductOrderActivity","onResume");
+        if(WXPayEntryActivity.isSuccess()){
+            ProductOrderFragment productOrderFragment = (ProductOrderFragment) productOrderPagerAdapter.getFragment(viewPager.getCurrentItem());
+            productOrderFragment.refresh();
+        }else {
+            LogUtil.e("ProductOrderActivity","WXnotSuccess");
+        }
     }
 }

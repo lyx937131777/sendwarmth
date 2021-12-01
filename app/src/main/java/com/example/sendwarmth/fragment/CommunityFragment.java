@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.sendwarmth.fragment.adapter.MyFragAdapter;
 import com.example.sendwarmth.R;
+import com.example.sendwarmth.util.LogUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -90,6 +91,12 @@ public class CommunityFragment extends Fragment
             }
         });
         return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LogUtil.e("CommunityFragment","onStart");
     }
 
 

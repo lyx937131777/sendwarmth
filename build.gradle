@@ -2,7 +2,7 @@
 buildscript {
     repositories {
         google()
-//        mavenCentral()
+        mavenCentral()
 //        maven { url "https://kotlin.bintray.com/kotlinx" }
 //        maven { url "https://dl.bintray.com/google/mobile-ads-adapters-android/" }
         jcenter()
@@ -18,6 +18,11 @@ buildscript {
 
 allprojects {
     repositories {
+        // 支付宝 SDK AAR 包所需的配置
+        flatDir {
+            dirs 'libs'
+        }
+
         google()
 //        mavenCentral()
 //        maven { url "https://kotlin.bintray.com/kotlinx" }

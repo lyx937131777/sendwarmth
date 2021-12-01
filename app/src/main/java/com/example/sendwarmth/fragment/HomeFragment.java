@@ -31,10 +31,8 @@ import com.example.sendwarmth.db.ServiceClass;
 import com.example.sendwarmth.db.ServiceSubject;
 import com.example.sendwarmth.presenter.HomePresenter;
 import com.example.sendwarmth.util.LogUtil;
-import com.sun.banner.BannerAdapter;
-import com.sun.banner.BannerScroller;
-import com.sun.banner.BannerView;
-import com.sun.banner.BannerViewPager;
+import com.youth.banner.Banner;
+
 
 import org.litepal.LitePal;
 
@@ -47,7 +45,8 @@ public class HomeFragment extends Fragment
 
     private EditText searchText;
 
-    private BannerView bannerView;
+//    private BannerView bannerView;
+    private Banner banner;
 
     private RecyclerView serviceClassRecycler;
 //    private Menu[]menus = {new Menu("lifeCare",R.drawable.life_care,"生活护理"),
@@ -78,8 +77,10 @@ public class HomeFragment extends Fragment
         MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(getContext())).build();
         homePresenter = myComponent.homePresenter();
 
-        bannerView = root.findViewById(R.id.banner);
-        homePresenter.updateCarousel(bannerView);
+//        bannerView = root.findViewById(R.id.banner);
+//        homePresenter.updateCarousel(bannerView);
+        banner = root.findViewById(R.id.banner);
+        homePresenter.updateCarousel(banner);
 
         initServiceClass();
         serviceClassRecycler = root.findViewById(R.id.recycler_service_class);
@@ -111,6 +112,7 @@ public class HomeFragment extends Fragment
     public void onStart()
     {
         super.onStart();
+        LogUtil.e("HomeFragment","onStart");
         homePresenter.updateServiceClass(serviceClassAdapter);
         homePresenter.updateRecommendServiceSubject(recommendServiceSubjectAdapter);
     }

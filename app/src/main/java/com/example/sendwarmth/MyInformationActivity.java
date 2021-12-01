@@ -53,6 +53,7 @@ import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.presenter.MyInformationPresenter;
 import com.example.sendwarmth.util.HttpUtil;
 import com.example.sendwarmth.util.LogUtil;
+import com.example.sendwarmth.util.MapUtil;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -70,8 +71,10 @@ public class MyInformationActivity extends AppCompatActivity implements View.OnC
     private String imagePath = null;
 
     private CircleImageView profile;
-    private TextView userNameText, nameText, cusAddressText, houseNumText, telText, personalDescriptionText;
-    private CardView profileCard;
+    private TextView  nameText, genderText, cusAddressText, houseNumText, telText, idNumberText,
+            personalDescriptionText, contactNameText, contactPhoneText, relationshipText,commonDiseasesText;
+    private CardView profileCard,nameCard, genderCard, cusAddressCard, houseNumCard, idNumberCard,
+            personalDesCriptionCard,contactNameCard, contactPhoneCard, relationshipCard,commonDiseasesCard;
 
     private Account account;
     private Customer customer;
@@ -126,6 +129,7 @@ public class MyInformationActivity extends AppCompatActivity implements View.OnC
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyInformationActivity.this).edit();
                 editor.remove("userId");
                 editor.remove("password");
+                editor.remove("profile");
                 editor.apply();
                 Intent intent_logout = new Intent(MyInformationActivity.this, LoginActivity.class);
                 startActivity(intent_logout);
@@ -196,25 +200,55 @@ public class MyInformationActivity extends AppCompatActivity implements View.OnC
         Intent intent = new Intent(context, ModifyInformationActivity.class);
         String attribute,value;
         switch (v.getId()){
-            case R.id.user_name:
-                attribute = "userName";
-                value = customer.getUserName();
-                break;
             case R.id.name:
+            case R.id.name_card:
                 attribute = "customerName";
                 value = customer.getCustomerName();
                 break;
+            case R.id.gender:
+            case R.id.gender_card:
+                attribute = "gender";
+                value = customer.getGender();
+                break;
             case R.id.address:
+            case R.id.address_card:
                 attribute = "customerAddress";
                 value = customer.getCustomerAddress();
                 break;
             case R.id.house_num:
+            case R.id.house_num_card:
                 attribute = "houseNum";
                 value = customer.getHouseNum();
                 break;
+            case R.id.id:
+            case R.id.id_card:
+                attribute = "idNumber";
+                value = customer.getIdNumber();
+                break;
             case R.id.personal_description:
+            case R.id.personal_description_card:
                 attribute = "personalDescription";
                 value = customer.getPersonalDescription();
+                break;
+            case R.id.contact_name:
+            case R.id.contact_name_card:
+                attribute = "contactName";
+                value = customer.getEmergencyContactName();
+                break;
+            case R.id.contact_phone:
+            case R.id.contact_phone_card:
+                attribute = "contactPhone";
+                value = customer.getEmergencyContactPhone();
+                break;
+            case R.id.relationship:
+            case R.id.relationship_card:
+                attribute = "relationship";
+                value = customer.getRelationship();
+                break;
+            case R.id.common_diseases:
+            case R.id.common_diseases_card:
+                attribute = "commonDiseases";
+                value = customer.getCommonDiseases();
                 break;
             default:
                 return;
@@ -229,20 +263,48 @@ public class MyInformationActivity extends AppCompatActivity implements View.OnC
 
         profile = findViewById(R.id.profile);
         profileCard = findViewById(R.id.profile_card);
-        userNameText = findViewById(R.id.user_name);
         nameText = findViewById(R.id.name);
+        nameCard = findViewById(R.id.name_card);
+        genderText = findViewById(R.id.gender);
+        genderCard = findViewById(R.id.gender_card);
         cusAddressText = findViewById(R.id.address);
+        cusAddressCard = findViewById(R.id.address_card);
         houseNumText = findViewById(R.id.house_num);
+        houseNumCard = findViewById(R.id.house_num_card);
         telText = findViewById(R.id.tel);
+        idNumberText = findViewById(R.id.id);
+        idNumberCard = findViewById(R.id.id_card);
         personalDescriptionText = findViewById(R.id.personal_description);
+        personalDesCriptionCard = findViewById(R.id.personal_description_card);
+        contactNameText = findViewById(R.id.contact_name);
+        contactNameCard = findViewById(R.id.contact_name_card);
+        contactPhoneText = findViewById(R.id.contact_phone);
+        contactPhoneCard = findViewById(R.id.contact_phone_card);
+        relationshipText = findViewById(R.id.relationship);
+        relationshipCard = findViewById(R.id.relationship_card);
+        commonDiseasesText = findViewById(R.id.common_diseases);
+        commonDiseasesCard = findViewById(R.id.common_diseases_card);
 
-       refresh();
+        refresh();
 
-        userNameText.setOnClickListener(this);
         nameText.setOnClickListener(this);
+        nameCard.setOnClickListener(this);
+        genderText.setOnClickListener(this);
+        genderCard.setOnClickListener(this);
         cusAddressText.setOnClickListener(this);
         houseNumText.setOnClickListener(this);
+        idNumberText.setOnClickListener(this);
+        idNumberCard.setOnClickListener(this);
         personalDescriptionText.setOnClickListener(this);
+        personalDesCriptionCard.setOnClickListener(this);
+        contactNameText.setOnClickListener(this);
+        contactNameCard.setOnClickListener(this);
+        contactPhoneText.setOnClickListener(this);
+        contactPhoneCard.setOnClickListener(this);
+        relationshipText.setOnClickListener(this);
+        relationshipCard.setOnClickListener(this);
+        commonDiseasesText.setOnClickListener(this);
+        commonDiseasesCard.setOnClickListener(this);
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,12 +322,17 @@ public class MyInformationActivity extends AppCompatActivity implements View.OnC
     }
 
     public void refresh(){
-        userNameText.setText(customer.getUserName());
         nameText.setText(customer.getCustomerName());
+        genderText.setText(MapUtil.getGender(customer.getGender()));
         cusAddressText.setText(customer.getCustomerAddress());
         houseNumText.setText(customer.getHouseNum());
         telText.setText(customer.getCustomerTel());
+        idNumberText.setText(customer.getIdNumber());
         personalDescriptionText.setText(customer.getPersonalDescription());
+        contactNameText.setText(customer.getEmergencyContactName());
+        contactPhoneText.setText(customer.getEmergencyContactPhone());
+        relationshipText.setText(MapUtil.getRelationship(customer.getRelationship()));
+        commonDiseasesText.setText(customer.getCommonDiseases());
     }
 
     public void setAccount(Account account){

@@ -1,9 +1,13 @@
 package com.example.sendwarmth.fragment;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,18 +18,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.sendwarmth.MyInformationActivity;
 import com.example.sendwarmth.ProductOrderingActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.SearchActivity;
+import com.example.sendwarmth.ServiceSubjectActivity;
 import com.example.sendwarmth.adapter.ProductClassAdapter;
 import com.example.sendwarmth.adapter.ShoppingCartAdapter;
 import com.example.sendwarmth.adapter.TabAdapter;
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
 import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
+import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.db.ProductClass;
 import com.example.sendwarmth.presenter.ShoppingMallPresenter;
+import com.example.sendwarmth.util.LogUtil;
 
 import org.litepal.LitePal;
 
@@ -56,6 +64,11 @@ public class ShoppingMallFragment extends Fragment
 
     private RecyclerView shoppingCartRecycler;
     private ShoppingCartAdapter shoppingCartAdapter;
+
+    //检查信息是否完整
+    private SharedPreferences pref;
+    private String credential;
+    private Customer customer;
 
     private ShoppingMallPresenter shoppingMallPresenter;
 
@@ -129,10 +142,31 @@ public class ShoppingMallFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(getContext(), ProductOrderingActivity.class);
-                intent.putExtra("totalCount",shoppingMallPresenter.getTotalCount());
-                intent.putExtra("totalPrice",shoppingMallPresenter.getTotalPrice());
-                startActivity(intent);
+                pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                credential = pref.getString("credential","");
+                customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+                if(customer.informationIncomplete()){
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("提示")
+                            .setMessage("您的必要身份信息不完整（姓名，性别，详细地址，身份证），请补全信息后再下单。")
+                            .setPositiveButton("现在去填", new
+                                    DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which)
+                                        {
+                                            Intent intent = new Intent(getContext(), MyInformationActivity.class);
+                                            intent.putExtra("customer",customer);
+                                            startActivity(intent);
+                                        }
+                                    })
+                            .setNegativeButton("稍后再说",null).show();
+                }else {
+                    Intent intent = new Intent(getContext(), ProductOrderingActivity.class);
+                    intent.putExtra("totalCount", shoppingMallPresenter.getTotalCount());
+                    intent.putExtra("totalPrice", shoppingMallPresenter.getTotalPrice());
+                    startActivity(intent);
+                }
             }
         });
 
@@ -182,8 +216,10 @@ public class ShoppingMallFragment extends Fragment
     public void onStart()
     {
         super.onStart();
+        LogUtil.e("ShoppingMallFragment","onStart");
         shoppingMallPresenter.refresh();
         shoppingMallPresenter.updateProductClass(productClassAdapter,tabAdapter,productClassList);
         shoppingMallPresenter.updateProduct(productClassAdapter);
     }
+
 }

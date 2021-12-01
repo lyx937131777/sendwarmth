@@ -81,7 +81,7 @@ public class HealthBroadcastActivity extends AppCompatActivity
         title.setText(healthBroadcast.getTopicName());
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
         if(healthBroadcast.getCreatorInfo() != null && healthBroadcast.getCreatorInfo().getCustomerInfo()!=null)
-            author.setText(healthBroadcast.getCreatorInfo().getCustomerInfo().getUserNameWithRole());
+            author.setText(healthBroadcast.getCreatorInfo().getCustomerInfo().getCustomerNameWithRole());
         time.setText(TimeUtil.timeStampToString(healthBroadcast.getTimestamp(),"yyyy-MM-dd HH:mm"));
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 

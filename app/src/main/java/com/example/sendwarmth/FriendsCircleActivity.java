@@ -58,7 +58,7 @@ public class FriendsCircleActivity extends AppCompatActivity
         Glide.with(this).load(HttpUtil.getResourceURL(friendsCircle.getPicture())).into(picture);
         collapsingToolbarLayout.setTitle("");
         Glide.with(this).load(R.drawable.profile_uri).into(authorProfile);
-        author.setText(friendsCircle.getCustomerInfo().getUserName());
+        author.setText(friendsCircle.getCustomerInfo().getCustomerName());
         time.setText(TimeUtil.timeStampToString(friendsCircle.getTimestamp(),"yyyy-MM-dd HH:mm"));
         description.setText(friendsCircle.getContent());
     }

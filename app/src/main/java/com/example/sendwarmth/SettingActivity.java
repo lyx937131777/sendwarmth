@@ -16,6 +16,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +33,7 @@ import com.example.sendwarmth.util.HttpUtil;
 
 public class SettingActivity extends AppCompatActivity
 {
-    private TextView versionText;
+    private TextView versionText, userAgreementText, privacyPolicyText;
     private Button updateButton;
 
     private SharedPreferences pref;
@@ -110,6 +112,28 @@ public class SettingActivity extends AppCompatActivity
             }
         });
 
+        userAgreementText = findViewById(R.id.user_agreement);
+        privacyPolicyText = findViewById(R.id.privacy_policy);
+        userAgreementText.setText(Html.fromHtml("<a href=\"http://app.swn-sh.com/yhxy.html\">用户协议</a>"));
+        userAgreementText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, WebActivity.class);
+                intent.putExtra("link","http://app.swn-sh.com/yhxy.html");
+                intent.putExtra("title","用户协议");
+                startActivity(intent);
+            }
+        });
+        privacyPolicyText.setText(Html.fromHtml("<a href=\"http://app.swn-sh.com/yszc.html\">隐私政策</a>"));
+        privacyPolicyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, WebActivity.class);
+                intent.putExtra("link","http://app.swn-sh.com/yszc.html");
+                intent.putExtra("title","隐私政策");
+                startActivity(intent);
+            }
+        });
         settingPresenter.getLatestVersion(version);
     }
 

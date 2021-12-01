@@ -1,6 +1,7 @@
 package com.example.sendwarmth.presenter;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.Toast;
@@ -22,7 +23,7 @@ public class RegisterPresenter
 {
     private Context context;
     private CheckUtil checkUtil;
-
+    private ProgressDialog progressDialog;
 
     public RegisterPresenter(Context context, CheckUtil checkUtil)
     {
@@ -30,13 +31,13 @@ public class RegisterPresenter
         this.checkUtil = checkUtil;
     }
 
-    public void register(String tel, String password, String confirm, String userName, String name, String cusAddress,
-                         double longitude, double latitude, String houseNum, String personalDescription)
+    public void register(String tel, String password, String confirm)
     {
-        if (!checkUtil.checkRegister(tel,password,confirm,userName,name,cusAddress,longitude,latitude,houseNum,personalDescription))
+        if (!checkUtil.checkRegister(tel,password,confirm))
             return;
+        progressDialog = ProgressDialog.show(context,"","注册中...");
         String address = HttpUtil.LocalAddress + "/api/users/old";
-        HttpUtil.registerRequest(address, tel, password, userName, name, cusAddress,longitude,latitude,houseNum,personalDescription, new
+        HttpUtil.registerRequest(address, tel, password, new
                 Callback()
                 {
                     @Override
@@ -51,11 +52,13 @@ public class RegisterPresenter
                                 Toast.makeText(context, "网络连接错误", Toast.LENGTH_LONG).show();
                             }
                         });
+                        progressDialog.dismiss();
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException
                     {
+                        progressDialog.dismiss();
                         final String responseData = response.body().string();
                         LogUtil.e("RegisterPresenter", responseData);
                         if (Utility.checkString(responseData,"code").equals("000"))

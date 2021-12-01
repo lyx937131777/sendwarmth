@@ -64,6 +64,13 @@ public class MyInformationPresenter {
                 if(Utility.checkResponse(responseData,context,address)){
                     Account account = Utility.handleAccount(responseData);
                     ((MyInformationActivity)context).setAccount(account);
+                    String profile = account.getProFile();
+                    if(profile != null){
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("profile",profile);
+                        editor.putString("latest", String.valueOf(System.currentTimeMillis()));
+                        editor.apply();
+                    }
                 }
             }
         });
@@ -100,6 +107,7 @@ public class MyInformationPresenter {
                                         final String responseData = response.body().string();
                                         if(Utility.checkResponse(responseData,context,address)){
                                             updateAccount();
+
                                             ((AppCompatActivity) context).runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {

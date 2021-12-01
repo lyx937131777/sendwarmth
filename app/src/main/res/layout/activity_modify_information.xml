@@ -31,6 +31,7 @@
             android:layout_height="wrap_content">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/default_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -49,6 +50,143 @@
                     android:layout_gravity="center_vertical|right"
                     android:layout_marginRight="10dp"/>
             </androidx.cardview.widget.CardView>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/gender"
+                android:visibility="gone">
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/male"
+                    android:checked="true"
+                    android:padding="20dp"
+                    android:text="男"/>
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/female"
+                    android:padding="20dp"
+                    android:text="女"/>
+            </RadioGroup>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relationship"
+                android:visibility="gone">
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/children"
+                    android:checked="true"
+                    android:padding="20dp"
+                    android:text="子女"/>
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relatives"
+                    android:padding="20dp"
+                    android:text="亲属"/>
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/friends"
+                    android:padding="20dp"
+                    android:text="朋友"/>
+            </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/common_diseases"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/coronary_heart_disease"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:text="冠心病"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/angina_pectoris"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:text="心绞痛"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hypertension"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:text="高血压"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/diabetes"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:text="糖尿病"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cerebral_infarction"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:text="脑梗塞"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chronic_gastritis"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:text="慢性胃炎"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/osteoporosis"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:text="骨质疏松"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chronic_bronchitis"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:text="慢性支气管炎"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gout"
+                    android:textSize="20sp"
+                    android:padding="20dp"
+                    android:text="痛风"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/other"
+                        android:textSize="20sp"
+                        android:padding="20dp"
+                        android:text="其他" />
+                    <EditText
+                        android:id="@+id/other_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:hint="请填写病症名"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </LinearLayout>
 
         </LinearLayout>
 

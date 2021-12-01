@@ -1,5 +1,7 @@
 package com.example.sendwarmth;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -19,6 +21,7 @@ import com.example.sendwarmth.fragment.CommunityFragment;
 import com.example.sendwarmth.fragment.HomeFragment;
 import com.example.sendwarmth.fragment.PersonalCenterFragment;
 import com.example.sendwarmth.fragment.adapter.MyFragAdapter;
+import com.example.sendwarmth.presenter.MainPresenter;
 import com.example.sendwarmth.presenter.SettingPresenter;
 import com.example.sendwarmth.util.LogUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     private int viewPagerSelected = 0;
 
     private SettingPresenter settingPresenter;
+    private MainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity
 
         MyComponent myComponent = DaggerMyComponent.builder().myModule(new MyModule(this)).build();
         settingPresenter = myComponent.settingPresenter();
+        mainPresenter = myComponent.mainPresenter();
 
         navView = findViewById(R.id.nav_view);
         viewPager = findViewById(R.id.view_pager);
@@ -153,6 +158,26 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         settingPresenter.getLatestVersionMain(version);
+        mainPresenter.getMe();
+        //判断是否同意用户协议及隐私政策
+//        boolean agreed = pref.getBoolean("agreed",false);
+//        if(!agreed){
+//            new AlertDialog.Builder(this)
+//                    .setTitle("用户协议和隐私政策")
+//                    .setMessage("使用此APP前，您需同意用户协议和隐私政策，具体内容您可前往设置页面查看。")
+//                    .setPositiveButton("同意", new DialogInterface.OnClickListener()
+//                    {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i)
+//                        {
+//                            SharedPreferences.Editor editor = pref.edit();
+//                            editor.putBoolean("agreed",true);
+//                            editor.apply();
+//                        }
+//                    })
+//                    .setNegativeButton("暂不同意",null)
+//                    .show();
+//        }
 
         long time = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
@@ -160,6 +185,13 @@ public class MainActivity extends AppCompatActivity
         LogUtil.e("TimeTest","calendar(default): " + calendar.getTimeInMillis());
         LogUtil.e("TimeTest","calendar: year: " + calendar.get(Calendar.YEAR) + " month: " + (calendar.get(Calendar.MONTH)+1) + " day:" + calendar.get(Calendar.DAY_OF_MONTH));
         LogUtil.e("TimeTest","calendar: hour: " + calendar.get(Calendar.HOUR_OF_DAY) + " minute: " + calendar.get(Calendar.PM) + " second: " +calendar.get(Calendar.AM_PM));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LogUtil.e("MainActivity","onStart");
+
     }
 
     @Override

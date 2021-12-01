@@ -31,6 +31,7 @@ import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.Menu;
 import com.example.sendwarmth.presenter.PersonalCenterPresenter;
 import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.LogUtil;
 
 import org.litepal.LitePal;
 
@@ -70,14 +71,14 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
     private View allServiceOrder;
     private View allProductOrder;
 
-    private CircleImageView profile;
+    private CircleImageView profileImageView;
     private TextView userName;
     private TextView level;
     private ImageView setting;
 
     private Customer customer;
     private SharedPreferences pref;
-    private String credential;
+    private String credential,profile;
 
     private PersonalCenterPresenter personalCenterPresenter;
 
@@ -103,12 +104,12 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         mMenuAdapter = new MenuAdapter(mMenuList);
         mMenuRecycler.setAdapter(mMenuAdapter);
 
-        profile = root.findViewById(R.id.profile);
+        profileImageView = root.findViewById(R.id.profile);
         userName = root.findViewById(R.id.user_name);
         level = root.findViewById(R.id.level);
         setting = root.findViewById(R.id.setting);
 
-        profile.setOnClickListener(this);
+        profileImageView.setOnClickListener(this);
         userName.setOnClickListener(this);
         level.setOnClickListener(this);
         setting.setOnClickListener(this);
@@ -116,8 +117,14 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         credential = pref.getString("credential","");
         customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
-        userName.setText(customer.getUserNameWithRole());
+        userName.setText(customer.getCustomerNameWithRole());
         level.setText("Lv "+customer.getMemberLevel());
+        profile = pref.getString("profile",null);
+        if(profile != null){
+            Glide.with(getContext()).load(HttpUtil.getResourceURL(profile)).into(profileImageView);
+        }else {
+            Glide.with(getContext()).load(R.drawable.profile_uri).into(profileImageView);
+        }
 
 
         allServiceOrder = root.findViewById(R.id.all_service_orders);
@@ -169,11 +176,13 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        personalCenterPresenter.getMe();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        LogUtil.e("PersonalCenterFragment","onStart");
+//        personalCenterPresenter.getMe();
+//    }
+
 
     @Override
     public void onClick(View view)
@@ -196,26 +205,30 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     public void setCustomer(final Customer customer){
         this.customer = customer;
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                userName.setText(customer.getUserNameWithRole());
-                level.setText("Lv "+customer.getMemberLevel());
-            }
-        });
+        if(getActivity() != null){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    userName.setText(customer.getCustomerNameWithRole());
+                    level.setText("Lv "+customer.getMemberLevel());
+                }
+            });
+        }
     }
 
     public void setAccount(Account account){
         String proFile = account.getProFile();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(proFile != null){
-                    Glide.with(getContext()).load(HttpUtil.getResourceURL(proFile)).into(profile);
-                }else {
-                    Glide.with(getContext()).load(R.drawable.profile_uri).into(profile);
+        if(getActivity() != null){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(proFile != null){
+                        Glide.with(getContext()).load(HttpUtil.getResourceURL(proFile)).into(profileImageView);
+                    }else {
+                        Glide.with(getContext()).load(R.drawable.profile_uri).into(profileImageView);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }

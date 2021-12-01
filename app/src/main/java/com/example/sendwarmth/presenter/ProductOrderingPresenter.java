@@ -4,11 +4,14 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.sendwarmth.FriendsCircleActivity;
 import com.example.sendwarmth.NewFriendsCircleActivity;
+import com.example.sendwarmth.ProductOrderActivity;
+import com.example.sendwarmth.ProductOrderDetailActivity;
 import com.example.sendwarmth.ProductOrderingActivity;
 import com.example.sendwarmth.db.Product;
 import com.example.sendwarmth.util.CheckUtil;
@@ -141,6 +144,9 @@ public class ProductOrderingPresenter
                                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
+                                                    Intent intent = new Intent(context, ProductOrderActivity.class);
+                                                    intent.putExtra("index",1);
+                                                    context.startActivity(intent);
                                                     ((ProductOrderingActivity)context).finish();
                                                 }
                                             })

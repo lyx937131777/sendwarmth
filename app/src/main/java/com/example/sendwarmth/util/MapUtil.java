@@ -16,6 +16,8 @@ public class MapUtil
     private static Map<String,String> orderTypeMap = new HashMap<>();
     private static Map<String,String> topicTypeMap = new HashMap<>();
     private static Map<String,String> attributeMap = new HashMap<>();
+    private static Map<String,String> genderMap = new HashMap<>();
+    private static Map<String,String> relationshipMap = new HashMap<>();
 
     static{
         tipMap.put("无",0);
@@ -69,11 +71,23 @@ public class MapUtil
         topicTypeMap.put("养生","health_care");
         topicTypeMap.put("定期话题","regular_topic");
 
-        attributeMap.put("userName","用户名");
         attributeMap.put("customerName","姓名");
         attributeMap.put("customerAddress","地址");
         attributeMap.put("houseNum","门牌号");
         attributeMap.put("personalDescription","个人描述");
+        attributeMap.put("idNumber","身份证号");
+        attributeMap.put("gender","性别");
+        attributeMap.put("contactName","紧急联系人");
+        attributeMap.put("contactPhone","紧急联系人电话");
+        attributeMap.put("relationship","紧急联系人关系");
+        attributeMap.put("commonDiseases","常见病");
+
+        genderMap.put("male","男");
+        genderMap.put("female","女");
+
+        relationshipMap.put("children","子女");
+        relationshipMap.put("relatives","亲属");
+        relationshipMap.put("friends","朋友");
     }
 
     public static int getTip(String s){
@@ -108,5 +122,13 @@ public class MapUtil
 
     public static String getAttribute(String s){
         return attributeMap.get(s);
+    }
+
+    public static String getGender(String s){
+        return genderMap.get(s);
+    }
+
+    public static String getRelationship(String s){
+        return relationshipMap.get(s);
     }
 }

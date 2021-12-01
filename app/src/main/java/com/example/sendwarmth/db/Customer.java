@@ -18,7 +18,7 @@ public class Customer extends LitePalSupport implements Serializable
     private String customerName;
     private String customerAddress;
     private String customerTel;
-    private String userName;
+//    private String userName;
     private String personalDescription;
 
     private double accountBalance;
@@ -27,6 +27,15 @@ public class Customer extends LitePalSupport implements Serializable
     private double longitude;
     private double latitude;
     private String houseNum;
+
+    private String gender;
+    private String idNumber;
+    private String emergencyContactName;
+    private String emergencyContactPhone;
+    private String relationship;
+    //TODO 常见病
+    @SerializedName("image")
+    private String commonDiseases;
 
     private int memberLevel;
     private double memberPoints;
@@ -43,7 +52,10 @@ public class Customer extends LitePalSupport implements Serializable
         this.tempAddress = tempAddress;
     }
 
-    public String getNameWithRole(){
+    public String getCustomerNameWithRole(){
+        if(customerName == null){
+            return "暂未填写";
+        }
         if(roleType.equals("customer")){
             return customerName;
         }
@@ -53,14 +65,56 @@ public class Customer extends LitePalSupport implements Serializable
         return customerName + "（未知角色）";
     }
 
-    public String getUserNameWithRole(){
-        if(roleType.equals("customer")){
-            return userName;
-        }
-        if(roleType.equals("expert")){
-            return userName + "（专家）";
-        }
-        return userName + "（未知角色）";
+    public boolean informationIncomplete(){
+        return customerName == null || gender == null || customerAddress == null || idNumber == null;
+    }
+
+    public String getCommonDiseases() {
+        return commonDiseases;
+    }
+
+    public void setCommonDiseases(String commonDiseases) {
+        this.commonDiseases = commonDiseases;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public String getEmergencyContactName() {
+        return emergencyContactName;
+    }
+
+    public void setEmergencyContactName(String emergencyContactName) {
+        this.emergencyContactName = emergencyContactName;
+    }
+
+    public String getEmergencyContactPhone() {
+        return emergencyContactPhone;
+    }
+
+    public void setEmergencyContactPhone(String emergencyContactPhone) {
+        this.emergencyContactPhone = emergencyContactPhone;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
     }
 
     public String getRoleType()
@@ -141,15 +195,15 @@ public class Customer extends LitePalSupport implements Serializable
         this.customerTel = customerTel;
     }
 
-    public String getUserName()
-    {
-        return userName;
-    }
-
-    public void setUserName(String userName)
-    {
-        this.userName = userName;
-    }
+//    public String getUserName()
+//    {
+//        return userName;
+//    }
+//
+//    public void setUserName(String userName)
+//    {
+//        this.userName = userName;
+//    }
 
     public String getPersonalDescription()
     {

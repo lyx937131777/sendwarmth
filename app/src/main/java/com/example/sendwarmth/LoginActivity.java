@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -12,7 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 import com.example.sendwarmth.dagger2.DaggerMyComponent;
@@ -38,6 +42,9 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
 
     private LoginPresenter loginPresenter;
 
+    private CheckBox agreedCheckBox;
+    private boolean agreed = false;
+    private TextView userAgreementText, privacyPolicyText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -66,6 +73,36 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
             startActivity(intent_login);
             finish();
         }
+
+        agreedCheckBox = findViewById(R.id.agreed_check);
+        agreedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                agreed = isChecked;
+            }
+        });
+        userAgreementText = findViewById(R.id.user_agreement);
+        privacyPolicyText = findViewById(R.id.privacy_policy);
+        userAgreementText.setText(Html.fromHtml("<a href=\"http://app.swn-sh.com/yhxy.html\">用户协议</a>"));
+        userAgreementText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, WebActivity.class);
+                intent.putExtra("link","http://app.swn-sh.com/yhxy.html");
+                intent.putExtra("title","用户协议");
+                startActivity(intent);
+            }
+        });
+        privacyPolicyText.setText(Html.fromHtml("<a href=\"http://app.swn-sh.com/yszc.html\">隐私政策</a>"));
+        privacyPolicyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, WebActivity.class);
+                intent.putExtra("link","http://app.swn-sh.com/yszc.html");
+                intent.putExtra("title","隐私政策");
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -187,7 +224,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
             case R.id.login:
                 tel = telText.getText().toString();
                 passowrd = passwordText.getText().toString();
-                loginPresenter.login(tel, passowrd);
+                loginPresenter.login(tel, passowrd,agreed);
                 break;
             // 注册按钮
             case R.id.go_register:

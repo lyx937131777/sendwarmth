@@ -33,6 +33,7 @@ import com.example.sendwarmth.db.Worker;
 import com.example.sendwarmth.presenter.OrderingPresenter;
 import com.example.sendwarmth.util.DateAndTimePickerDialog;
 import com.example.sendwarmth.util.HttpUtil;
+import com.example.sendwarmth.util.LogUtil;
 import com.example.sendwarmth.util.MapUtil;
 import com.example.sendwarmth.util.TimeUtil;
 
@@ -50,6 +51,9 @@ public class ServiceSubjectActivity extends AppCompatActivity
 
     private Button orderButton;
 
+    private SharedPreferences pref;
+    private String credential;
+    private Customer customer;
 
     private ImageView serviceClassImage, serviceSubjectImage;
 
@@ -94,9 +98,30 @@ public class ServiceSubjectActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(ServiceSubjectActivity.this, OrderingActivity.class);
-                intent.putExtra("serviceWork", serviceSubject);
-                startActivity(intent);
+                pref = PreferenceManager.getDefaultSharedPreferences(ServiceSubjectActivity.this);
+                credential = pref.getString("credential","");
+                customer = LitePal.where("credential = ?",credential).findFirst(Customer.class);
+                if(customer.informationIncomplete()){
+                    new AlertDialog.Builder(ServiceSubjectActivity.this)
+                            .setTitle("提示")
+                            .setMessage("您的必要身份信息不完整（姓名，性别，详细地址，身份证），请补全信息后再下单。")
+                            .setPositiveButton("现在去填", new
+                                    DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which)
+                                        {
+                                            Intent intent = new Intent(ServiceSubjectActivity.this, MyInformationActivity.class);
+                                            intent.putExtra("customer",customer);
+                                            startActivity(intent);
+                                        }
+                                    })
+                            .setNegativeButton("稍后再说",null).show();
+                }else{
+                    Intent intent = new Intent(ServiceSubjectActivity.this, OrderingActivity.class);
+                    intent.putExtra("serviceWork", serviceSubject);
+                    startActivity(intent);
+                }
             }
         });
 

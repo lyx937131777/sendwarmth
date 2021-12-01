@@ -77,7 +77,14 @@ public class ProductOrderFragment extends Fragment
 
     public void refresh(){
         LogUtil.e("ProductOrderFragment", "refresh!!");
+        dismissDialog();
         productOrderPresenter.updateOrderList(productOrderAdapter,getTypes());
+    }
+
+    public void dismissDialog() {
+        if(productOrderAdapter != null){
+            productOrderAdapter.dismissDialog();
+        }
     }
 
     @Override

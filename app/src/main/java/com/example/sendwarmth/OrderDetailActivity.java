@@ -66,7 +66,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     private Button button;
 
     private RatingBar ratingBar;
-    private int score;
+    private int score = 5;
 
     private CardView commentCard,customerCommentCard, attendantCommentCard,appointedPersonCard;
     private EditText commentText;

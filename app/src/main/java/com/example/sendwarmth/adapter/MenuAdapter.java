@@ -19,6 +19,7 @@ import com.example.sendwarmth.OrderActivity;
 import com.example.sendwarmth.ProductOrderActivity;
 import com.example.sendwarmth.R;
 import com.example.sendwarmth.SettingActivity;
+import com.example.sendwarmth.WebActivity;
 import com.example.sendwarmth.db.Customer;
 import com.example.sendwarmth.db.Menu;
 import com.example.sendwarmth.util.LogUtil;
@@ -131,6 +132,16 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>
                             }
                             case "myActivity":{
                                 Intent intent = new Intent(mContext, MyActivityActivity.class);
+                                mContext.startActivity(intent);
+                                break;
+                            }
+                            case "myHealth":{
+                                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+                                String userId = pref.getString("userId","");
+                                Intent intent = new Intent(mContext, WebActivity.class);
+                                intent.putExtra("link","http://app.swn-sh.com/search.html?userid=" + userId);
+//                                intent.putExtra("link","http://www.baidu.com");
+                                intent.putExtra("title","我的健康");
                                 mContext.startActivity(intent);
                                 break;
                             }
