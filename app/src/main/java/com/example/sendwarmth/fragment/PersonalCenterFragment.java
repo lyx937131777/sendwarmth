@@ -58,13 +58,14 @@ public class PersonalCenterFragment extends Fragment implements View.OnClickList
 
     private RecyclerView mMenuRecycler;
     private Menu[] mMenus = {new Menu("myInformation",R.drawable.my_information,"我的信息"),
-            new Menu("myCommunity",R.drawable.my_community,"我的社区"),
+//            new Menu("myCommunity",R.drawable.my_community,"我的社区"),
             new Menu("myActivity",R.drawable.my_activity,"我的活动"),
             new Menu("myHealth",R.drawable.my_health,"我的健康"),
-            new Menu("myAddress",R.drawable.my_address,"收货地址"),
-            new Menu("feedback",R.drawable.feedback,"意见反馈"),
-            new Menu("customService",R.drawable.custom_service,"定制服务"),
-            new Menu("hotline",R.drawable.hotline,"热线电话")};
+//            new Menu("myAddress",R.drawable.my_address,"收货地址"),
+//            new Menu("feedback",R.drawable.feedback,"意见反馈"),
+//            new Menu("customService",R.drawable.custom_service,"定制服务"),
+//            new Menu("hotline",R.drawable.hotline,"热线电话")
+    };
     private List<Menu> mMenuList = new ArrayList<>();
     private MenuAdapter mMenuAdapter;
 

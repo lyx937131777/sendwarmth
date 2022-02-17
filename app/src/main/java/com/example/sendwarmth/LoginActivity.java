@@ -1,17 +1,28 @@
 package com.example.sendwarmth;
 
+import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -24,7 +35,10 @@ import com.example.sendwarmth.dagger2.MyComponent;
 import com.example.sendwarmth.dagger2.MyModule;
 import com.example.sendwarmth.presenter.LoginPresenter;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class LoginActivity extends AppCompatActivity implements OnClickListener
 {
@@ -39,6 +53,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+
+    private Dialog agreementDialog;
 
     private LoginPresenter loginPresenter;
 
@@ -65,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
         loginPresenter = myComponent.loginPresenter();
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = pref.edit();
         tel = pref.getString("userId",null);
         passowrd = pref.getString("password",null);
         if(tel != null & passowrd != null)
@@ -87,22 +104,92 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener
         userAgreementText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, WebActivity.class);
-                intent.putExtra("link","http://app.swn-sh.com/yhxy.html");
-                intent.putExtra("title","用户协议");
-                startActivity(intent);
+                goToUserAgreement();
             }
         });
         privacyPolicyText.setText(Html.fromHtml("<a href=\"http://app.swn-sh.com/yszc.html\">隐私政策</a>"));
         privacyPolicyText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, WebActivity.class);
-                intent.putExtra("link","http://app.swn-sh.com/yszc.html");
-                intent.putExtra("title","隐私政策");
-                startActivity(intent);
+                goToPrivacyPolicy();
             }
         });
+
+        initAgreementDialog();
+        Boolean firstLogin = pref.getBoolean("firstLogin",true);
+        if(firstLogin)
+            agreementDialog.show();
+    }
+
+    private void initAgreementDialog()
+    {
+        agreementDialog = new Dialog(this, R.style.Theme_AppCompat_Dialog_Alert);
+        View view = View.inflate(this, R.layout.dialog_agreement, null);
+        agreementDialog.setContentView(view);
+        agreementDialog.setCanceledOnTouchOutside(false);
+        //view.setMinimumHeight((int) (ScreenSizeUtils.getInstance(this).getScreenHeight() *
+        // 0.23f));
+        Window dialogWindow = agreementDialog.getWindow();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        //lp.width = (int) (ScreenSizeUtils.getInstance(this).getScreenWidth() * 0.9f);
+//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+        dialogWindow.setAttributes(lp);
+
+        SpannableString contentString = new SpannableString("请你务必审慎阅读，充分理解“用户协议”和“隐私政策”各条款。\n你可以阅读《用户协议》和《隐私政策》了解详细信息。如你同意，请点击“同意”开始接受我们的服务。");
+        ClickableSpan userAgreementSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                goToUserAgreement();
+            }
+        };
+        ClickableSpan privacyPolicySpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                goToPrivacyPolicy();
+            }
+        };
+        contentString.setSpan(userAgreementSpan,36,42, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        contentString.setSpan(privacyPolicySpan,43,49,Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        TextView contnet = view.findViewById(R.id.content);
+        contnet.setText(contentString);
+        contnet.setMovementMethod(LinkMovementMethod.getInstance());
+
+        Button agreeButton = view.findViewById(R.id.agree);
+        Button unagreeBotton = view.findViewById(R.id.unagree);
+        agreeButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                agreedCheckBox.setChecked(true);
+                editor.putBoolean("firstLogin",false);
+                editor.apply();
+                agreementDialog.cancel();
+            }
+        });
+
+        unagreeBotton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+    }
+
+    private void goToUserAgreement(){
+        Intent intent = new Intent(LoginActivity.this, WebActivity.class);
+        intent.putExtra("link","http://app.swn-sh.com/yhxy.html");
+        intent.putExtra("title","用户协议");
+        startActivity(intent);
+    }
+
+    private void goToPrivacyPolicy(){
+        Intent intent = new Intent(LoginActivity.this, WebActivity.class);
+        intent.putExtra("link","http://app.swn-sh.com/yszc.html");
+        intent.putExtra("title","隐私政策");
+        startActivity(intent);
     }
 
     @Override
